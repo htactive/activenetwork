@@ -11,9 +11,12 @@ import {EventDetailDescriptionComponent} from './app/components/event-detail-des
 import {EventDetailPeopleComponent} from './app/components/event-detail-people';
 import {EventDetailPhotosComponent} from './app/components/event-detail-photos';
 import {EventManager} from './app/modules/event-manager';
+import {Error404Page} from './app/modules/404-page';
 
 ReactDOM.render(
   <Router history={browserHistory}>
+    <Route path={`${virtualPath}/404`} component={Error404Page}/>
+
     <Route path={`${virtualPath}/`} component={Index}>
       <Route path={`${virtualPath}/post-grid`} component={PostGrid}/>
       <Route path={`${virtualPath}/profile-page`} component={ProfilePage}/>
