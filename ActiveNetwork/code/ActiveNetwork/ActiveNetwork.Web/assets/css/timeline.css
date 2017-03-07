@@ -11,6 +11,18 @@ body {
   overflow-x: hidden;
 }
 
+.bgr-blur {
+	background-image: url('/img/bgr-cover-blur.jpg');
+    background-size: cover;
+    display: block;
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    right: 0;
+    z-index: 0;
+    top: 0;
+}
+
 footer.footer {
   position: absolute;
   bottom: 0;
@@ -699,7 +711,6 @@ h1.row-title, h2.row-title, h3.row-title, h4.row-title, h5.row-title, h6.row-tit
   position: relative;
   border-radius: 3px;
   background: #ffffff;
-  border-top: 3px solid #2dc3e8;
   margin-bottom: 20px;
   width: 100%;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -786,7 +797,7 @@ h1.row-title, h2.row-title, h3.row-title, h4.row-title, h5.row-title, h6.row-tit
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
   border-top: 1px solid #f4f4f4;
-  padding: 10px;
+  padding: 15px 10px;
   background-color: #fff;
 }
 
