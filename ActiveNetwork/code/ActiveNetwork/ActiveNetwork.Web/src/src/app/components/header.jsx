@@ -28,7 +28,7 @@ export class Header extends Component {
               e.preventDefault();
               browserHistory.push(`${virtualPath}`)
             }}>
-              <span>network</span>
+              <span>Network</span>
             </a>
           </div>
           <div id="navbar" className="navbar-collapse collapse">
@@ -47,7 +47,10 @@ export class Header extends Component {
                 </a>
                 <ul className="dropdown-menu">
                   <li><a href="#">Trang Cá Nhân</a></li>
-                  <li><a href="#">Quản Lý Sự Kiện</a></li>
+                  <li><a href="" onClick={(e) => {
+                    e.preventDefault();
+                    browserHistory.push(`${virtualPath}/manage-event`)
+                  }}>Quản Lý Sự Kiện</a></li>
                   <li><a href="#">Cài Đặt</a></li>
                   <li className="divider"></li>
                   <li><a href="#">Đăng Xuất</a></li>
@@ -56,7 +59,6 @@ export class Header extends Component {
               <li>
                 <a href="#" onClick={() => this.createNewEvent()}><i className="fa fa-plus-circle" />&nbsp;Tạo sự kiện</a>
               </li>
-              <li><a href="#">Trang Chủ</a></li>
               <li className="dropdown">
                 <a href="http://demos.bootdey.com/dayday/grid_posts.html#" className="dropdown-toggle"
                    data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

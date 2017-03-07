@@ -5,3 +5,4 @@
 **/*.user
 **/.idea
 **/src/dist/**
+/ActiveNetwork/code/ActiveNetwork/ActiveNetwork.Web/src/dist
