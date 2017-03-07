@@ -4,7 +4,7 @@ import {Modal, Button, Form, FormGroup, Col, FormControl} from 'react-bootstrap'
 
 export class CreateEventDialog extends React.Component {
   componentWillMount() {
-    this.setState({startDate:'03/08/2017'});
+    this.setState({startDate: '03/08/2017'});
 
   }
 
@@ -20,7 +20,7 @@ export class CreateEventDialog extends React.Component {
     });
   }
 
-  toggleEndDate(){
+  toggleEndDate() {
     this.setState({
       showEndDate: !this.state.showEndDate,
     });
@@ -29,86 +29,76 @@ export class CreateEventDialog extends React.Component {
   render() {
     return (
       <Modal show={this.state.showModal} onHide={() => this.close()}>
-        <Modal.Header closeButton >
+        <Modal.Header closeButton>
           <Modal.Title style={{textAlign: 'center'}}>Tạo sự kiện</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form horizontal>
-            <FormGroup>
-              <Col sm={3} style={{textAlign: 'right'}} >
+          <form className="form-horizontal" style={{paddingTop: 10}}>
+            <div className="form-group">
+              <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
                 Tên sự kiện
-              </Col>
-              <Col sm={7}>
-                <FormControl type="text" placeholder="Nhập vào tên của sự kiện"></FormControl>
-              </Col>
-            </FormGroup>
+              </div>
+              <div className="col-sm-7">
+                <input type="text" className="form-control" id="inputEmail3" placeholder="Nhập vào tên của sự kiện"/>
+              </div>
+            </div>
 
-            <FormGroup>
-              <Col sm={3} style={{textAlign: 'right'}}>
+            <div className="form-group">
+              <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
                 Địa điểm
-              </Col>
-              <Col sm={7}>
-                <FormControl type="text" placeholder="Nhập một địa điểm"></FormControl>
-              </Col>
-            </FormGroup>
+              </div>
+              <div className="col-sm-7">
+                <input type="text" className="form-control" id="inputEmail3" placeholder="Nhập một địa điểm"/>
+              </div>
+            </div>
 
-            <FormGroup>
-              <Col sm={3} style={{textAlign: 'right'}}>
+            <div className="form-group">
+              <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
                 Thời gian bắt đầu
-              </Col>
-              <Col sm={4}>
+              </div>
+              <div className="col-sm-4">
                 <Datetime
                   defaultValue={new Date()}
                 />
-              </Col>
-              {this.state.showEndDate? null:
-              <Col sm={3}>
-              <Button onClick={() => this.toggleEndDate()}>+ Kết thúc</Button>
-              </Col>}
-            </FormGroup>
+              </div>
+              {this.state.showEndDate ? null :
+                <div className="col-sm-3">
+                  <Button onClick={() => this.toggleEndDate()}>+Kết thúc</Button>
+                </div>}
+            </div>
 
-            {this.state.showEndDate? <FormGroup>
-                <Col sm={3} style={{textAlign: 'right'}}>
+            {this.state.showEndDate ? <div className="form-group">
+                <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
                   Thời gian kết thúc
-                </Col>
-                <Col sm={4}>
+                </div>
+                <div className="col-sm-4">
                   <Datetime
                     defaultValue={new Date()}
                   />
-                </Col>
-                <Col sm={3}>
+                </div>
+                <div className="col-sm-3">
                   <Button onClick={() => this.toggleEndDate()}>- Hủy bỏ</Button>
-                </Col>
-              </FormGroup>: null}
+                </div>
+              </div> : null}
 
-
-            <FormGroup>
-              <Col sm={3} style={{textAlign: 'right'}}>
+            <div className="form-group">
+              <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
                 Chủ đề
-              </Col>
-              <Col sm={7}>
-                <FormControl type="text" placeholder="Chọn chủ đề của sự kiện"></FormControl>
-              </Col>
-            </FormGroup>
+              </div>
+              <div className="col-sm-7">
+                <input type="text" className="form-control" id="inputEmail3" placeholder="Chọn chủ đề của sự kiện"/>
+              </div>
+            </div>
 
-            <FormGroup>
-              <Col sm={3} style={{textAlign: 'right'}}>
+            <div className="form-group">
+              <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
                 Mô tả
-              </Col>
-              <Col sm={7}>
-                <FormControl type="text" placeholder="Thông tin chi tiết của sự kiện"></FormControl>
-              </Col>
-            </FormGroup>
-
-            <FormGroup>
-              <Col sm={3} style={{textAlign: 'right'}}>
-                Yêu cầu
-              </Col>
-              <Col sm={7}>
-                <FormControl type="text" placeholder="Yêu cầu cho người tham dự"></FormControl>
-              </Col>
-            </FormGroup>
-          </Form>
+              </div>
+              <div className="col-sm-7">
+                <input type="text" className="form-control" id="inputEmail3" placeholder="Thông tin chi tiết của sự kiện"/>
+              </div>
+            </div>
+          </form>
         </Modal.Body>
         <Modal.Footer>
           <Button bsStyle="primary">Tiếp tục</Button>
