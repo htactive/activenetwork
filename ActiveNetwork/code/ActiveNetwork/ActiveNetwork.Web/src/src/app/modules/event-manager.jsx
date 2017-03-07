@@ -25,7 +25,7 @@ export class EventManager extends Component {
               </div>
             </div>
           </div>
-          <div className="col-md-9 animated fadeInRight">
+          <div className="col-md-9 animated fadeInRight" style={{paddingLeft: 200}}>
             <div className="row">
               <div className="col-md-12">
                 <div className="file-box">
