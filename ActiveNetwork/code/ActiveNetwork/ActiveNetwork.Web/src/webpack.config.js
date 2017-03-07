@@ -19,7 +19,7 @@ module.exports = {
         {from: /^\/login.html\//, to: '/login.html'}
       ]
     },
-    contentBase: "./public",
+    contentBase: "../",
   },
   module: {
     loaders: [
