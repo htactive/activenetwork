@@ -34,12 +34,14 @@ export class CreateEventDialog extends React.Component {
         </Modal.Header>
         <Modal.Body>
           <form className="form-horizontal" style={{paddingTop: 10}}>
+            <ul className="folder-list" style={{padding: 15}}>
+              <li>
             <div className="form-group">
               <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
                 Tên sự kiện
               </div>
               <div className="col-sm-7">
-                <input type="text" className="form-control" id="inputEmail3" placeholder="Nhập vào tên của sự kiện"/>
+                <input type="text" className="form-control" id="eventname" placeholder="Nhập vào tên của sự kiện"/>
               </div>
             </div>
 
@@ -48,7 +50,7 @@ export class CreateEventDialog extends React.Component {
                 Địa điểm
               </div>
               <div className="col-sm-7">
-                <input type="text" className="form-control" id="inputEmail3" placeholder="Nhập một địa điểm"/>
+                <input type="text" className="form-control" id="eventplace" placeholder="Nhập một địa điểm"/>
               </div>
             </div>
 
@@ -81,12 +83,14 @@ export class CreateEventDialog extends React.Component {
                 </div>
               </div> : null}
 
-            <div className="form-group">
+              </li>
+
+            <div className="form-group"  style={{marginTop: 20}}>
               <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
                 Chủ đề
               </div>
               <div className="col-sm-7">
-                <input type="text" className="form-control" id="inputEmail3" placeholder="Chọn chủ đề của sự kiện"/>
+                <textarea className="form-control" rows="2" placeholder="Chọn chủ đề của sự kiện"></textarea>
               </div>
             </div>
 
@@ -95,13 +99,14 @@ export class CreateEventDialog extends React.Component {
                 Mô tả
               </div>
               <div className="col-sm-7">
-                <input type="text" className="form-control" id="inputEmail3" placeholder="Thông tin chi tiết của sự kiện"/>
+                <textarea className="form-control" rows="4" placeholder="Thông tin chi tiết của sự kiện"></textarea>
               </div>
             </div>
+            </ul>
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button bsStyle="primary">Tiếp tục</Button>
+          <Button bsStyle="primary">Tạo sự kiện</Button>
           <Button onClick={() => this.close()}>Hủy</Button>
         </Modal.Footer>
       </Modal>);

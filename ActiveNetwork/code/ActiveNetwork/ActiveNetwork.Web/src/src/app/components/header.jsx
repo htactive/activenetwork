@@ -47,7 +47,10 @@ export class Header extends Component {
                 </a>
                 <ul className="dropdown-menu">
                   <li><a href="#">Trang Cá Nhân</a></li>
-                  <li><a href="#">Quản Lý Sự Kiện</a></li>
+                  <li><a href="" onClick={(e) => {
+                    e.preventDefault();
+                    browserHistory.push(`${virtualPath}/manage-event`)
+                  }}>Quản Lý Sự Kiện</a></li>
                   <li><a href="#">Cài Đặt</a></li>
                   <li className="divider"></li>
                   <li><a href="#">Đăng Xuất</a></li>
