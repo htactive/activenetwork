@@ -13,11 +13,10 @@ img {
 .white-panel {
   position: absolute;
   background: white;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .white-panel .box {
-  border-radius: 0px;
+  border: 1px solid #e0e0e0;
   margin-bottom: 0px;
 }
 
@@ -29,11 +28,60 @@ img {
   color: #A92733;
 }
 
+.white-panel img {
+  border-radius: 3px;
+}
+
+.white-panel .username a {
+  color: #505458;
+  font-weight: normal;
+}
+
+.white-panel .username a:hover,
+.white-panel .username a:focus {
+  color: #505458;
+  text-decoration: none;
+}
+
 .white-panel:hover {
-  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
   margin-top: -5px;
   -webkit-transition: all 0.3s ease-in-out;
   -moz-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
+}
+
+.box-body > p {
+  color: #6f7680;
+}
+
+.box-body > a.event-name {
+  color: #505458;
+  line-height: 30px;
+  font-weight: normal;
+  font-size: 15px;
+}
+
+.box-body > p > a {
+  color: #bec1ca;
+  padding: 0px 2px;
+}
+
+.box-footer > a {
+  color: #505458 !important;
+  font-size: 11px;
+  padding: 5px;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+.box-footer > a > i {
+  margin-right: 5px;
+}
+
+.box-footer > a:hover,
+.box-footer > a:focus {
+  cursor: pointer;
+  text-decoration: none;
 }

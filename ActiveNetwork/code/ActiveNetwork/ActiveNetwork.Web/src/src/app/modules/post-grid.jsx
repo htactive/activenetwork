@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {virtualPath} from '../commons/constant'
 import {browserHistory} from 'react-router';
 
-export class PostGrid extends Component {
+export class  PostGrid extends Component {
 
   componentWillMount() {
     let posts = [
@@ -11,7 +11,7 @@ export class PostGrid extends Component {
         host_avatar: '/img/Friends/guy-6.jpg',
         cover_image: '/img/Photos/1.jpg',
         title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit.',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit.<a href="https://youtu.be/DLS0PA2cgoo">https://youtu.be/DLS0PA2cgoo</a>',
         article_width: 0,
         article_top: 0,
         article_left: 0
@@ -282,7 +282,7 @@ export class PostGrid extends Component {
     return (<div>
       <div className="container page-content ">
         <div className="row">
-          <div className="col-md-10 col-md-offset-1">
+          <div className="col-md-12">
             <section id="blog-landing">
               {this.state.posts != null ? this.state.posts.map((post, x) =>
                 (<article
@@ -304,19 +304,19 @@ export class PostGrid extends Component {
                       </div>
                     </div>
                     <div className="box-body">
-                      <a href="" onClick={(e)=>this.goToEventDetail(e)}>Sự kiện nhậu mừng sinh nhật Bill Gate</a>
-                      <p>{post.description}</p>
+                      <a className="event-name" href="" onClick={(e)=>this.goToEventDetail(e)}>Sự kiện nhậu mừng sinh nhật Bill Gate</a>
+                      <p dangerouslySetInnerHTML={{__html: post.description}} />
                     </div>
                     <img className="img-responsive show-in-modal" src={post.cover_image} alt="Photo"/>
                     <div className="box-footer">
-                      <button type="button" className="btn btn-link btn-xs"><i className="fa fa-plus"/> Tham gia
-                      </button>
-                      <button type="button" className="btn btn-link btn-xs"><i className="fa fa-heart"/>
+                      <a type="button" ><i className="fa fa-plus"/> Tham gia
+                      </a>
+                      <a type="button" ><i className="fa fa-heart"/>
                         Yêu thích
-                      </button>
-                      <button type="button" className="btn btn-link btn-xs"><i className="fa fa-comment"/>
+                      </a>
+                      <a type="button" ><i className="fa fa-comment"/>
                         Bình luận
-                      </button>
+                      </a>
                     </div>
                   </div>
                 </article>)

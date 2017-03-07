@@ -1559,6 +1559,7 @@ a, a:hover {
 .avatar-img > a > img {
   display: inline-block;
   width: 30px;
+  border-radius: 3px;
 }
 
 .avatar-img > a > span {
