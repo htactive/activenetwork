@@ -59,7 +59,6 @@ export class Header extends Component {
               <li>
                 <a href="#" onClick={() => this.createNewEvent()}><i className="fa fa-plus-circle" />&nbsp;Tạo sự kiện</a>
               </li>
-              <li><a href="#">Trang Chủ</a></li>
               <li className="dropdown">
                 <a href="http://demos.bootdey.com/dayday/grid_posts.html#" className="dropdown-toggle"
                    data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

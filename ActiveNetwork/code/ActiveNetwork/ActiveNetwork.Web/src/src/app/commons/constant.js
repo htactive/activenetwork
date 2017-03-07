@@ -1,4 +1,4 @@
-export const virtualPath = "/app.html";
+export const virtualPath = "";
 
 export const MessageBoxButton = {
   Yes: 0x0001,

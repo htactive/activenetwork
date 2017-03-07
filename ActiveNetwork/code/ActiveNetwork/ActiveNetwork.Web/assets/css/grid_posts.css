@@ -13,10 +13,10 @@ img {
 .white-panel {
   position: absolute;
   background: white;
+  border-radius: 3px;
 }
 
 .white-panel .box {
-  border: 1px solid #e0e0e0;
   margin-bottom: 0px;
 }
 
@@ -29,7 +29,6 @@ img {
 }
 
 .white-panel img {
-  border-radius: 3px;
 }
 
 .white-panel .username a {
