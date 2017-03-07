@@ -28,7 +28,7 @@ export class Header extends Component {
               e.preventDefault();
               browserHistory.push(`${virtualPath}`)
             }}>
-              <span>network</span>
+              <span>Network</span>
             </a>
           </div>
           <div id="navbar" className="navbar-collapse collapse">
