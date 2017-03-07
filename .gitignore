@@ -1,0 +1,7 @@
+**/packages/**
+**/*.suo
+**/obj/**
+**/bin/**
+**/*.user
+**/.idea
+**/src/dist/**
