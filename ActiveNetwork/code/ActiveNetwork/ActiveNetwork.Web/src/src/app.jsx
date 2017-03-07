@@ -13,7 +13,7 @@ import {EventDetailPhotosComponent} from './app/components/event-detail-photos';
 
 ReactDOM.render(
   <Router history={browserHistory}>
-    <Route path={virtualPath} component={Index}>
+    <Route path={`${virtualPath}/`} component={Index}>
       <Route path={`${virtualPath}/post-grid`} component={PostGrid}/>
       <Route path={`${virtualPath}/profile-page`} component={ProfilePage}/>
       <Route path={`${virtualPath}/event`} component={EventDetailPage}>
