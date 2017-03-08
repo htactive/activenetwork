@@ -1,0 +1,36 @@
+﻿<#@ template language="C#" debug="true" hostspecific="true"#>
+<#@ include file="EF.Utility.CS.ttinclude"#>
+<# 
+var entities = new List<EntityMetadataRender>(){
+new EntityMetadataRender(){Name = "Test"},
+};
+  var fileManager = EntityFrameworkTemplateFileManager.Create(this); 
+  fileManager.StartHeader(); 
+#><#
+foreach(var entity in entities){
+    fileManager.StartNewFile("I"+entity.Name+"Repository.cs"); 
+    #>using ActiveNetwork.Entities;
+
+namespace ActiveNetwork.Repository
+{
+    public partial interface I<#=entity.Name#>Repository : IBaseRepository<<#=entity.Name#>>
+    {
+    }
+}
+<# 
+  }
+  fileManager.Process(); 
+#>
+<#+
+public class EntityMetadataRender
+{
+	public EntityMetadataRender()
+	{
+		IdKey = "Id";
+		IsOverrideKeyMethod = false;
+	}
+    public string Name{get;set;}
+	public string IdKey{get;set;}
+	public bool IsOverrideKeyMethod{get;set;}
+}
+#>
