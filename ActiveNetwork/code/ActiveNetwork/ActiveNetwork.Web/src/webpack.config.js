@@ -5,7 +5,7 @@ module.exports = {
   },
   output: {
     path: __dirname + "/dist/application",
-    publicPath: "/dist/application",
+    publicPath: "/src/dist/application",
     filename: "[name].js"
   },
   resolve: {
@@ -15,11 +15,11 @@ module.exports = {
   devServer: {
     historyApiFallback: {
       rewrites: [
-        {from: /^\/app.html\//, to: '/app.html'},
+        {from: /^\//, to: '/app.html'},
         {from: /^\/login.html\//, to: '/login.html'}
       ]
     },
-    contentBase: "./public",
+    contentBase: "../",
   },
   module: {
     loaders: [

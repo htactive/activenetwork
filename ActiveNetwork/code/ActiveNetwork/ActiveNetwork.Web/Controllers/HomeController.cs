@@ -10,7 +10,7 @@ namespace ActiveNetwork.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return File(Server.MapPath("~/") + "app.html", "text/html"); 
         }
 
         public ActionResult About()

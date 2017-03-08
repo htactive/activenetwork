@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveNetwork.Web", "ActiveNetwork.Web\ActiveNetwork.Web.csproj", "{073A131E-506D-4A92-93AA-FC0F20CEF634}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveNetwork.Entities", "ActiveNetwork.Entities\ActiveNetwork.Entities.csproj", "{2452A885-1F81-480A-8950-7BE495CEA83E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveNetwork.Repository", "ActiveNetwork.Repository\ActiveNetwork.Repository.csproj", "{AFED1BD8-FBCD-4086-A1A2-D8AC8C9B3B1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{073A131E-506D-4A92-93AA-FC0F20CEF634}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{073A131E-506D-4A92-93AA-FC0F20CEF634}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{073A131E-506D-4A92-93AA-FC0F20CEF634}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2452A885-1F81-480A-8950-7BE495CEA83E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2452A885-1F81-480A-8950-7BE495CEA83E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2452A885-1F81-480A-8950-7BE495CEA83E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2452A885-1F81-480A-8950-7BE495CEA83E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFED1BD8-FBCD-4086-A1A2-D8AC8C9B3B1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFED1BD8-FBCD-4086-A1A2-D8AC8C9B3B1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFED1BD8-FBCD-4086-A1A2-D8AC8C9B3B1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFED1BD8-FBCD-4086-A1A2-D8AC8C9B3B1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

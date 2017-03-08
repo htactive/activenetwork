@@ -57,8 +57,7 @@ namespace ActiveNetwork.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return File(Server.MapPath("~/") + "login.html", "text/html");
         }
 
         //
