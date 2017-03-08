@@ -5,7 +5,7 @@ module.exports = {
   },
   output: {
     path: __dirname + "/dist/application",
-    publicPath: "/dist/application",
+    publicPath: "/src/dist/application",
     filename: "[name].js"
   },
   resolve: {
