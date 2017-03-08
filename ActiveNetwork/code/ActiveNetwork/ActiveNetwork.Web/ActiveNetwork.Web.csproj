@@ -169,6 +169,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -223,10 +224,21 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="src\" />
+    <Folder Include="Views\BaseApi\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ActiveNetwork.Entities\ActiveNetwork.Entities.csproj">
+      <Project>{2452a885-1f81-480a-8950-7be495cea83e}</Project>
+      <Name>ActiveNetwork.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ActiveNetwork.Repository\ActiveNetwork.Repository.csproj">
+      <Project>{afed1bd8-fbcd-4086-a1a2-d8ac8c9b3b1b}</Project>
+      <Name>ActiveNetwork.Repository</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
