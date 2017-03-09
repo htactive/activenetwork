@@ -1,6 +1,7 @@
 module.exports = {
   entry: {
     login: ['./src/login.jsx'],
+    recoverpassword: ['./src/recoverpassword.jsx'],
     app: ['./src/app.jsx']
   },
   output: {
@@ -16,7 +17,8 @@ module.exports = {
     historyApiFallback: {
       rewrites: [
         {from: /^\//, to: '/app.html'},
-        {from: /^\/login.html\//, to: '/login.html'}
+        {from: /^\/login.html\//, to: '/login.html'},
+         {from: /^\/recoverpassword.html\//, to: '/recoverpassword.html'}
       ]
     },
     contentBase: "../",
