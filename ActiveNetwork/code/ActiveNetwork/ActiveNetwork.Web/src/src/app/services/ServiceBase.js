@@ -1,5 +1,5 @@
 export class ServiceBase {
-  async  executeFetch(url){
+  async executeFetch(url){
     try {
       let result = await fetch(url, {
         method: 'GET',

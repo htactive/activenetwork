@@ -1,6 +1,19 @@
 import React, {Component} from 'react';
+import {UserProfileServiceInstance} from '../services/user-profile-service'
 
 export class ProfilePage extends Component {
+  componentWillMount(){
+     this.setState({userProfile: []});
+  }
+
+  async componentDidMount(){
+    this.setState({userProfile: await this.getData()});
+  }
+
+  async getData(){
+    return await UserProfileServiceInstance.getUserProfile('1');
+  }
+
   render() {
     return <div>
       <div className="container page-content edit-profile">
@@ -17,7 +30,7 @@ export class ProfilePage extends Component {
                   <div className="col-md-3">
                     <div className="user-info-left">
                       <img src="/img/Friends/guy-3.jpg" alt="Profile Picture" />
-                        <h2>John Breakgrow jr.</h2>
+                        <h2>{this.state.userProfile.UserName}</h2>
                         <div className="contact">
                           <p>
                         <span className="file-input btn btn-azure btn-file">
@@ -43,15 +56,15 @@ export class ProfilePage extends Component {
                         <h3><i className="fa fa-square"></i> Basic Information</h3>
                         <p className="data-row">
                           <span className="data-name">Username</span>
-                          <span className="data-value">jonasmith</span>
+                          <span className="data-value">{this.state.userProfile.UserName}</span>
                         </p>
                         <p className="data-row">
                           <span className="data-name">Birth Date</span>
-                          <span className="data-value">Nov 20, 1988</span>
+                          <span className="data-value">{this.state.userProfile.BirthDate}</span>
                         </p>
                         <p className="data-row">
                           <span className="data-name">Gender</span>
-                          <span className="data-value">Male</span>
+                          <span className="data-value">{this.state.userProfile.Gender}</span>
                         </p>
                         <p className="data-row">
                           <span className="data-name">Website</span>
@@ -70,15 +83,15 @@ export class ProfilePage extends Component {
                         <h3><i className="fa fa-square"></i> Contact Information</h3>
                         <p className="data-row">
                           <span className="data-name">Email</span>
-                          <span className="data-value">me@jonasmith.com</span>
+                          <span className="data-value">{this.state.userProfile.Email}</span>
                         </p>
                         <p className="data-row">
                           <span className="data-name">Phone</span>
-                          <span className="data-value">(1800) 221 - 876543</span>
+                          <span className="data-value">{this.state.userProfile.Phone}</span>
                         </p>
                         <p className="data-row">
                           <span className="data-name">Address</span>
-                          <span className="data-value">Riverside City 66, 80123 Denver, Colorado</span>
+                          <span className="data-value">{this.state.userProfile.Address}</span>
                         </p>
                       </div>
                       <div className="about">
