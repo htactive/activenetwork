@@ -65,9 +65,33 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ANDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ANEvent.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ANEventImage.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ANEventInformation.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ANEventMember.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Class1.cs" />
+    <Compile Include="Image.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test.cs">
+    <Compile Include="RequestToJoin.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserProfile.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
   </ItemGroup>

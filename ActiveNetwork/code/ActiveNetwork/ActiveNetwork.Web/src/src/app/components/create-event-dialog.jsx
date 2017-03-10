@@ -5,7 +5,6 @@ import {Modal, Button, Form, FormGroup, Col, FormControl} from 'react-bootstrap'
 export class CreateEventDialog extends React.Component {
   componentWillMount() {
     this.setState({startDate: '03/08/2017'});
-
   }
 
   show() {

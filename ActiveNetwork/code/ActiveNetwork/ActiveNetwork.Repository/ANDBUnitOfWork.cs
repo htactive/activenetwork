@@ -18,12 +18,12 @@ namespace ActiveNetwork.Repository
         }
         #region Repositories
 
-        private ITestRepository testRepository;
-        public ITestRepository TestRepository
+        private IUserRepository userRepository;
+        public IUserRepository UserRepository
         {
             get
             {
-                return testRepository ?? (testRepository = new TestRepository(this));
+                return userRepository ?? (userRepository = new UserRepository(this));
             }
         }
 
