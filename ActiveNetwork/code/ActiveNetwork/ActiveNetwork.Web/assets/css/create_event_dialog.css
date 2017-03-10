@@ -33,3 +33,11 @@
   right: 20px;
   top: 3px;
 }
+
+.event-location .menu {
+  position: absolute;
+  border: 1px solid #d5d5d5;
+  z-index: 10;
+  background-color: #fff;
+  width: 90%;
+}

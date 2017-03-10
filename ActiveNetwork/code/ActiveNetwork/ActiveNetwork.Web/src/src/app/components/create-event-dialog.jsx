@@ -3,15 +3,17 @@ var Datetime = require('react-datetime');
 import {Modal, Button, Form, FormGroup, Col, FormControl} from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
 import Autocomplete from 'react-autocomplete';
+import {getStates, matchStateToTerm, sortStates, styles, fakeRequest} from 'react-autocomplete/build/lib/utils'
+import {GoogleAPIServiceInstance} from '../services/location-service'
 
 export class CreateEventDialog extends React.Component {
   componentWillMount() {
     this.setState({
       startDate: '03/08/2017',
-      coverImage: null,
-      value: '',
-      unitedStates: getStates(),
-      loading: false
+      isLocationLoading: false,
+      locationList: [],
+      event_coverImage: null,
+      event_location: ''
     });
   }
 
@@ -54,24 +56,13 @@ export class CreateEventDialog extends React.Component {
     };
     resizeFunc();
   }
-  renderItems (items) {
-    console.log(items)
+
+  renderItems(items) {
     return items.map((item, index) => {
-      var text = item.props.children
-      if (index === 0 || items[index - 1].props.children.charAt(0) !== text.charAt(0)) {
-        var style = {
-          background: '#eee',
-          color: '#454545',
-          padding: '2px 6px',
-          fontWeight: 'bold'
-        }
-        return [<div style={style}>{text.charAt(0)}</div>, item]
-      }
-      else {
-        return item
-      }
-    })
+      return item;
+    });
   }
+
   render() {
     return (
       <Modal show={this.state.showModal} onHide={() => this.close()}>
@@ -122,17 +113,19 @@ export class CreateEventDialog extends React.Component {
               <div className="col-sm-7">
                 {/*<input type="text" className="form-control" id="eventplace" placeholder="Nhập một địa điểm"/>*/}
                 <Autocomplete
-                  value={this.state.value}
-                  inputProps={{name: "US state", id: "states-autocomplete"}}
-                  items={this.state.unitedStates}
-                  getItemValue={(item) => item.name}
-                  onSelect={(value, state) => this.setState({ value, unitedStates: [state] }) }
-                  onChange={(event, value) => {
-                    this.setState({ value, loading: true })
-                    fakeRequest(value, (items) => {
-                      this.setState({ unitedStates: items, loading: false })
-                    })
+                  wrapperProps={{className: "event-location"}}
+                  wrapperStyle={{width: "100%"}}
+                  value={this.state.event_location}
+                  inputProps={{
+                    name: "Event Location",
+                    id: "eventplace",
+                    className: "form-control",
+                    placeholder: "Nhập một địa điểm"
                   }}
+                  items={this.state.locationList}
+                  getItemValue={(item) => item.id}
+                  onSelect={(value, state) => this.setState({event_location: value, locationList: [state]}) }
+                  onChange={(event, value) => this.eventLocationOnChange(event, value)}
                   renderItem={(item, isHighlighted) => (
                     <div
                       style={isHighlighted ? styles.highlightedItem : styles.item}
@@ -141,13 +134,11 @@ export class CreateEventDialog extends React.Component {
                     >{item.name}</div>
                   )}
                   renderMenu={(items, value, style) => (
-                    <div style={{...styles.menu, ...style}}>
+                    <div className="menu" style={[styles.menu, style]}>
                       {value === '' ? (
-                        <div style={{padding: 6}}>Type of the name of a United State</div>
-                      ) : this.state.loading ? (
+                        <div style={{padding: 6}}>Gõ tên một địa điểm bất kì</div>
+                      ) : this.state.isLocationLoading ? (
                         <div style={{padding: 6}}>Loading...</div>
-                      ) : items.length === 0 ? (
-                        <div style={{padding: 6}}>No matches for {value}</div>
                       ) : this.renderItems(items)}
                     </div>
                   )}
@@ -213,5 +204,11 @@ export class CreateEventDialog extends React.Component {
   removeCoverImage(e) {
     e.stopPropagation();
     this.setState({file: null});
+  }
+
+  async eventLocationOnChange(event, value) {
+    this.setState({event_location: value, isLocationLoading: true});
+    let items = await GoogleAPIServiceInstance.searchPlaces(value);
+    this.setState({locationList: items, isLocationLoading: false});
   }
 }
