@@ -12,9 +12,11 @@ namespace ActiveNetwork.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Test
+    public partial class UserProfile
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public Nullable<int> UserId { get; set; }
+    
+        public virtual User User { get; set; }
     }
 }

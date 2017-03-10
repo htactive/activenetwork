@@ -4,43 +4,587 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ANDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Test">
+    <Schema Namespace="ANDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ANEvent">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="UserId" Type="int" />
         </EntityType>
+        <EntityType Name="ANEventImage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ANEventId" Type="int" />
+          <Property Name="ImageId" Type="int" />
+        </EntityType>
+        <EntityType Name="ANEventInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ANEventId" Type="int" />
+        </EntityType>
+        <EntityType Name="ANEventMember">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ANEventId" Type="int" />
+          <Property Name="UserId" Type="int" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="RequestToJoin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ANEventId" Type="int" />
+          <Property Name="UserId" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+        </EntityType>
+        <Association Name="FK_ANEvent_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ANEvent" Type="Self.ANEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEvent">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEventImage_ANEvent">
+          <End Role="ANEvent" Type="Self.ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ANEventImage" Type="Self.ANEventImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventImage">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEventImage_Image">
+          <End Role="Image" Type="Self.Image" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ANEventImage" Type="Self.ANEventImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventImage">
+              <PropertyRef Name="ImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEventInformation_ANEvent">
+          <End Role="ANEvent" Type="Self.ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ANEventInformation" Type="Self.ANEventInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventInformation">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEventMember_ANEvent">
+          <End Role="ANEvent" Type="Self.ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ANEventMember" Type="Self.ANEventMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventMember">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEventMember_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ANEventMember" Type="Self.ANEventMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventMember">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestToJoin_ANEvent">
+          <End Role="ANEvent" Type="Self.ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RequestToJoin" Type="Self.RequestToJoin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequestToJoin">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestToJoin_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RequestToJoin" Type="Self.RequestToJoin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequestToJoin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ANDBModelStoreContainer">
-          <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ANEvent" EntityType="Self.ANEvent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ANEventImage" EntityType="Self.ANEventImage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ANEventInformation" EntityType="Self.ANEventInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ANEventMember" EntityType="Self.ANEventMember" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequestToJoin" EntityType="Self.RequestToJoin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ANEvent_User" Association="Self.FK_ANEvent_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ANEvent" EntitySet="ANEvent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEventImage_ANEvent" Association="Self.FK_ANEventImage_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvent" />
+            <End Role="ANEventImage" EntitySet="ANEventImage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEventImage_Image" Association="Self.FK_ANEventImage_Image">
+            <End Role="Image" EntitySet="Image" />
+            <End Role="ANEventImage" EntitySet="ANEventImage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEventInformation_ANEvent" Association="Self.FK_ANEventInformation_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvent" />
+            <End Role="ANEventInformation" EntitySet="ANEventInformation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEventMember_ANEvent" Association="Self.FK_ANEventMember_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvent" />
+            <End Role="ANEventMember" EntitySet="ANEventMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEventMember_User" Association="Self.FK_ANEventMember_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ANEventMember" EntitySet="ANEventMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestToJoin_ANEvent" Association="Self.FK_RequestToJoin_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvent" />
+            <End Role="RequestToJoin" EntitySet="RequestToJoin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestToJoin_User" Association="Self.FK_RequestToJoin_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="RequestToJoin" EntitySet="RequestToJoin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_User" Association="Self.FK_UserProfile_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ANDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Test">
+        <EntityContainer Name="ANDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ANEvents" EntityType="ANDBModel.ANEvent" />
+          <EntitySet Name="ANEventImages" EntityType="ANDBModel.ANEventImage" />
+          <EntitySet Name="ANEventInformations" EntityType="ANDBModel.ANEventInformation" />
+          <EntitySet Name="ANEventMembers" EntityType="ANDBModel.ANEventMember" />
+          <EntitySet Name="Images" EntityType="ANDBModel.Image" />
+          <EntitySet Name="RequestToJoins" EntityType="ANDBModel.RequestToJoin" />
+          <EntitySet Name="sysdiagrams" EntityType="ANDBModel.sysdiagram" />
+          <EntitySet Name="Users" EntityType="ANDBModel.User" />
+          <EntitySet Name="UserProfiles" EntityType="ANDBModel.UserProfile" />
+          <AssociationSet Name="FK_ANEvent_User" Association="ANDBModel.FK_ANEvent_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ANEvent" EntitySet="ANEvents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEventImage_ANEvent" Association="ANDBModel.FK_ANEventImage_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvents" />
+            <End Role="ANEventImage" EntitySet="ANEventImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEventInformation_ANEvent" Association="ANDBModel.FK_ANEventInformation_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvents" />
+            <End Role="ANEventInformation" EntitySet="ANEventInformations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEventMember_ANEvent" Association="ANDBModel.FK_ANEventMember_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvents" />
+            <End Role="ANEventMember" EntitySet="ANEventMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestToJoin_ANEvent" Association="ANDBModel.FK_RequestToJoin_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvents" />
+            <End Role="RequestToJoin" EntitySet="RequestToJoins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEventImage_Image" Association="ANDBModel.FK_ANEventImage_Image">
+            <End Role="Image" EntitySet="Images" />
+            <End Role="ANEventImage" EntitySet="ANEventImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEventMember_User" Association="ANDBModel.FK_ANEventMember_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ANEventMember" EntitySet="ANEventMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestToJoin_User" Association="ANDBModel.FK_RequestToJoin_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="RequestToJoin" EntitySet="RequestToJoins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_User" Association="ANDBModel.FK_UserProfile_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ANEvent">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="ANDBModel.FK_ANEvent_User" FromRole="ANEvent" ToRole="User" />
+          <NavigationProperty Name="ANEventImages" Relationship="ANDBModel.FK_ANEventImage_ANEvent" FromRole="ANEvent" ToRole="ANEventImage" />
+          <NavigationProperty Name="ANEventInformations" Relationship="ANDBModel.FK_ANEventInformation_ANEvent" FromRole="ANEvent" ToRole="ANEventInformation" />
+          <NavigationProperty Name="ANEventMembers" Relationship="ANDBModel.FK_ANEventMember_ANEvent" FromRole="ANEvent" ToRole="ANEventMember" />
+          <NavigationProperty Name="RequestToJoins" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="ANEvent" ToRole="RequestToJoin" />
         </EntityType>
-        <EntityContainer Name="ANDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Tests" EntityType="Self.Test" />
-        </EntityContainer>
+        <EntityType Name="ANEventImage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ANEventId" Type="Int32" />
+          <Property Name="ImageId" Type="Int32" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventImage_ANEvent" FromRole="ANEventImage" ToRole="ANEvent" />
+          <NavigationProperty Name="Image" Relationship="ANDBModel.FK_ANEventImage_Image" FromRole="ANEventImage" ToRole="Image" />
+        </EntityType>
+        <EntityType Name="ANEventInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ANEventId" Type="Int32" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventInformation_ANEvent" FromRole="ANEventInformation" ToRole="ANEvent" />
+        </EntityType>
+        <EntityType Name="ANEventMember">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ANEventId" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventMember_ANEvent" FromRole="ANEventMember" ToRole="ANEvent" />
+          <NavigationProperty Name="User" Relationship="ANDBModel.FK_ANEventMember_User" FromRole="ANEventMember" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ANEventImages" Relationship="ANDBModel.FK_ANEventImage_Image" FromRole="Image" ToRole="ANEventImage" />
+        </EntityType>
+        <EntityType Name="RequestToJoin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ANEventId" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="RequestToJoin" ToRole="ANEvent" />
+          <NavigationProperty Name="User" Relationship="ANDBModel.FK_RequestToJoin_User" FromRole="RequestToJoin" ToRole="User" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ANEvents" Relationship="ANDBModel.FK_ANEvent_User" FromRole="User" ToRole="ANEvent" />
+          <NavigationProperty Name="ANEventMembers" Relationship="ANDBModel.FK_ANEventMember_User" FromRole="User" ToRole="ANEventMember" />
+          <NavigationProperty Name="RequestToJoins" Relationship="ANDBModel.FK_RequestToJoin_User" FromRole="User" ToRole="RequestToJoin" />
+          <NavigationProperty Name="UserProfiles" Relationship="ANDBModel.FK_UserProfile_User" FromRole="User" ToRole="UserProfile" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="ANDBModel.FK_UserProfile_User" FromRole="UserProfile" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_ANEvent_User">
+          <End Type="ANDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEvent">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEventImage_ANEvent">
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventImage" Role="ANEventImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventImage">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEventInformation_ANEvent">
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventInformation" Role="ANEventInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventInformation">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEventMember_ANEvent">
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventMember" Role="ANEventMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventMember">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestToJoin_ANEvent">
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.RequestToJoin" Role="RequestToJoin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequestToJoin">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEventImage_Image">
+          <End Type="ANDBModel.Image" Role="Image" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventImage" Role="ANEventImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventImage">
+              <PropertyRef Name="ImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEventMember_User">
+          <End Type="ANDBModel.User" Role="User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventMember" Role="ANEventMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventMember">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestToJoin_User">
+          <End Type="ANDBModel.User" Role="User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.RequestToJoin" Role="RequestToJoin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequestToJoin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_User">
+          <End Type="ANDBModel.User" Role="User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.UserProfile" Role="UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ANDBModelStoreContainer" CdmEntityContainer="ANDBEntities">
-          <EntitySetMapping Name="Tests">
-            <EntityTypeMapping TypeName="ANDBModel.Test">
-              <MappingFragment StoreEntitySet="Test">
+          <EntitySetMapping Name="ANEvents">
+            <EntityTypeMapping TypeName="ANDBModel.ANEvent">
+              <MappingFragment StoreEntitySet="ANEvent">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ANEventImages">
+            <EntityTypeMapping TypeName="ANDBModel.ANEventImage">
+              <MappingFragment StoreEntitySet="ANEventImage">
+                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+                <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ANEventInformations">
+            <EntityTypeMapping TypeName="ANDBModel.ANEventInformation">
+              <MappingFragment StoreEntitySet="ANEventInformation">
+                <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ANEventMembers">
+            <EntityTypeMapping TypeName="ANDBModel.ANEventMember">
+              <MappingFragment StoreEntitySet="ANEventMember">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Images">
+            <EntityTypeMapping TypeName="ANDBModel.Image">
+              <MappingFragment StoreEntitySet="Image">
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RequestToJoins">
+            <EntityTypeMapping TypeName="ANDBModel.RequestToJoin">
+              <MappingFragment StoreEntitySet="RequestToJoin">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ANDBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ANDBModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="ANDBModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
