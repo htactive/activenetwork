@@ -19,5 +19,17 @@ namespace ActiveNetwork.Web.Controllers
             if (entity == null) return null;
             return UserProfileMapper.ToModel(entity);
         }
+
+        [Route("update-user-profile"), HttpPost]
+        public UserProfileModel UpdateUserProfile([FromBody]UserProfileModel model)
+        {
+            var entity = this.ANDBUnitOfWork.UserProfileRepository.Save(UserProfileMapper.ToEntity(model));
+            if (entity != null)
+            {
+                this.ANDBUnitOfWork.Commit();
+                return UserProfileMapper.ToModel(entity);
+            }
+            return null;
+        }
     }
 }
