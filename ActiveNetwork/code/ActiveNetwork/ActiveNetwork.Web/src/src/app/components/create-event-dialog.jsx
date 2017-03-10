@@ -123,15 +123,15 @@ export class CreateEventDialog extends React.Component {
                     placeholder: "Nhập một địa điểm"
                   }}
                   items={this.state.locationList}
-                  getItemValue={(item) => item.id}
+                  getItemValue={(item) => item.Address}
                   onSelect={(value, state) => this.setState({event_location: value, locationList: [state]}) }
                   onChange={(event, value) => this.eventLocationOnChange(event, value)}
                   renderItem={(item, isHighlighted) => (
                     <div
                       style={isHighlighted ? styles.highlightedItem : styles.item}
-                      key={item.abbr}
-                      id={item.abbr}
-                    >{item.name}</div>
+                      key={item.Id}
+                      id={item.Id}
+                    >{item.Name}</div>
                   )}
                   renderMenu={(items, value, style) => (
                     <div className="menu" style={[styles.menu, style]}>
@@ -209,6 +209,7 @@ export class CreateEventDialog extends React.Component {
   async eventLocationOnChange(event, value) {
     this.setState({event_location: value, isLocationLoading: true});
     let items = await GoogleAPIServiceInstance.searchPlaces(value);
+    items.push({Id: '__ju__', Name: 'Chỉ dùng "' + value + '"', Address: value})
     this.setState({locationList: items, isLocationLoading: false});
   }
 }
