@@ -10,16 +10,10 @@
 namespace ActiveNetwork.Entities
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class UserProfile
+    public partial class sp_helpdiagramdefinition_Result
     {
-        public int Id { get; set; }
-        public string UserName { get; set; }
-        public Nullable<System.DateTime> BirthDate { get; set; }
-        public string Gender { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Address { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

@@ -27,6 +27,15 @@ namespace ActiveNetwork.Repository
             }
         }
 
+        private IUserProfileRepository userProfileRepository;
+        public IUserProfileRepository UserProfileRepository
+        {
+            get
+            {
+                return userProfileRepository ?? (userProfileRepository = new UserProfileRepository(this));
+            }
+        }
+
         #endregion
     }
 }

@@ -87,6 +87,12 @@
     <Compile Include="RequestToJoin.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagrams_Result.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="sysdiagram.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
@@ -107,7 +113,9 @@
     <None Include="ANDB.edmx.diagram">
       <DependentUpon>ANDB.edmx</DependentUpon>
     </None>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
