@@ -5,13 +5,10 @@ using System.Web;
 
 namespace ActiveNetwork.Web.Models
 {
-    public class ANEventDetailModel
+    public class ANEventRequestToJoinModel
     {
         public int Id { get; set; }
+        public int ANEventId { get; set; }
         public int UserId { get; set; }
-        public int EventMember { get; set; }
-        public int RequestToJoin { get; set; }
-        public int Posts { get; set; }
-        public int Images { get; set; }
     }
 }

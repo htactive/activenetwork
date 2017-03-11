@@ -12,7 +12,7 @@ namespace ActiveNetwork.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class RequestToJoin
+    public partial class ANEventRequestToJoin
     {
         public int Id { get; set; }
         public Nullable<int> ANEventId { get; set; }

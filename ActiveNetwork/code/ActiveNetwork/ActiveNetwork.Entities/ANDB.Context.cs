@@ -28,11 +28,15 @@ namespace ActiveNetwork.Entities
         }
     
         public virtual DbSet<ANEvent> ANEvents { get; set; }
+        public virtual DbSet<ANEventCategory> ANEventCategories { get; set; }
         public virtual DbSet<ANEventImage> ANEventImages { get; set; }
         public virtual DbSet<ANEventInformation> ANEventInformations { get; set; }
         public virtual DbSet<ANEventMember> ANEventMembers { get; set; }
+        public virtual DbSet<ANEventRequestToJoin> ANEventRequestToJoins { get; set; }
+        public virtual DbSet<ANEventRequirement> ANEventRequirements { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Image> Images { get; set; }
-        public virtual DbSet<RequestToJoin> RequestToJoins { get; set; }
+        public virtual DbSet<RequiredProfile> RequiredProfiles { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserProfile> UserProfiles { get; set; }

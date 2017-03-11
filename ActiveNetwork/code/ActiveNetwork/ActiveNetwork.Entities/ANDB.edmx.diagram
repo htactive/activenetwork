@@ -5,23 +5,31 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="4f2b220458a3495388c886bcce4d439c" Name="Diagram1">
-        <EntityTypeShape EntityType="ANDBModel.ANEvent" Width="1.5" PointX="3" PointY="5" />
-        <EntityTypeShape EntityType="ANDBModel.ANEventImage" Width="1.5" PointX="5.25" PointY="2.25" />
-        <EntityTypeShape EntityType="ANDBModel.ANEventInformation" Width="1.5" PointX="5.25" PointY="13.625" />
-        <EntityTypeShape EntityType="ANDBModel.ANEventMember" Width="1.5" PointX="5.25" PointY="8.25" />
-        <EntityTypeShape EntityType="ANDBModel.Image" Width="1.5" PointX="3" PointY="2.375" />
-        <EntityTypeShape EntityType="ANDBModel.RequestToJoin" Width="1.5" PointX="5.25" PointY="5.25" />
-        <EntityTypeShape EntityType="ANDBModel.sysdiagram" Width="1.5" PointX="7.75" PointY="0.75" />
-        <EntityTypeShape EntityType="ANDBModel.User" Width="1.5" PointX="0.75" PointY="5.375" />
-        <EntityTypeShape EntityType="ANDBModel.UserProfile" Width="1.5" PointX="7.75" PointY="3.75" />
+        <EntityTypeShape EntityType="ANDBModel.ANEvent" Width="1.5" PointX="3" PointY="11.25" />
+        <EntityTypeShape EntityType="ANDBModel.ANEventCategory" Width="1.5" PointX="8.25" PointY="12.25" />
+        <EntityTypeShape EntityType="ANDBModel.ANEventImage" Width="1.5" PointX="8.25" PointY="9.25" />
+        <EntityTypeShape EntityType="ANDBModel.ANEventInformation" Width="1.5" PointX="5.25" PointY="25.75" />
+        <EntityTypeShape EntityType="ANDBModel.ANEventMember" Width="1.5" PointX="5.25" PointY="11.875" />
+        <EntityTypeShape EntityType="ANDBModel.ANEventRequestToJoin" Width="1.5" PointX="5.25" PointY="8.875" />
+        <EntityTypeShape EntityType="ANDBModel.ANEventRequirement" Width="1.5" PointX="5.25" PointY="15.25" />
+        <EntityTypeShape EntityType="ANDBModel.Category" Width="1.5" PointX="6" PointY="18.25" />
+        <EntityTypeShape EntityType="ANDBModel.Image" Width="1.5" PointX="6" PointY="6.375" />
+        <EntityTypeShape EntityType="ANDBModel.RequiredProfile" Width="1.5" PointX="3" PointY="16.5" />
+        <EntityTypeShape EntityType="ANDBModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ANDBModel.User" Width="1.5" PointX="0.75" PointY="10.5" />
+        <EntityTypeShape EntityType="ANDBModel.UserProfile" Width="1.5" PointX="3" PointY="7.75" />
+        <AssociationConnector Association="ANDBModel.FK_ANEvent_Required_ANEvent" />
+        <AssociationConnector Association="ANDBModel.FK_ANEvent_Topic_ANEvent" />
         <AssociationConnector Association="ANDBModel.FK_ANEvent_User" />
         <AssociationConnector Association="ANDBModel.FK_ANEventImage_ANEvent" />
         <AssociationConnector Association="ANDBModel.FK_ANEventInformation_ANEvent" />
         <AssociationConnector Association="ANDBModel.FK_ANEventMember_ANEvent" />
         <AssociationConnector Association="ANDBModel.FK_RequestToJoin_ANEvent" />
+        <AssociationConnector Association="ANDBModel.FK_ANEvent_Topic_Topic" />
         <AssociationConnector Association="ANDBModel.FK_ANEventImage_Image" />
         <AssociationConnector Association="ANDBModel.FK_ANEventMember_User" />
         <AssociationConnector Association="ANDBModel.FK_RequestToJoin_User" />
+        <AssociationConnector Association="ANDBModel.FK_ANEvent_Required_RequiredProfile" />
         <AssociationConnector Association="ANDBModel.FK_UserProfile_User" />
       </Diagram>
     </edmx:Diagrams>
