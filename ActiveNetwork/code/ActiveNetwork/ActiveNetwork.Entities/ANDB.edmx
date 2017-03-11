@@ -24,7 +24,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ANEventId" Type="int" />
-          <Property Name="TopicId" Type="int" />
+          <Property Name="CategoryId" Type="int" />
         </EntityType>
         <EntityType Name="ANEventImage">
           <Key>
@@ -172,7 +172,7 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ANEventCategory">
-              <PropertyRef Name="TopicId" />
+              <PropertyRef Name="CategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -545,7 +545,7 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ANEventId" Type="Int32" />
-          <Property Name="TopicId" Type="Int32" />
+          <Property Name="CategoryId" Type="Int32" />
           <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEvent_Topic_ANEvent" FromRole="ANEventCategory" ToRole="ANEvent" />
           <NavigationProperty Name="Category" Relationship="ANDBModel.FK_ANEvent_Topic_Topic" FromRole="ANEventCategory" ToRole="Category" />
         </EntityType>
@@ -764,7 +764,7 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ANEventCategory">
-              <PropertyRef Name="TopicId" />
+              <PropertyRef Name="CategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -883,7 +883,7 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <EntitySetMapping Name="ANEventCategories">
             <EntityTypeMapping TypeName="ANDBModel.ANEventCategory">
               <MappingFragment StoreEntitySet="ANEventCategory">
-                <ScalarProperty Name="TopicId" ColumnName="TopicId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
