@@ -187,7 +187,7 @@
     </Compile>
     <Compile Include="Mapper\UserProfileMapper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\EventDetailModel.cs" />
+    <Compile Include="Models\ANEventDetailModel.cs" />
     <Compile Include="Models\GoogleServiceModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

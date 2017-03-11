@@ -22,6 +22,7 @@
         <AssociationConnector Association="ANDBModel.FK_ANEventImage_Image" />
         <AssociationConnector Association="ANDBModel.FK_ANEventMember_User" />
         <AssociationConnector Association="ANDBModel.FK_RequestToJoin_User" />
+        <AssociationConnector Association="ANDBModel.FK_UserProfile_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

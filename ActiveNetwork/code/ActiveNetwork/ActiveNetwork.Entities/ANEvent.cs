@@ -25,6 +25,10 @@ namespace ActiveNetwork.Entities
     
         public int Id { get; set; }
         public Nullable<int> UserId { get; set; }
+        public Nullable<int> EventMember { get; set; }
+        public Nullable<int> RequestToJoin { get; set; }
+        public Nullable<int> Posts { get; set; }
+        public Nullable<int> Images { get; set; }
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -11,6 +11,10 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
+          <Property Name="EventMember" Type="int" />
+          <Property Name="RequestToJoin" Type="int" />
+          <Property Name="Posts" Type="int" />
+          <Property Name="Images" Type="int" />
         </EntityType>
         <EntityType Name="ANEventImage">
           <Key>
@@ -26,6 +30,9 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ANEventId" Type="int" />
+          <Property Name="CreateTime" Type="date" />
+          <Property Name="EventLocation" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="2000" />
         </EntityType>
         <EntityType Name="ANEventMember">
           <Key>
@@ -66,17 +73,20 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UserProfile">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="50" />
           <Property Name="BirthDate" Type="date" />
-          <Property Name="Gender" Type="varchar" MaxLength="50" />
-          <Property Name="Email" Type="varchar" MaxLength="50" />
-          <Property Name="Phone" Type="varchar" MaxLength="50" />
-          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserId" Type="int" />
         </EntityType>
         <Association Name="FK_ANEvent_User">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
@@ -188,6 +198,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserProfile_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -228,7 +250,18 @@
           <EntitySet Name="RequestToJoin" EntityType="Self.RequestToJoin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UserProfile].[Id] AS [Id], 
+    [UserProfile].[UserName] AS [UserName], 
+    [UserProfile].[Gender] AS [Gender], 
+    [UserProfile].[BirthDate] AS [BirthDate], 
+    [UserProfile].[Email] AS [Email], 
+    [UserProfile].[Phone] AS [Phone], 
+    [UserProfile].[Address] AS [Address], 
+    [UserProfile].[UserId] AS [UserId]
+    FROM [dbo].[UserProfile] AS [UserProfile]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_ANEvent_User" Association="Self.FK_ANEvent_User">
             <End Role="User" EntitySet="User" />
             <End Role="ANEvent" EntitySet="ANEvent" />
@@ -260,6 +293,10 @@
           <AssociationSet Name="FK_RequestToJoin_User" Association="Self.FK_RequestToJoin_User">
             <End Role="User" EntitySet="User" />
             <End Role="RequestToJoin" EntitySet="RequestToJoin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_User" Association="Self.FK_UserProfile_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -338,6 +375,10 @@
             <End Role="User" EntitySet="Users" />
             <End Role="RequestToJoin" EntitySet="RequestToJoins" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_User" Association="ANDBModel.FK_UserProfile_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -361,6 +402,10 @@
           <NavigationProperty Name="ANEventInformations" Relationship="ANDBModel.FK_ANEventInformation_ANEvent" FromRole="ANEvent" ToRole="ANEventInformation" />
           <NavigationProperty Name="ANEventMembers" Relationship="ANDBModel.FK_ANEventMember_ANEvent" FromRole="ANEvent" ToRole="ANEventMember" />
           <NavigationProperty Name="RequestToJoins" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="ANEvent" ToRole="RequestToJoin" />
+          <Property Name="EventMember" Type="Int32" />
+          <Property Name="RequestToJoin" Type="Int32" />
+          <Property Name="Posts" Type="Int32" />
+          <Property Name="Images" Type="Int32" />
         </EntityType>
         <EntityType Name="ANEventImage">
           <Key>
@@ -379,6 +424,9 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ANEventId" Type="Int32" />
           <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventInformation_ANEvent" FromRole="ANEventInformation" ToRole="ANEvent" />
+          <Property Name="CreateTime" Type="DateTime" Precision="0" />
+          <Property Name="EventLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ANEventMember">
           <Key>
@@ -426,18 +474,21 @@
           <NavigationProperty Name="ANEvents" Relationship="ANDBModel.FK_ANEvent_User" FromRole="User" ToRole="ANEvent" />
           <NavigationProperty Name="ANEventMembers" Relationship="ANDBModel.FK_ANEventMember_User" FromRole="User" ToRole="ANEventMember" />
           <NavigationProperty Name="RequestToJoins" Relationship="ANDBModel.FK_RequestToJoin_User" FromRole="User" ToRole="RequestToJoin" />
+          <NavigationProperty Name="UserProfiles" Relationship="ANDBModel.FK_UserProfile_User" FromRole="User" ToRole="UserProfile" />
         </EntityType>
         <EntityType Name="UserProfile">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BirthDate" Type="DateTime" Precision="0" />
-          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="ANDBModel.FK_UserProfile_User" FromRole="UserProfile" ToRole="User" />
         </EntityType>
         <Association Name="FK_ANEvent_User">
           <End Type="ANDBModel.User" Role="User" Multiplicity="0..1" />
@@ -549,6 +600,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserProfile_User">
+          <End Type="ANDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="ANDBModel.UserProfile" Role="UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -582,6 +645,10 @@
           <EntitySetMapping Name="ANEvents">
             <EntityTypeMapping TypeName="ANDBModel.ANEvent">
               <MappingFragment StoreEntitySet="ANEvent">
+                <ScalarProperty Name="Images" ColumnName="Images" />
+                <ScalarProperty Name="Posts" ColumnName="Posts" />
+                <ScalarProperty Name="RequestToJoin" ColumnName="RequestToJoin" />
+                <ScalarProperty Name="EventMember" ColumnName="EventMember" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -599,6 +666,9 @@
           <EntitySetMapping Name="ANEventInformations">
             <EntityTypeMapping TypeName="ANDBModel.ANEventInformation">
               <MappingFragment StoreEntitySet="ANEventInformation">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="EventLocation" ColumnName="EventLocation" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -651,6 +721,7 @@
           <EntitySetMapping Name="UserProfiles">
             <EntityTypeMapping TypeName="ANDBModel.UserProfile">
               <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Email" ColumnName="Email" />

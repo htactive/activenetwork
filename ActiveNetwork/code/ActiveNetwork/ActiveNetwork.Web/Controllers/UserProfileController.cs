@@ -15,7 +15,7 @@ namespace ActiveNetwork.Web.Controllers
         [Route("get-user-profile"), HttpGet]
         public UserProfileModel GetUserProfile(int UserID)
         {
-            var entity = this.ANDBUnitOfWork.UserProfileRepository.GetAll().FirstOrDefault(x => x.Id == UserID);
+            var entity = this.ANDBUnitOfWork.UserProfileRepository.GetAll().FirstOrDefault(x => x.UserId == UserID);
             if (entity == null) return null;
             return UserProfileMapper.ToModel(entity);
         }

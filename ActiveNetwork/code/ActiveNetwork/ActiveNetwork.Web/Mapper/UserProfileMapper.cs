@@ -14,6 +14,7 @@ namespace ActiveNetwork.Web.Mapper
             return entity == null ? null : new UserProfileModel()
             {
                 Id = entity.Id,
+                UserId = entity.UserId,
                 UserName = entity.UserName,
                 BirthDate = entity.BirthDate,
                 Gender = entity.Gender,
