@@ -17,21 +17,27 @@ namespace ActiveNetwork.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ANEvent()
         {
+            this.ANEventRequirements = new HashSet<ANEventRequirement>();
+            this.ANEventCategories = new HashSet<ANEventCategory>();
             this.ANEventImages = new HashSet<ANEventImage>();
             this.ANEventInformations = new HashSet<ANEventInformation>();
             this.ANEventMembers = new HashSet<ANEventMember>();
-            this.RequestToJoins = new HashSet<RequestToJoin>();
-            this.ANEvent_Required = new HashSet<ANEvent_Required>();
-            this.ANEvent_Topic = new HashSet<ANEvent_Topic>();
+            this.ANEventRequestToJoins = new HashSet<ANEventRequestToJoin>();
         }
     
         public int Id { get; set; }
         public Nullable<int> UserId { get; set; }
         public Nullable<int> EventMember { get; set; }
         public Nullable<int> RequestToJoin { get; set; }
-        public Nullable<int> Posts { get; set; }
         public Nullable<int> Images { get; set; }
+        public Nullable<int> Requirements { get; set; }
+        public Nullable<int> Categories { get; set; }
+        public Nullable<int> Information { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ANEventRequirement> ANEventRequirements { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ANEventCategory> ANEventCategories { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ANEventImage> ANEventImages { get; set; }
@@ -40,10 +46,6 @@ namespace ActiveNetwork.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ANEventMember> ANEventMembers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RequestToJoin> RequestToJoins { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ANEvent_Required> ANEvent_Required { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ANEvent_Topic> ANEvent_Topic { get; set; }
+        public virtual ICollection<ANEventRequestToJoin> ANEventRequestToJoins { get; set; }
     }
 }

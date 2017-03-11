@@ -13,18 +13,12 @@
           <Property Name="UserId" Type="int" />
           <Property Name="EventMember" Type="int" />
           <Property Name="RequestToJoin" Type="int" />
-          <Property Name="Posts" Type="int" />
           <Property Name="Images" Type="int" />
+          <Property Name="Requirements" Type="int" />
+          <Property Name="Categories" Type="int" />
+          <Property Name="Information" Type="int" />
         </EntityType>
-        <EntityType Name="ANEvent_Required">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ANEventId" Type="int" Nullable="false" />
-          <Property Name="RequiredId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ANEvent_Topic">
+        <EntityType Name="ANEventCategory">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -58,20 +52,36 @@
           <Property Name="ANEventId" Type="int" />
           <Property Name="UserId" Type="int" />
         </EntityType>
-        <EntityType Name="Image">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Url" Type="nvarchar" MaxLength="500" />
-        </EntityType>
-        <EntityType Name="RequestToJoin">
+        <EntityType Name="ANEventRequestToJoin">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ANEventId" Type="int" />
           <Property Name="UserId" Type="int" />
+        </EntityType>
+        <EntityType Name="ANEventRequirement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ANEventId" Type="int" Nullable="false" />
+          <Property Name="RequiredId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="RequiredProfile">
           <Key>
@@ -88,14 +98,6 @@
           <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
-        <EntityType Name="Topic">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="500" />
-          <Property Name="Description" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -122,12 +124,12 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <End Role="ANEvent" Type="Self.ANEvent" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ANEvent_Required" Type="Self.ANEvent_Required" Multiplicity="*" />
+          <End Role="ANEventRequirement" Type="Self.ANEventRequirement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ANEvent">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="ANEvent_Required">
+            <Dependent Role="ANEventRequirement">
               <PropertyRef Name="ANEventId" />
             </Dependent>
           </ReferentialConstraint>
@@ -136,12 +138,12 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <End Role="RequiredProfile" Type="Self.RequiredProfile" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ANEvent_Required" Type="Self.ANEvent_Required" Multiplicity="*" />
+          <End Role="ANEventRequirement" Type="Self.ANEventRequirement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RequiredProfile">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="ANEvent_Required">
+            <Dependent Role="ANEventRequirement">
               <PropertyRef Name="RequiredId" />
             </Dependent>
           </ReferentialConstraint>
@@ -150,26 +152,26 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <End Role="ANEvent" Type="Self.ANEvent" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ANEvent_Topic" Type="Self.ANEvent_Topic" Multiplicity="*" />
+          <End Role="ANEventCategory" Type="Self.ANEventCategory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ANEvent">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="ANEvent_Topic">
+            <Dependent Role="ANEventCategory">
               <PropertyRef Name="ANEventId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ANEvent_Topic_Topic">
-          <End Role="Topic" Type="Self.Topic" Multiplicity="0..1">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ANEvent_Topic" Type="Self.ANEvent_Topic" Multiplicity="*" />
+          <End Role="ANEventCategory" Type="Self.ANEventCategory" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Topic">
+            <Principal Role="Category">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="ANEvent_Topic">
+            <Dependent Role="ANEventCategory">
               <PropertyRef Name="TopicId" />
             </Dependent>
           </ReferentialConstraint>
@@ -260,12 +262,12 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <End Role="ANEvent" Type="Self.ANEvent" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="RequestToJoin" Type="Self.RequestToJoin" Multiplicity="*" />
+          <End Role="ANEventRequestToJoin" Type="Self.ANEventRequestToJoin" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ANEvent">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="RequestToJoin">
+            <Dependent Role="ANEventRequestToJoin">
               <PropertyRef Name="ANEventId" />
             </Dependent>
           </ReferentialConstraint>
@@ -274,12 +276,24 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <End Role="User" Type="Self.User" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="RequestToJoin" Type="Self.RequestToJoin" Multiplicity="*" />
+          <End Role="ANEventRequestToJoin" Type="Self.ANEventRequestToJoin" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="RequestToJoin">
+            <Dependent Role="ANEventRequestToJoin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -317,16 +331,16 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="ANDBModelStoreContainer">
           <EntitySet Name="ANEvent" EntityType="Self.ANEvent" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ANEvent_Required" EntityType="Self.ANEvent_Required" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ANEvent_Topic" EntityType="Self.ANEvent_Topic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ANEventCategory" EntityType="Self.ANEventCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ANEventImage" EntityType="Self.ANEventImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ANEventInformation" EntityType="Self.ANEventInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ANEventMember" EntityType="Self.ANEventMember" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ANEventRequestToJoin" EntityType="Self.ANEventRequestToJoin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ANEventRequirement" EntityType="Self.ANEventRequirement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="RequestToJoin" EntityType="Self.RequestToJoin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RequiredProfile" EntityType="Self.RequiredProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Topic" EntityType="Self.Topic" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserProfile" EntityType="Self.UserProfile" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -342,19 +356,19 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           </EntitySet>
           <AssociationSet Name="FK_ANEvent_Required_ANEvent" Association="Self.FK_ANEvent_Required_ANEvent">
             <End Role="ANEvent" EntitySet="ANEvent" />
-            <End Role="ANEvent_Required" EntitySet="ANEvent_Required" />
+            <End Role="ANEventRequirement" EntitySet="ANEventRequirement" />
           </AssociationSet>
           <AssociationSet Name="FK_ANEvent_Required_RequiredProfile" Association="Self.FK_ANEvent_Required_RequiredProfile">
             <End Role="RequiredProfile" EntitySet="RequiredProfile" />
-            <End Role="ANEvent_Required" EntitySet="ANEvent_Required" />
+            <End Role="ANEventRequirement" EntitySet="ANEventRequirement" />
           </AssociationSet>
           <AssociationSet Name="FK_ANEvent_Topic_ANEvent" Association="Self.FK_ANEvent_Topic_ANEvent">
             <End Role="ANEvent" EntitySet="ANEvent" />
-            <End Role="ANEvent_Topic" EntitySet="ANEvent_Topic" />
+            <End Role="ANEventCategory" EntitySet="ANEventCategory" />
           </AssociationSet>
           <AssociationSet Name="FK_ANEvent_Topic_Topic" Association="Self.FK_ANEvent_Topic_Topic">
-            <End Role="Topic" EntitySet="Topic" />
-            <End Role="ANEvent_Topic" EntitySet="ANEvent_Topic" />
+            <End Role="Category" EntitySet="Category" />
+            <End Role="ANEventCategory" EntitySet="ANEventCategory" />
           </AssociationSet>
           <AssociationSet Name="FK_ANEvent_User" Association="Self.FK_ANEvent_User">
             <End Role="User" EntitySet="User" />
@@ -382,11 +396,15 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           </AssociationSet>
           <AssociationSet Name="FK_RequestToJoin_ANEvent" Association="Self.FK_RequestToJoin_ANEvent">
             <End Role="ANEvent" EntitySet="ANEvent" />
-            <End Role="RequestToJoin" EntitySet="RequestToJoin" />
+            <End Role="ANEventRequestToJoin" EntitySet="ANEventRequestToJoin" />
           </AssociationSet>
           <AssociationSet Name="FK_RequestToJoin_User" Association="Self.FK_RequestToJoin_User">
             <End Role="User" EntitySet="User" />
-            <End Role="RequestToJoin" EntitySet="RequestToJoin" />
+            <End Role="ANEventRequestToJoin" EntitySet="ANEventRequestToJoin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_User" Association="Self.FK_UserProfile_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -425,14 +443,26 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
           <EntitySet Name="ANEvents" EntityType="ANDBModel.ANEvent" />
+          <EntitySet Name="ANEventCategories" EntityType="ANDBModel.ANEventCategory" />
           <EntitySet Name="ANEventImages" EntityType="ANDBModel.ANEventImage" />
           <EntitySet Name="ANEventInformations" EntityType="ANDBModel.ANEventInformation" />
           <EntitySet Name="ANEventMembers" EntityType="ANDBModel.ANEventMember" />
+          <EntitySet Name="ANEventRequestToJoins" EntityType="ANDBModel.ANEventRequestToJoin" />
+          <EntitySet Name="ANEventRequirements" EntityType="ANDBModel.ANEventRequirement" />
+          <EntitySet Name="Categories" EntityType="ANDBModel.Category" />
           <EntitySet Name="Images" EntityType="ANDBModel.Image" />
-          <EntitySet Name="RequestToJoins" EntityType="ANDBModel.RequestToJoin" />
+          <EntitySet Name="RequiredProfiles" EntityType="ANDBModel.RequiredProfile" />
           <EntitySet Name="sysdiagrams" EntityType="ANDBModel.sysdiagram" />
           <EntitySet Name="Users" EntityType="ANDBModel.User" />
           <EntitySet Name="UserProfiles" EntityType="ANDBModel.UserProfile" />
+          <AssociationSet Name="FK_ANEvent_Required_ANEvent" Association="ANDBModel.FK_ANEvent_Required_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvents" />
+            <End Role="ANEventRequirement" EntitySet="ANEventRequirements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEvent_Topic_ANEvent" Association="ANDBModel.FK_ANEvent_Topic_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvents" />
+            <End Role="ANEventCategory" EntitySet="ANEventCategories" />
+          </AssociationSet>
           <AssociationSet Name="FK_ANEvent_User" Association="ANDBModel.FK_ANEvent_User">
             <End Role="User" EntitySet="Users" />
             <End Role="ANEvent" EntitySet="ANEvents" />
@@ -451,7 +481,11 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           </AssociationSet>
           <AssociationSet Name="FK_RequestToJoin_ANEvent" Association="ANDBModel.FK_RequestToJoin_ANEvent">
             <End Role="ANEvent" EntitySet="ANEvents" />
-            <End Role="RequestToJoin" EntitySet="RequestToJoins" />
+            <End Role="ANEventRequestToJoin" EntitySet="ANEventRequestToJoins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEvent_Topic_Topic" Association="ANDBModel.FK_ANEvent_Topic_Topic">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="ANEventCategory" EntitySet="ANEventCategories" />
           </AssociationSet>
           <AssociationSet Name="FK_ANEventImage_Image" Association="ANDBModel.FK_ANEventImage_Image">
             <End Role="Image" EntitySet="Images" />
@@ -463,29 +497,17 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           </AssociationSet>
           <AssociationSet Name="FK_RequestToJoin_User" Association="ANDBModel.FK_RequestToJoin_User">
             <End Role="User" EntitySet="Users" />
-            <End Role="RequestToJoin" EntitySet="RequestToJoins" />
-          </AssociationSet>
-          <EntitySet Name="ANEvent_Required" EntityType="ANDBModel.ANEvent_Required" />
-          <EntitySet Name="ANEvent_Topic" EntityType="ANDBModel.ANEvent_Topic" />
-          <EntitySet Name="RequiredProfiles" EntityType="ANDBModel.RequiredProfile" />
-          <EntitySet Name="Topics" EntityType="ANDBModel.Topic" />
-          <AssociationSet Name="FK_ANEvent_Required_ANEvent" Association="ANDBModel.FK_ANEvent_Required_ANEvent">
-            <End Role="ANEvent" EntitySet="ANEvents" />
-            <End Role="ANEvent_Required" EntitySet="ANEvent_Required" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ANEvent_Topic_ANEvent" Association="ANDBModel.FK_ANEvent_Topic_ANEvent">
-            <End Role="ANEvent" EntitySet="ANEvents" />
-            <End Role="ANEvent_Topic" EntitySet="ANEvent_Topic" />
+            <End Role="ANEventRequestToJoin" EntitySet="ANEventRequestToJoins" />
           </AssociationSet>
           <AssociationSet Name="FK_ANEvent_Required_RequiredProfile" Association="ANDBModel.FK_ANEvent_Required_RequiredProfile">
             <End Role="RequiredProfile" EntitySet="RequiredProfiles" />
-            <End Role="ANEvent_Required" EntitySet="ANEvent_Required" />
+            <End Role="ANEventRequirement" EntitySet="ANEventRequirements" />
           </AssociationSet>
-          <AssociationSet Name="FK_ANEvent_Topic_Topic" Association="ANDBModel.FK_ANEvent_Topic_Topic">
-            <End Role="Topic" EntitySet="Topics" />
-            <End Role="ANEvent_Topic" EntitySet="ANEvent_Topic" />
+          <AssociationSet Name="FK_UserProfile_User" Association="ANDBModel.FK_UserProfile_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -503,17 +525,29 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" />
+          <Property Name="EventMember" Type="Int32" />
+          <Property Name="RequestToJoin" Type="Int32" />
+          <Property Name="Images" Type="Int32" />
+          <Property Name="Requirements" Type="Int32" />
+          <Property Name="Categories" Type="Int32" />
+          <Property Name="Information" Type="Int32" />
+          <NavigationProperty Name="ANEventRequirements" Relationship="ANDBModel.FK_ANEvent_Required_ANEvent" FromRole="ANEvent" ToRole="ANEventRequirement" />
+          <NavigationProperty Name="ANEventCategories" Relationship="ANDBModel.FK_ANEvent_Topic_ANEvent" FromRole="ANEvent" ToRole="ANEventCategory" />
           <NavigationProperty Name="User" Relationship="ANDBModel.FK_ANEvent_User" FromRole="ANEvent" ToRole="User" />
           <NavigationProperty Name="ANEventImages" Relationship="ANDBModel.FK_ANEventImage_ANEvent" FromRole="ANEvent" ToRole="ANEventImage" />
           <NavigationProperty Name="ANEventInformations" Relationship="ANDBModel.FK_ANEventInformation_ANEvent" FromRole="ANEvent" ToRole="ANEventInformation" />
           <NavigationProperty Name="ANEventMembers" Relationship="ANDBModel.FK_ANEventMember_ANEvent" FromRole="ANEvent" ToRole="ANEventMember" />
-          <NavigationProperty Name="RequestToJoins" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="ANEvent" ToRole="RequestToJoin" />
-          <Property Name="EventMember" Type="Int32" />
-          <Property Name="RequestToJoin" Type="Int32" />
-          <Property Name="Posts" Type="Int32" />
-          <Property Name="Images" Type="Int32" />
-          <NavigationProperty Name="ANEvent_Required" Relationship="ANDBModel.FK_ANEvent_Required_ANEvent" FromRole="ANEvent" ToRole="ANEvent_Required" />
-          <NavigationProperty Name="ANEvent_Topic" Relationship="ANDBModel.FK_ANEvent_Topic_ANEvent" FromRole="ANEvent" ToRole="ANEvent_Topic" />
+          <NavigationProperty Name="ANEventRequestToJoins" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="ANEvent" ToRole="ANEventRequestToJoin" />
+        </EntityType>
+        <EntityType Name="ANEventCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ANEventId" Type="Int32" />
+          <Property Name="TopicId" Type="Int32" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEvent_Topic_ANEvent" FromRole="ANEventCategory" ToRole="ANEvent" />
+          <NavigationProperty Name="Category" Relationship="ANDBModel.FK_ANEvent_Topic_Topic" FromRole="ANEventCategory" ToRole="Category" />
         </EntityType>
         <EntityType Name="ANEventImage">
           <Key>
@@ -531,10 +565,10 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ANEventId" Type="Int32" />
-          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventInformation_ANEvent" FromRole="ANEventInformation" ToRole="ANEvent" />
           <Property Name="CreateTime" Type="DateTime" Precision="0" />
           <Property Name="EventLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventInformation_ANEvent" FromRole="ANEventInformation" ToRole="ANEvent" />
         </EntityType>
         <EntityType Name="ANEventMember">
           <Key>
@@ -546,6 +580,35 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventMember_ANEvent" FromRole="ANEventMember" ToRole="ANEvent" />
           <NavigationProperty Name="User" Relationship="ANDBModel.FK_ANEventMember_User" FromRole="ANEventMember" ToRole="User" />
         </EntityType>
+        <EntityType Name="ANEventRequestToJoin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ANEventId" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="ANEventRequestToJoin" ToRole="ANEvent" />
+          <NavigationProperty Name="User" Relationship="ANDBModel.FK_RequestToJoin_User" FromRole="ANEventRequestToJoin" ToRole="User" />
+        </EntityType>
+        <EntityType Name="ANEventRequirement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ANEventId" Type="Int32" Nullable="false" />
+          <Property Name="RequiredId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEvent_Required_ANEvent" FromRole="ANEventRequirement" ToRole="ANEvent" />
+          <NavigationProperty Name="RequiredProfile" Relationship="ANDBModel.FK_ANEvent_Required_RequiredProfile" FromRole="ANEventRequirement" ToRole="RequiredProfile" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ANEventCategories" Relationship="ANDBModel.FK_ANEvent_Topic_Topic" FromRole="Category" ToRole="ANEventCategory" />
+        </EntityType>
         <EntityType Name="Image">
           <Key>
             <PropertyRef Name="Id" />
@@ -554,15 +617,12 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ANEventImages" Relationship="ANDBModel.FK_ANEventImage_Image" FromRole="Image" ToRole="ANEventImage" />
         </EntityType>
-        <EntityType Name="RequestToJoin">
+        <EntityType Name="RequiredProfile">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ANEventId" Type="Int32" />
-          <Property Name="UserId" Type="Int32" />
-          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="RequestToJoin" ToRole="ANEvent" />
-          <NavigationProperty Name="User" Relationship="ANDBModel.FK_RequestToJoin_User" FromRole="RequestToJoin" ToRole="User" />
+          <NavigationProperty Name="ANEventRequirements" Relationship="ANDBModel.FK_ANEvent_Required_RequiredProfile" FromRole="RequiredProfile" ToRole="ANEventRequirement" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -581,7 +641,8 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="ANEvents" Relationship="ANDBModel.FK_ANEvent_User" FromRole="User" ToRole="ANEvent" />
           <NavigationProperty Name="ANEventMembers" Relationship="ANDBModel.FK_ANEventMember_User" FromRole="User" ToRole="ANEventMember" />
-          <NavigationProperty Name="RequestToJoins" Relationship="ANDBModel.FK_RequestToJoin_User" FromRole="User" ToRole="RequestToJoin" />
+          <NavigationProperty Name="ANEventRequestToJoins" Relationship="ANDBModel.FK_RequestToJoin_User" FromRole="User" ToRole="ANEventRequestToJoin" />
+          <NavigationProperty Name="UserProfiles" Relationship="ANDBModel.FK_UserProfile_User" FromRole="User" ToRole="UserProfile" />
         </EntityType>
         <EntityType Name="UserProfile">
           <Key>
@@ -589,13 +650,42 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BirthDate" Type="DateTime" Precision="0" />
           <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="ANDBModel.FK_UserProfile_User" FromRole="UserProfile" ToRole="User" />
         </EntityType>
+        <Association Name="FK_ANEvent_Required_ANEvent">
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventRequirement" Role="ANEventRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventRequirement">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEvent_Topic_ANEvent">
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventCategory" Role="ANEventCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventCategory">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ANEvent_User">
           <End Type="ANDBModel.User" Role="User" Multiplicity="0..1" />
           <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="*" />
@@ -654,13 +744,27 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="ANDBModel.RequestToJoin" Role="RequestToJoin" Multiplicity="*" />
+          <End Type="ANDBModel.ANEventRequestToJoin" Role="ANEventRequestToJoin" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ANEvent">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="RequestToJoin">
+            <Dependent Role="ANEventRequestToJoin">
               <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEvent_Topic_Topic">
+          <End Type="ANDBModel.Category" Role="Category" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventCategory" Role="ANEventCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventCategory">
+              <PropertyRef Name="TopicId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -696,77 +800,13 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <End Type="ANDBModel.User" Role="User" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="ANDBModel.RequestToJoin" Role="RequestToJoin" Multiplicity="*" />
+          <End Type="ANDBModel.ANEventRequestToJoin" Role="ANEventRequestToJoin" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="RequestToJoin">
+            <Dependent Role="ANEventRequestToJoin">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="ANEvent_Required">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ANEventId" Type="Int32" Nullable="false" />
-          <Property Name="RequiredId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEvent_Required_ANEvent" FromRole="ANEvent_Required" ToRole="ANEvent" />
-          <NavigationProperty Name="RequiredProfile" Relationship="ANDBModel.FK_ANEvent_Required_RequiredProfile" FromRole="ANEvent_Required" ToRole="RequiredProfile" />
-        </EntityType>
-        <EntityType Name="ANEvent_Topic">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ANEventId" Type="Int32" />
-          <Property Name="TopicId" Type="Int32" />
-          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEvent_Topic_ANEvent" FromRole="ANEvent_Topic" ToRole="ANEvent" />
-          <NavigationProperty Name="Topic" Relationship="ANDBModel.FK_ANEvent_Topic_Topic" FromRole="ANEvent_Topic" ToRole="Topic" />
-        </EntityType>
-        <EntityType Name="RequiredProfile">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="ANEvent_Required" Relationship="ANDBModel.FK_ANEvent_Required_RequiredProfile" FromRole="RequiredProfile" ToRole="ANEvent_Required" />
-        </EntityType>
-        <EntityType Name="Topic">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ANEvent_Topic" Relationship="ANDBModel.FK_ANEvent_Topic_Topic" FromRole="Topic" ToRole="ANEvent_Topic" />
-        </EntityType>
-        <Association Name="FK_ANEvent_Required_ANEvent">
-          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ANDBModel.ANEvent_Required" Role="ANEvent_Required" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ANEvent">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ANEvent_Required">
-              <PropertyRef Name="ANEventId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ANEvent_Topic_ANEvent">
-          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ANDBModel.ANEvent_Topic" Role="ANEvent_Topic" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ANEvent">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ANEvent_Topic">
-              <PropertyRef Name="ANEventId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -774,31 +814,29 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <End Type="ANDBModel.RequiredProfile" Role="RequiredProfile" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="ANDBModel.ANEvent_Required" Role="ANEvent_Required" Multiplicity="*" />
+          <End Type="ANDBModel.ANEventRequirement" Role="ANEventRequirement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RequiredProfile">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="ANEvent_Required">
+            <Dependent Role="ANEventRequirement">
               <PropertyRef Name="RequiredId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ANEvent_Topic_Topic">
-          <End Type="ANDBModel.Topic" Role="Topic" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ANDBModel.ANEvent_Topic" Role="ANEvent_Topic" Multiplicity="*" />
+        <Association Name="FK_UserProfile_User">
+          <End Type="ANDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="ANDBModel.UserProfile" Role="UserProfile" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Topic">
+            <Principal Role="User">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="ANEvent_Topic">
-              <PropertyRef Name="TopicId" />
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -831,11 +869,22 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <EntitySetMapping Name="ANEvents">
             <EntityTypeMapping TypeName="ANDBModel.ANEvent">
               <MappingFragment StoreEntitySet="ANEvent">
+                <ScalarProperty Name="Information" ColumnName="Information" />
+                <ScalarProperty Name="Categories" ColumnName="Categories" />
+                <ScalarProperty Name="Requirements" ColumnName="Requirements" />
                 <ScalarProperty Name="Images" ColumnName="Images" />
-                <ScalarProperty Name="Posts" ColumnName="Posts" />
                 <ScalarProperty Name="RequestToJoin" ColumnName="RequestToJoin" />
                 <ScalarProperty Name="EventMember" ColumnName="EventMember" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ANEventCategories">
+            <EntityTypeMapping TypeName="ANDBModel.ANEventCategory">
+              <MappingFragment StoreEntitySet="ANEventCategory">
+                <ScalarProperty Name="TopicId" ColumnName="TopicId" />
+                <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -869,6 +918,33 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ANEventRequestToJoins">
+            <EntityTypeMapping TypeName="ANDBModel.ANEventRequestToJoin">
+              <MappingFragment StoreEntitySet="ANEventRequestToJoin">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ANEventRequirements">
+            <EntityTypeMapping TypeName="ANDBModel.ANEventRequirement">
+              <MappingFragment StoreEntitySet="ANEventRequirement">
+                <ScalarProperty Name="RequiredId" ColumnName="RequiredId" />
+                <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="ANDBModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Images">
             <EntityTypeMapping TypeName="ANDBModel.Image">
               <MappingFragment StoreEntitySet="Image">
@@ -877,11 +953,9 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RequestToJoins">
-            <EntityTypeMapping TypeName="ANDBModel.RequestToJoin">
-              <MappingFragment StoreEntitySet="RequestToJoin">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
+          <EntitySetMapping Name="RequiredProfiles">
+            <EntityTypeMapping TypeName="ANDBModel.RequiredProfile">
+              <MappingFragment StoreEntitySet="RequiredProfile">
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -911,48 +985,14 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ANEvent_Required">
-            <EntityTypeMapping TypeName="ANDBModel.ANEvent_Required">
-              <MappingFragment StoreEntitySet="ANEvent_Required">
-                <ScalarProperty Name="RequiredId" ColumnName="RequiredId" />
-                <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ANEvent_Topic">
-            <EntityTypeMapping TypeName="ANDBModel.ANEvent_Topic">
-              <MappingFragment StoreEntitySet="ANEvent_Topic">
-                <ScalarProperty Name="TopicId" ColumnName="TopicId" />
-                <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RequiredProfiles">
-            <EntityTypeMapping TypeName="ANDBModel.RequiredProfile">
-              <MappingFragment StoreEntitySet="RequiredProfile">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Topics">
-            <EntityTypeMapping TypeName="ANDBModel.Topic">
-              <MappingFragment StoreEntitySet="Topic">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

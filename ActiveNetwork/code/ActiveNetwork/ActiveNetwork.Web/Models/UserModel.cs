@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ActiveNetwork.Web.Models
 {
-    public class EventDetailModel
+    public class UserModel
     {
     }
 }
