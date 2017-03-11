@@ -40,10 +40,6 @@ namespace ActiveNetwork.Entities
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserProfile> UserProfiles { get; set; }
-        public virtual DbSet<ANEvent_Required> ANEvent_Required { get; set; }
-        public virtual DbSet<ANEvent_Topic> ANEvent_Topic { get; set; }
-        public virtual DbSet<RequiredProfile> RequiredProfiles { get; set; }
-        public virtual DbSet<Topic> Topics { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ActiveNetwork.Web.Models
 {
-    public class TopicModel
+    public class CategoryModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

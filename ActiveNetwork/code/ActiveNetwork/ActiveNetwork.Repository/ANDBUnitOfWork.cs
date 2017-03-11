@@ -36,12 +36,12 @@ namespace ActiveNetwork.Repository
             }
         }
 
-        private ITopicRepository topicRepository;
-        public ITopicRepository TopicRepository
+        private ICategoryRepository categoryRepository;
+        public ICategoryRepository CategoryRepository
         {
             get
             {
-                return topicRepository ?? (topicRepository = new TopicRepository(this));
+                return categoryRepository ?? (categoryRepository = new CategoryRepository(this));
             }
         }
         #endregion

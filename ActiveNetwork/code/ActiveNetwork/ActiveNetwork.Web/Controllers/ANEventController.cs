@@ -17,11 +17,11 @@ namespace ActiveNetwork.Web.Controllers
         const string googleApiKey = "AIzaSyAM-HP8n5wt6tBXPCp1pcrAmdhG3FQrjr0";
 
         [HttpGet, Route("anevent/get-all-topics")]
-        public List<TopicModel> GetAllTopics()
+        public List<CategoryModel> GetAllTopics()
         {
-            var entities = this.ANDBUnitOfWork.TopicRepository.GetAll().Take(1000).ToList();
+            var entities = this.ANDBUnitOfWork.CategoryRepository.GetAll().Take(1000).ToList();
 
-            return entities.Select(x => new TopicModel()
+            return entities.Select(x => new CategoryModel()
             {
                 Description = x.Description,
                 Id = x.Id,

@@ -8,9 +8,9 @@
         <EntityTypeShape EntityType="ANDBModel.ANEvent" Width="1.5" PointX="3" PointY="11.25" />
         <EntityTypeShape EntityType="ANDBModel.ANEventCategory" Width="1.5" PointX="8.25" PointY="12.25" />
         <EntityTypeShape EntityType="ANDBModel.ANEventImage" Width="1.5" PointX="8.25" PointY="9.25" />
-        <EntityTypeShape EntityType="ANDBModel.ANEventInformation" Width="1.5" PointX="5.25" PointY="25.75" />
-        <EntityTypeShape EntityType="ANDBModel.ANEventMember" Width="1.5" PointX="5.25" PointY="11.875" />
-        <EntityTypeShape EntityType="ANDBModel.ANEventRequestToJoin" Width="1.5" PointX="5.25" PointY="8.875" />
+        <EntityTypeShape EntityType="ANDBModel.ANEventInformation" Width="1.5" PointX="5.25" PointY="23" />
+        <EntityTypeShape EntityType="ANDBModel.ANEventMember" Width="1.5" PointX="5.25" PointY="8.875" />
+        <EntityTypeShape EntityType="ANDBModel.ANEventRequestToJoin" Width="1.5" PointX="5.25" PointY="11.875" />
         <EntityTypeShape EntityType="ANDBModel.ANEventRequirement" Width="1.5" PointX="5.25" PointY="15.25" />
         <EntityTypeShape EntityType="ANDBModel.Category" Width="1.5" PointX="6" PointY="18.25" />
         <EntityTypeShape EntityType="ANDBModel.Image" Width="1.5" PointX="6" PointY="6.375" />
