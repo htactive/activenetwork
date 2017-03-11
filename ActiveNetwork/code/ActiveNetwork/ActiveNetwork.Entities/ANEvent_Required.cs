@@ -12,15 +12,13 @@ namespace ActiveNetwork.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class UserProfile
+    public partial class ANEvent_Required
     {
         public int Id { get; set; }
-        public string UserName { get; set; }
-        public Nullable<System.DateTime> BirthDate { get; set; }
-        public string Gender { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Address { get; set; }
-        public Nullable<int> UserId { get; set; }
+        public int ANEventId { get; set; }
+        public int RequiredId { get; set; }
+    
+        public virtual ANEvent ANEvent { get; set; }
+        public virtual RequiredProfile RequiredProfile { get; set; }
     }
 }

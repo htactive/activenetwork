@@ -36,6 +36,14 @@ namespace ActiveNetwork.Repository
             }
         }
 
+        private ITopicRepository topicRepository;
+        public ITopicRepository TopicRepository
+        {
+            get
+            {
+                return topicRepository ?? (topicRepository = new TopicRepository(this));
+            }
+        }
         #endregion
     }
 }

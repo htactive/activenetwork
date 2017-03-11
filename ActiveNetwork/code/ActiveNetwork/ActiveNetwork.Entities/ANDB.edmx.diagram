@@ -22,6 +22,14 @@
         <AssociationConnector Association="ANDBModel.FK_ANEventImage_Image" />
         <AssociationConnector Association="ANDBModel.FK_ANEventMember_User" />
         <AssociationConnector Association="ANDBModel.FK_RequestToJoin_User" />
+        <EntityTypeShape EntityType="ANDBModel.ANEvent_Required" Width="1.5" PointX="8.25" PointY="7.75" />
+        <EntityTypeShape EntityType="ANDBModel.ANEvent_Topic" Width="1.5" PointX="10.25" PointY="4.75" />
+        <EntityTypeShape EntityType="ANDBModel.RequiredProfile" Width="1.5" PointX="6" PointY="18" />
+        <EntityTypeShape EntityType="ANDBModel.Topic" Width="1.5" PointX="8" PointY="11.875" />
+        <AssociationConnector Association="ANDBModel.FK_ANEvent_Required_ANEvent" />
+        <AssociationConnector Association="ANDBModel.FK_ANEvent_Topic_ANEvent" />
+        <AssociationConnector Association="ANDBModel.FK_ANEvent_Required_RequiredProfile" />
+        <AssociationConnector Association="ANDBModel.FK_ANEvent_Topic_Topic" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

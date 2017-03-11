@@ -4,6 +4,7 @@
 var entities = new List<EntityMetadataRender>(){
 new EntityMetadataRender(){Name = "User"},
 new EntityMetadataRender(){Name = "UserProfile"},
+new EntityMetadataRender(){Name = "Topic"},
 };
   var fileManager = EntityFrameworkTemplateFileManager.Create(this); 
   fileManager.StartHeader(); 

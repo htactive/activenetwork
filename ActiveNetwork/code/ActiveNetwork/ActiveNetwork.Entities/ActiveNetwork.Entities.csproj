@@ -79,12 +79,21 @@
     <Compile Include="ANEventMember.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="ANEvent_Required.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ANEvent_Topic.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Class1.cs" />
     <Compile Include="Image.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestToJoin.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RequiredProfile.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
     <Compile Include="sp_helpdiagramdefinition_Result.cs">
@@ -94,6 +103,9 @@
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
     <Compile Include="sysdiagram.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Topic.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">

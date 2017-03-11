@@ -5,6 +5,12 @@ import Dropzone from 'react-dropzone';
 import Autocomplete from 'react-autocomplete';
 import {getStates, matchStateToTerm, sortStates, styles, fakeRequest} from 'react-autocomplete/build/lib/utils'
 import {GoogleAPIServiceInstance} from '../services/location-service'
+import {ANEventServiceInstance} from '../services/anevent-service';
+import Select from 'react-select';
+import {
+  Editor,
+  createEditorState,
+} from 'medium-draft';
 
 export class CreateEventDialog extends React.Component {
   componentWillMount() {
@@ -12,9 +18,36 @@ export class CreateEventDialog extends React.Component {
       startDate: '03/08/2017',
       isLocationLoading: false,
       locationList: [],
+      topicList: [],
       event_coverImage: null,
-      event_location: ''
+      event_location: '',
+      event_topics: [],
+      event_description: createEditorState()
     });
+  }
+
+  async componentDidMount() {
+    let resizeFunc = function () {
+      setTimeout(function () {
+        let container = $('.cover-image-upload-zone .full-zone .image-preview');
+        if (container.length > 0) {
+          let width = container.width();
+          container.height(width * 0.52)
+        }
+        resizeFunc();
+      }, 200);
+    };
+    resizeFunc();
+    await this.loadTopics();
+  }
+
+  async loadTopics() {
+    let topics = await ANEventServiceInstance.getAllTopics();
+    this.setState({topicList: topics});
+  }
+
+  onEventDescriptionChanged(editorState) {
+    this.setState({event_description: editorState});
   }
 
   show() {
@@ -41,20 +74,6 @@ export class CreateEventDialog extends React.Component {
     this.setState({
       showEndDate: !this.state.showEndDate,
     });
-  }
-
-  componentDidMount() {
-    let resizeFunc = function () {
-      setTimeout(function () {
-        let container = $('.cover-image-upload-zone .full-zone .image-preview');
-        if (container.length > 0) {
-          let width = container.width();
-          container.height(width * 0.52)
-        }
-        resizeFunc();
-      }, 200);
-    };
-    resizeFunc();
   }
 
   renderItems(items) {
@@ -111,7 +130,6 @@ export class CreateEventDialog extends React.Component {
                 Địa điểm
               </div>
               <div className="col-sm-7">
-                {/*<input type="text" className="form-control" id="eventplace" placeholder="Nhập một địa điểm"/>*/}
                 <Autocomplete
                   wrapperProps={{className: "event-location"}}
                   wrapperStyle={{width: "100%"}}
@@ -180,7 +198,26 @@ export class CreateEventDialog extends React.Component {
                 Chủ đề
               </div>
               <div className="col-sm-7">
-                <textarea className="form-control" rows="2" placeholder="Chọn chủ đề của sự kiện"/>
+                <Select multi value={this.state.event_topics} placeholder="Gõ để chọn chủ đề"
+                        options={this.state.topicList}
+                        optionRenderer={(obj) =>
+                          (
+                            <div className="user-block">
+                              <img className="img-circle" src={"/img/Likes/likes-1.png"} alt={obj.Name}/>
+                              <span className="username">{obj.Name}</span>
+                              <span className="description">{obj.Description}</span>
+                            </div>
+                          )}
+                        filterOption={(obj, text) => {
+                          if (text === undefined || text === null || text === '') return true;
+                          text = text.toLowerCase();
+                          return obj.Name.toLowerCase().indexOf(text) > -1 || obj.Description.toLowerCase().indexOf(text) > -1;
+                        }}
+                        labelKey={"Name"}
+                        valueKey={"Id"}
+                        onChange={(v) => this.topicsOnChanged(v)}
+                />
+
               </div>
             </div>
 
@@ -189,7 +226,10 @@ export class CreateEventDialog extends React.Component {
                 Mô tả
               </div>
               <div className="col-sm-7">
-                <textarea className="form-control" rows="4" placeholder="Thông tin chi tiết của sự kiện"/>
+                <Editor
+                  ref="editor"
+                  editorState={this.state.event_description}
+                  onChange={(e) => this.onEventDescriptionChanged(e)}/>
               </div>
             </div>
           </form>
@@ -211,5 +251,9 @@ export class CreateEventDialog extends React.Component {
     let items = await GoogleAPIServiceInstance.searchPlaces(value);
     items.push({Id: '__ju__', Name: 'Chỉ dùng "' + value + '"', Address: value})
     this.setState({locationList: items, isLocationLoading: false});
+  }
+
+  topicsOnChanged(v) {
+    this.setState({event_topics: v});
   }
 }

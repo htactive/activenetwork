@@ -12,15 +12,17 @@ namespace ActiveNetwork.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class UserProfile
+    public partial class RequiredProfile
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public RequiredProfile()
+        {
+            this.ANEvent_Required = new HashSet<ANEvent_Required>();
+        }
+    
         public int Id { get; set; }
-        public string UserName { get; set; }
-        public Nullable<System.DateTime> BirthDate { get; set; }
-        public string Gender { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Address { get; set; }
-        public Nullable<int> UserId { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ANEvent_Required> ANEvent_Required { get; set; }
     }
 }

@@ -12,15 +12,19 @@ namespace ActiveNetwork.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class UserProfile
+    public partial class Topic
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Topic()
+        {
+            this.ANEvent_Topic = new HashSet<ANEvent_Topic>();
+        }
+    
         public int Id { get; set; }
-        public string UserName { get; set; }
-        public Nullable<System.DateTime> BirthDate { get; set; }
-        public string Gender { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Address { get; set; }
-        public Nullable<int> UserId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ANEvent_Topic> ANEvent_Topic { get; set; }
     }
 }
