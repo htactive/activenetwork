@@ -21,7 +21,7 @@ ReactDOM.render(
 
     <Route path={`${virtualPath}/`} component={Index}>
       <Route path={`${virtualPath}/post-grid`} component={PostGrid}/>
-      <Route path={`${virtualPath}/profile-page`} component={ProfilePage}/>
+      <Route path={`${virtualPath}/profile`} component={ProfilePage}/>
       <Route path={`${virtualPath}/manage-event`} component={EventManager}/>
       <Route path={`${virtualPath}/event`} component={EventDetailPage}>
         <Route path={`${virtualPath}/event/wall`} component={EventDetailWallComponent}/>

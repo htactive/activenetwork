@@ -18,15 +18,32 @@ namespace ActiveNetwork.Repository
         }
         #region Repositories
 
-        private ITestRepository testRepository;
-        public ITestRepository TestRepository
+        private IUserRepository userRepository;
+        public IUserRepository UserRepository
         {
             get
             {
-                return testRepository ?? (testRepository = new TestRepository(this));
+                return userRepository ?? (userRepository = new UserRepository(this));
             }
         }
 
+        private IUserProfileRepository userProfileRepository;
+        public IUserProfileRepository UserProfileRepository
+        {
+            get
+            {
+                return userProfileRepository ?? (userProfileRepository = new UserProfileRepository(this));
+            }
+        }
+
+        private ICategoryRepository categoryRepository;
+        public ICategoryRepository CategoryRepository
+        {
+            get
+            {
+                return categoryRepository ?? (categoryRepository = new CategoryRepository(this));
+            }
+        }
         #endregion
     }
 }

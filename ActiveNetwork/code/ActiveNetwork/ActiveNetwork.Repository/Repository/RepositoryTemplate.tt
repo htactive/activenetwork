@@ -2,7 +2,9 @@
 <#@ include file="EF.Utility.CS.ttinclude"#>
 <# 
 var entities = new List<EntityMetadataRender>(){
-new EntityMetadataRender(){Name = "Test"},
+new EntityMetadataRender(){Name = "User"},
+new EntityMetadataRender(){Name = "UserProfile"},
+new EntityMetadataRender(){Name = "Category"},
 };
   var fileManager = EntityFrameworkTemplateFileManager.Create(this); 
   fileManager.StartHeader(); 

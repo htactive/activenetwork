@@ -1,0 +1,58 @@
+.cover-image-upload-zone {
+  -webkit-border-radius: 0 !important;
+  -webkit-background-clip: padding-box !important;
+  -moz-border-radius: 0 !important;
+  -moz-background-clip: padding !important;
+  border-radius: 0 !important;
+  background-clip: padding-box !important;
+  color: #858585;
+  background-color: #fbfbfb;
+  border: 1px solid #d5d5d5;
+  font-family: inherit;
+  -webkit-transition: -webkit-box-shadow .45s, border-color .45s ease-in-out;
+  -moz-transition: -moz-box-shadow .45s, border-color .45s ease-in-out;
+  -o-transition: box-shadow .45s, border-color .45s ease-in-out;
+  transition: box-shadow .45s, border-color .45s ease-in-out;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.cover-image-upload-zone .empty-zone {
+  padding: 6px 12px;
+}
+
+.cover-image-upload-zone .full-zone .image-preview {
+  overflow: hidden;
+}
+
+.cover-image-upload-zone .full-zone .btn-remove {
+
+  position: absolute;
+  right: 20px;
+  top: 3px;
+}
+
+.event-location .menu {
+  position: absolute;
+  border: 1px solid #d5d5d5;
+  z-index: 10;
+  background-color: #fff;
+  width: 90%;
+}
+
+.Select-control {
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  background-color: #fbfbfb;
+}
+
+.Select-menu-outer {
+  z-index: 10;
+}
+
+.md-RichEditor-root {
+  border: 1px solid #d5d5d5;
+}

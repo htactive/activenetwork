@@ -1,40 +1,56 @@
 import React, {Component} from 'react';
+import {UserProfileServiceInstance} from '../services/user-profile-service'
 
 export class ProfilePage extends Component {
+  componentWillMount() {
+    this.setState({userProfile: []});
+  }
+
+  async componentDidMount() {
+    this.setState({userProfile: await this.getData()});
+  }
+
+  async getData() {
+    return await UserProfileServiceInstance.getUserProfile('1');
+  }
+
   render() {
     return <div>
       <div className="container page-content edit-profile">
         <div className="row">
           <div className="col-md-10 col-md-offset-1">
             <ul className="nav nav-tabs nav-tabs-custom-colored tabs-iconized">
-              <li className="active"><a href="#profile-tab" data-toggle="tab" aria-expanded="true"><i className="fa fa-user"></i> Profile</a></li>
-              <li className=""><a href="#activity-tab" data-toggle="tab" aria-expanded="false"><i className="fa fa-rss"></i> Recent Activity</a></li>
-              <li className=""><a href="#settings-tab" data-toggle="tab" aria-expanded="false"><i className="fa fa-gear"></i> Settings</a></li>
+              <li className="active"><a href="#profile-tab" data-toggle="tab" aria-expanded="true"><i
+                className="fa fa-user"></i> Profile</a></li>
+              <li className=""><a href="#activity-tab" data-toggle="tab" aria-expanded="false"><i
+                className="fa fa-rss"></i> Recent Activity</a></li>
+              <li className=""><a href="#settings-tab" data-toggle="tab" aria-expanded="false"><i
+                className="fa fa-gear"></i> Settings</a></li>
             </ul>
             <div className="tab-content profile-page">
               <div className="tab-pane profile active" id="profile-tab">
                 <div className="row">
                   <div className="col-md-3">
                     <div className="user-info-left">
-                      <img src="/img/Friends/guy-3.jpg" alt="Profile Picture" />
-                        <h2>John Breakgrow jr.</h2>
-                        <div className="contact">
-                          <p>
+                      <img src="/img/Friends/guy-3.jpg" alt="Profile Picture"/>
+                      <h2>{this.state.userProfile.UserName}</h2>
+                      <div className="contact">
+                        <p>
                         <span className="file-input btn btn-azure btn-file">
                           Change Avatar <input type="file" multiple=""/>
                         </span>
-                          </p>
-                          <p>
+                        </p>
+                        <p>
                         <span className="file-input btn btn-azure btn-file">
-                          Change Cover <input type="file" multiple="" />
+                          Change Cover <input type="file" multiple=""/>
                         </span>
-                          </p>
-                          <ul className="list-inline social">
-                            <li><a href="#" title="Facebook"><i className="fa fa-facebook-square"></i></a></li>
-                            <li><a href="#" title="Twitter"><i className="fa fa-twitter-square"></i></a></li>
-                            <li><a href="#" title="Google Plus"><i className="fa fa-google-plus-square"></i></a></li>
-                          </ul>
-                        </div>
+                        </p>
+                        <ul className="list-inline social">
+                          <li><a href="#" title="Facebook"><i className="fa fa-facebook-square"></i></a></li>
+                          <li><a href="#" title="Twitter"><i className="fa fa-twitter-square"></i></a></li>
+                          <li><a href="#" title="Google Plus"><i className="fa fa-google-plus-square"></i></a></li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                   <div className="col-md-9">
@@ -43,15 +59,15 @@ export class ProfilePage extends Component {
                         <h3><i className="fa fa-square"></i> Basic Information</h3>
                         <p className="data-row">
                           <span className="data-name">Username</span>
-                          <span className="data-value">jonasmith</span>
+                          <span className="data-value">{this.state.userProfile.UserName}</span>
                         </p>
                         <p className="data-row">
                           <span className="data-name">Birth Date</span>
-                          <span className="data-value">Nov 20, 1988</span>
+                          <span className="data-value">{this.state.userProfile.BirthDate}</span>
                         </p>
                         <p className="data-row">
                           <span className="data-name">Gender</span>
-                          <span className="data-value">Male</span>
+                          <span className="data-value">{this.state.userProfile.Gender}</span>
                         </p>
                         <p className="data-row">
                           <span className="data-name">Website</span>
@@ -70,21 +86,25 @@ export class ProfilePage extends Component {
                         <h3><i className="fa fa-square"></i> Contact Information</h3>
                         <p className="data-row">
                           <span className="data-name">Email</span>
-                          <span className="data-value">me@jonasmith.com</span>
+                          <span className="data-value">{this.state.userProfile.Email}</span>
                         </p>
                         <p className="data-row">
                           <span className="data-name">Phone</span>
-                          <span className="data-value">(1800) 221 - 876543</span>
+                          <span className="data-value">{this.state.userProfile.Phone}</span>
                         </p>
                         <p className="data-row">
                           <span className="data-name">Address</span>
-                          <span className="data-value">Riverside City 66, 80123 Denver, Colorado</span>
+                          <span className="data-value">{this.state.userProfile.Address}</span>
                         </p>
                       </div>
                       <div className="about">
                         <h3><i className="fa fa-square"></i> About Me</h3>
-                        <p>Dramatically facilitate proactive solutions whereas professional intellectual capital. Holisticly utilize competitive e-markets through intermandated meta-services. Objectively.</p>
-                        <p>Monotonectally foster future-proof infomediaries before principle-centered interfaces. Assertively recaptiualize cutting-edge web services rather than emerging "outside the box" thinking. Phosfluorescently cultivate resource maximizing technologies and user-centric convergence. Completely underwhelm cross functional innovation vis-a-vis.</p>
+                        <p>Dramatically facilitate proactive solutions whereas professional intellectual capital.
+                          Holisticly utilize competitive e-markets through intermandated meta-services. Objectively.</p>
+                        <p>Monotonectally foster future-proof infomediaries before principle-centered interfaces.
+                          Assertively recaptiualize cutting-edge web services rather than emerging "outside the box"
+                          thinking. Phosfluorescently cultivate resource maximizing technologies and user-centric
+                          convergence. Completely underwhelm cross functional innovation vis-a-vis.</p>
                       </div>
                     </div>
                   </div>
@@ -96,7 +116,8 @@ export class ProfilePage extends Component {
                   <li>
                     <i className="fa fa-times activity-icon pull-left"></i>
                     <p>
-                      <a href="#">Jonathan</a> commented on <a href="#">Special Deal 2013</a> <span className="timestamp">12 minutes ago</span>
+                      <a href="#">Jonathan</a> commented on <a href="#">Special Deal 2013</a> <span
+                      className="timestamp">12 minutes ago</span>
                     </p>
                   </li>
                   <li>
@@ -114,13 +135,15 @@ export class ProfilePage extends Component {
                   <li>
                     <i className="fa fa-times activity-icon pull-left"></i>
                     <p>
-                      <a href="#">Jonathan</a> has added review on <a href="#">jQuery Complete Guide</a> book <span className="timestamp">Yesterday</span>
+                      <a href="#">Jonathan</a> has added review on <a href="#">jQuery Complete Guide</a> book <span
+                      className="timestamp">Yesterday</span>
                     </p>
                   </li>
                   <li>
                     <i className="fa fa-times activity-icon pull-left"></i>
                     <p>
-                      <a href="#">Jonathan</a> liked <a href="#">a post</a> <span className="timestamp">December 12</span>
+                      <a href="#">Jonathan</a> liked <a href="#">a post</a> <span
+                      className="timestamp">December 12</span>
                     </p>
                   </li>
                   <li>
@@ -138,11 +161,13 @@ export class ProfilePage extends Component {
                   <li>
                     <i className="fa fa-times activity-icon pull-left"></i>
                     <p>
-                      <a href="#">Jonathan</a> has updated his credit card info <span className="timestamp">September 28</span>
+                      <a href="#">Jonathan</a> has updated his credit card info <span
+                      className="timestamp">September 28</span>
                     </p>
                   </li>
                 </ul>
-                <p className="text-center more"><a href="#" className="btn btn-custom-primary">View more <i className="fa fa-long-arrow-right"></i></a></p>
+                <p className="text-center more"><a href="#" className="btn btn-custom-primary">View more <i
+                  className="fa fa-long-arrow-right"></i></a></p>
               </div>
 
               <div className="tab-pane settings" id="settings-tab">
@@ -152,47 +177,47 @@ export class ProfilePage extends Component {
                     <div className="form-group">
                       <label htmlFor="old-password" className="col-sm-3 control-label">Old Password</label>
                       <div className="col-sm-4">
-                        <input type="password" id="old-password" name="old-password" className="form-control" />
+                        <input type="password" id="old-password" name="old-password" className="form-control"/>
                       </div>
                     </div>
                     <hr/>
-                      <div className="form-group">
-                        <label htmlFor="password" className="col-sm-3 control-label">New Password</label>
-                        <div className="col-sm-4">
-                          <input type="password" id="password" name="password" className="form-control" />
-                        </div>
+                    <div className="form-group">
+                      <label htmlFor="password" className="col-sm-3 control-label">New Password</label>
+                      <div className="col-sm-4">
+                        <input type="password" id="password" name="password" className="form-control"/>
                       </div>
-                      <div className="form-group">
-                        <label htmlFor="password2" className="col-sm-3 control-label">Repeat Password</label>
-                        <div className="col-sm-4">
-                          <input type="password" id="password2" name="password2" className="form-control" />
-                        </div>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="password2" className="col-sm-3 control-label">Repeat Password</label>
+                      <div className="col-sm-4">
+                        <input type="password" id="password2" name="password2" className="form-control"/>
                       </div>
+                    </div>
                   </fieldset>
                   <fieldset>
                     <h3><i className="fa fa-square"></i> Privacy</h3>
                     <div className="checkbox">
                       <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked" />
-                          <span className="text">Show my display name</span>
+                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
+                        <span className="text">Show my display name</span>
                       </label>
                     </div>
                     <div className="checkbox">
                       <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked" />
-                          <span className="text">Show my birth date</span>
+                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
+                        <span className="text">Show my birth date</span>
                       </label>
                     </div>
                     <div className="checkbox">
                       <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked" />
-                          <span className="text">Show my email</span>
+                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
+                        <span className="text">Show my email</span>
                       </label>
                     </div>
                     <div className="checkbox">
                       <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked" />
-                          <span className="text">Show my online status on chat</span>
+                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
+                        <span className="text">Show my online status on chat</span>
                       </label>
                     </div>
                   </fieldset>
@@ -200,34 +225,35 @@ export class ProfilePage extends Component {
                   <fieldset>
                     <div className="checkbox">
                       <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked" />
-                          <span className="text">Receive message from administrator</span>
+                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
+                        <span className="text">Receive message from administrator</span>
                       </label>
                     </div>
 
                     <div className="checkbox">
                       <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked" />
-                          <span className="text">New product has been added</span>
+                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
+                        <span className="text">New product has been added</span>
                       </label>
                     </div>
 
                     <div className="checkbox">
                       <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked" />
-                          <span className="text">Product review has been approved</span>
+                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
+                        <span className="text">Product review has been approved</span>
                       </label>
                     </div>
 
                     <div className="checkbox">
                       <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked" />
-                          <span className="text">Others liked your post</span>
+                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
+                        <span className="text">Others liked your post</span>
                       </label>
                     </div>
                   </fieldset>
                 </form>
-                <p className="text-center"><a href="#" className="btn btn-custom-primary"><i className="fa fa-floppy-o"></i> Save Changes</a></p>
+                <p className="text-center"><a href="#" className="btn btn-custom-primary"><i
+                  className="fa fa-floppy-o"></i> Save Changes</a></p>
               </div>
             </div>
           </div>

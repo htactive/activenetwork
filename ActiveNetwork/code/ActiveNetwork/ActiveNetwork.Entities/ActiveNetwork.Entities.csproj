@@ -41,6 +41,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
@@ -65,9 +67,51 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ANDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ANEvent.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ANEventCategory.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ANEventImage.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ANEventInformation.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ANEventMember.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ANEventRequestToJoin.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ANEventRequirement.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Category.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Class1.cs" />
+    <Compile Include="Image.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test.cs">
+    <Compile Include="RequiredProfile.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagrams_Result.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserProfile.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -81,7 +125,9 @@
     <None Include="ANDB.edmx.diagram">
       <DependentUpon>ANDB.edmx</DependentUpon>
     </None>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
