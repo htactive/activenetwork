@@ -11,8 +11,8 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
-          <Property Name="CreatedDate" Type="datetime" />
-          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="ANEventCategory">
           <Key>
@@ -36,9 +36,9 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ANEventId" Type="int" />
-          <Property Name="CreateTime" Type="date" />
           <Property Name="EventLocation" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ANEventLocation">
           <Key>
@@ -531,8 +531,8 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="ANEventRequirements" Relationship="ANDBModel.FK_ANEvent_Required_ANEvent" FromRole="ANEvent" ToRole="ANEventRequirement" />
           <NavigationProperty Name="ANEventCategories" Relationship="ANDBModel.FK_ANEvent_Topic_ANEvent" FromRole="ANEvent" ToRole="ANEventCategory" />
           <NavigationProperty Name="User" Relationship="ANDBModel.FK_ANEvent_User" FromRole="ANEvent" ToRole="User" />
@@ -567,9 +567,9 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ANEventId" Type="Int32" />
-          <Property Name="CreateTime" Type="DateTime" Precision="0" />
           <Property Name="EventLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventInformation_ANEvent" FromRole="ANEventInformation" ToRole="ANEvent" />
         </EntityType>
         <EntityType Name="ANEventLocation">
@@ -907,9 +907,9 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <EntitySetMapping Name="ANEventInformations">
             <EntityTypeMapping TypeName="ANDBModel.ANEventInformation">
               <MappingFragment StoreEntitySet="ANEventInformation">
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="EventLocation" ColumnName="EventLocation" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
