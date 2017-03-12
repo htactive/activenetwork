@@ -12,7 +12,7 @@ namespace ActiveNetwork.Web.Controllers
 {
     public class UserProfileController : BaseApiController
     {
-        [Route("get-user-profile"), HttpGet]
+        [Route("anprofile/get-user-profile"), HttpGet]
         public UserProfileModel GetUserProfile(int UserID)
         {
             var entity = this.ANDBUnitOfWork.UserProfileRepository.GetAll().FirstOrDefault(x => x.UserId == UserID);
@@ -20,7 +20,7 @@ namespace ActiveNetwork.Web.Controllers
             return UserProfileMapper.ToModel(entity);
         }
 
-        [Route("update-user-profile"), HttpPost]
+        [Route("anprofile/update-user-profile"), HttpPost]
         public UserProfileModel UpdateUserProfile([FromBody]UserProfileModel model)
         {
             var entity = this.ANDBUnitOfWork.UserProfileRepository.Save(UserProfileMapper.ToEntity(model));
