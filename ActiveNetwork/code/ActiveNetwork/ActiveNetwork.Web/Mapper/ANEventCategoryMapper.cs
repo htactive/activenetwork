@@ -14,29 +14,14 @@ namespace ActiveNetwork.Web.Mapper
             return entity == null ? null : new ANEventCategoryModel()
             {
                 Id = entity.Id,
-                ANEventId = entity.ANEventId,
-                CategoryId = entity.CategoryId
+                ANEvent = new ANEventModel() { Id = entity.ANEventId.GetValueOrDefault() },
+                Category = new CategoryModel() { Id = entity.CategoryId.GetValueOrDefault() }
             };
         }
 
         public static List<ANEventCategoryModel> ToModel(IEnumerable<ANEventCategory> entities)
         {
             return entities == null ? null : entities.Select(ToModel).ToList();
-        }
-
-        public static ANEventCategory ToEntity(ANEventCategoryModel model)
-        {
-            return model == null ? null : new ANEventCategory()
-            {
-                Id = model.Id,
-                ANEventId = model.ANEventId,
-                CategoryId = model.CategoryId
-            };
-        }
-
-        public static List<ANEventCategory> ToEntity(IEnumerable<ANEventCategoryModel> models)
-        {
-            return models == null ? null : models.Select(ToEntity).ToList();
         }
     }
 }

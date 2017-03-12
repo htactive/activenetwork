@@ -8,7 +8,7 @@ namespace ActiveNetwork.Web.Models
     public class ANEventCategoryModel
     {
         public int Id { get; set; }
-        public int? ANEventId { get; set; }
-        public int? CategoryId { get; set; }
+        public ANEventModel ANEvent { get; set; }
+        public CategoryModel Category { get; set; }
     }
 }

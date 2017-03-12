@@ -112,20 +112,21 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Username" Type="nvarchar" MaxLength="500" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UserProfile">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserId" Type="int" />
           <Property Name="Gender" Type="nvarchar" MaxLength="50" />
           <Property Name="BirthDate" Type="date" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
           <Property Name="Address" Type="nvarchar" MaxLength="50" />
-          <Property Name="UserId" Type="int" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="500" />
+          <Property Name="Avatar" Type="int" />
         </EntityType>
         <Association Name="FK_ANEvent_Required_ANEvent">
           <End Role="ANEvent" Type="Self.ANEvent" Multiplicity="1">
@@ -293,6 +294,18 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserProfile_Image">
+          <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="Avatar" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserProfile_User">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
@@ -350,18 +363,7 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <EntitySet Name="RequiredProfile" EntityType="Self.RequiredProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [UserProfile].[Id] AS [Id], 
-    [UserProfile].[UserName] AS [UserName], 
-    [UserProfile].[Gender] AS [Gender], 
-    [UserProfile].[BirthDate] AS [BirthDate], 
-    [UserProfile].[Email] AS [Email], 
-    [UserProfile].[Phone] AS [Phone], 
-    [UserProfile].[Address] AS [Address], 
-    [UserProfile].[UserId] AS [UserId]
-    FROM [dbo].[UserProfile] AS [UserProfile]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ANEvent_Required_ANEvent" Association="Self.FK_ANEvent_Required_ANEvent">
             <End Role="ANEvent" EntitySet="ANEvent" />
             <End Role="ANEventRequirement" EntitySet="ANEventRequirement" />
@@ -409,6 +411,10 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <AssociationSet Name="FK_RequestToJoin_User" Association="Self.FK_RequestToJoin_User">
             <End Role="User" EntitySet="User" />
             <End Role="ANEventRequestToJoin" EntitySet="ANEventRequestToJoin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Image" Association="Self.FK_UserProfile_Image">
+            <End Role="Image" EntitySet="Image" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
           </AssociationSet>
           <AssociationSet Name="FK_UserProfile_User" Association="Self.FK_UserProfile_User">
             <End Role="User" EntitySet="User" />
@@ -511,6 +517,10 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <AssociationSet Name="FK_ANEvent_Required_RequiredProfile" Association="ANDBModel.FK_ANEvent_Required_RequiredProfile">
             <End Role="RequiredProfile" EntitySet="RequiredProfiles" />
             <End Role="ANEventRequirement" EntitySet="ANEventRequirements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Image" Association="ANDBModel.FK_UserProfile_Image">
+            <End Role="Image" EntitySet="Images" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
           </AssociationSet>
           <AssociationSet Name="FK_UserProfile_User" Association="ANDBModel.FK_UserProfile_User">
             <End Role="User" EntitySet="Users" />
@@ -631,6 +641,7 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ANEventImages" Relationship="ANDBModel.FK_ANEventImage_Image" FromRole="Image" ToRole="ANEventImage" />
+          <NavigationProperty Name="UserProfiles" Relationship="ANDBModel.FK_UserProfile_Image" FromRole="Image" ToRole="UserProfile" />
         </EntityType>
         <EntityType Name="RequiredProfile">
           <Key>
@@ -665,13 +676,17 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" />
           <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BirthDate" Type="DateTime" Precision="0" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="Int32" />
+          <Property Name="FirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Avatar" Type="Int32" />
+          <NavigationProperty Name="Image" Relationship="ANDBModel.FK_UserProfile_Image" FromRole="UserProfile" ToRole="Image" />
           <NavigationProperty Name="User" Relationship="ANDBModel.FK_UserProfile_User" FromRole="UserProfile" ToRole="User" />
         </EntityType>
         <Association Name="FK_ANEvent_Required_ANEvent">
@@ -840,6 +855,18 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserProfile_Image">
+          <End Type="ANDBModel.Image" Role="Image" Multiplicity="0..1" />
+          <End Type="ANDBModel.UserProfile" Role="UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="Avatar" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserProfile_User">
           <End Type="ANDBModel.User" Role="User" Multiplicity="0..1" />
           <End Type="ANDBModel.UserProfile" Role="UserProfile" Multiplicity="*" />
@@ -1005,13 +1032,16 @@ warning 6002: The table/view 'ANDB.dbo.UserProfile' does not have a primary key 
           <EntitySetMapping Name="UserProfiles">
             <EntityTypeMapping TypeName="ANDBModel.UserProfile">
               <MappingFragment StoreEntitySet="UserProfile">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

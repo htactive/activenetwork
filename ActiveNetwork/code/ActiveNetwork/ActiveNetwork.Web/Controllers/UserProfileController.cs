@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Data.Entity;
 using ActiveNetwork.Web.Models;
 using ActiveNetwork.Web.Mapper;
+using System.Data.Entity;
 
 namespace ActiveNetwork.Web.Controllers
 {
@@ -23,13 +24,23 @@ namespace ActiveNetwork.Web.Controllers
         [Route("anprofile/update-user-profile"), HttpPost]
         public UserProfileModel UpdateUserProfile([FromBody]UserProfileModel model)
         {
-            var entity = this.ANDBUnitOfWork.UserProfileRepository.Save(UserProfileMapper.ToEntity(model));
-            if (entity != null)
+            var entity = this.ANDBUnitOfWork.UserProfileRepository.GetObject(model.Id);
+            if (entity == null) return null;
+            if (entity.LastName != model.LastName)
             {
-                this.ANDBUnitOfWork.Commit();
-                return UserProfileMapper.ToModel(entity);
+                entity.LastName = model.LastName;
             }
-            return null;
+            entity.MiddleName = model.MiddleName;
+            entity.Phone = model.Phone;
+            entity.Address = model.Address;
+            entity.BirthDate = model.BirthDate;
+            entity.Email = model.Email;
+            entity.FirstName = model.FirstName;
+            entity.Gender = model.Gender;
+
+            var saveResult = this.ANDBUnitOfWork.UserProfileRepository.Save(entity);
+            this.ANDBUnitOfWork.Commit();
+            return UserProfileMapper.ToModel(saveResult);
         }
     }
 }

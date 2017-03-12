@@ -14,29 +14,14 @@ namespace ActiveNetwork.Web.Mapper
             return entity == null ? null : new ANEventImageModel()
             {
                 Id = entity.Id,
-                ANEventId = entity.ANEventId,
-                ImageId = entity.ImageId
+                ANEvent = new ANEventModel() { Id = entity.ANEventId.GetValueOrDefault() },
+                Image = new ImageModel() { Id = entity.ImageId.GetValueOrDefault() }
             };
         }
 
         public static List<ANEventImageModel> ToModel(IEnumerable<ANEventImage> entities)
         {
             return entities == null ? null : entities.Select(ToModel).ToList();
-        }
-
-        public static ANEventImage ToEntity(ANEventImageModel model)
-        {
-            return model == null ? null : new ANEventImage()
-            {
-                Id = model.Id,
-                ANEventId = model.ANEventId,
-                ImageId = model.ImageId
-            };
-        }
-
-        public static List<ANEventImage> ToEntity(IEnumerable<ANEventImageModel> models)
-        {
-            return models == null ? null : models.Select(ToEntity).ToList();
         }
     }
 }

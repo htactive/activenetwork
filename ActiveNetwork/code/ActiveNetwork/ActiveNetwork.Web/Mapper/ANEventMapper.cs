@@ -17,32 +17,14 @@ namespace ActiveNetwork.Web.Mapper
                 UserId = entity.UserId,
                 ANEventMembers = Mapper.ANEventMemberMapper.ToModel(entity.ANEventMembers),
                 Images = Mapper.ANEventImageMapper.ToModel(entity.ANEventImages),
-                Information = Mapper.ANEventInformationMapper.ToModel(entity.ANEventInformations),
-                RequestToJoins = Mapper.ANEventRequestToJoinMapper.ToModel(entity.ANEventRequestToJoins)
+                Informations = Mapper.ANEventInformationMapper.ToModel(entity.ANEventInformations),
+                RequestToJoins = Mapper.ANEventRequestToJoinMapper.ToModel(entity.ANEventRequestToJoins),
             };
         }
 
         public static List<ANEventModel> ToModel(IEnumerable<ANEvent> entities)
         {
             return entities == null ? null : entities.Select(ToModel).ToList();
-        }
-
-        public static ANEvent ToEntity(ANEventModel model)
-        {
-            return model == null ? null : new ANEvent()
-            {
-                Id = model.Id,
-                UserId = model.UserId,
-                ANEventMembers = Mapper.ANEventMemberMapper.ToEntity(model.ANEventMembers),
-                ANEventImages = Mapper.ANEventImageMapper.ToEntity(model.Images),
-                ANEventInformations = Mapper.ANEventInformationMapper.ToEntity(model.Information),
-                ANEventRequestToJoins = Mapper.ANEventRequestToJoinMapper.ToEntity(model.RequestToJoins)
-            };
-        }
-
-        public static List<ANEvent> ToEntity(IEnumerable<ANEventModel> models)
-        {
-            return models == null ? null : models.Select(ToEntity).ToList();
         }
     }
 }
