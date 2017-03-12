@@ -15,7 +15,7 @@ export class EventManager extends Component {
                 <div className="file-manager">
                   <div className="hr-line-dashed"></div>
                   <div className="hr-line-dashed"></div>
-                  <h5>Danh sách sự kiện</h5>
+                  <h5 style={{color: 'black'}}>Danh sách sự kiện</h5>
                   <ul className="folder-list" style={{padding: 0}}>
                     <li><a href=""><i className="fa fa-align-right"></i> Sự kiện đã tạo</a></li>
                     <li><a href=""><i className="fa fa-align-right"></i> Sự kiện đã tham gia</a></li>
