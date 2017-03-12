@@ -15,9 +15,11 @@ namespace ActiveNetwork.Web.Mapper
             {
                 Id = entity.Id,
                 ANEventId = entity.ANEventId,
-                CreateTime = entity.CreateTime,
+                Title = entity.Title,
                 Description = entity.Description,
-                Location = entity.EventLocation
+                Location = entity.EventLocation,
+                CreateDate = entity.CreateDate,
+                EndDate = entity.EndDate
             };
         }
 
@@ -32,9 +34,11 @@ namespace ActiveNetwork.Web.Mapper
             {
                 Id = model.Id,
                 ANEventId = model.ANEventId,
-                CreateTime = model.CreateTime,
+                Title = model.Title,
                 Description = model.Description,
-                EventLocation = model.Location  
+                EventLocation = model.Location,
+                CreateDate = model.CreateDate,
+                EndDate = model.EndDate
             };
         }
 

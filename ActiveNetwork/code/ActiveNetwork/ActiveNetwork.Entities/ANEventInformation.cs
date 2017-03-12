@@ -16,9 +16,11 @@ namespace ActiveNetwork.Entities
     {
         public int Id { get; set; }
         public Nullable<int> ANEventId { get; set; }
-        public Nullable<System.DateTime> CreateTime { get; set; }
         public string EventLocation { get; set; }
         public string Description { get; set; }
+        public string Title { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
     
         public virtual ANEvent ANEvent { get; set; }
     }

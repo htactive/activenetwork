@@ -1,4 +1,5 @@
 ﻿using ActiveNetwork.Entities;
+using ActiveNetwork.Web.Mapper;
 using ActiveNetwork.Web.Models;
 using Newtonsoft.Json;
 using System;
@@ -63,6 +64,14 @@ namespace ActiveNetwork.Web.Controllers
             var results = sandbox.Search(new SearchingSandbox.Model.SearchCriteria() { UserId = 1 });
 
             return Mapper.ANEventMapper.ToModel(results);
+        }
+
+        [Route("anevent/get-event"), HttpGet]
+        public ANEventModel GetEvent(int Id)
+        {
+            var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll().FirstOrDefault(x => x.Id == Id);
+            if (entity == null) return null;
+            return ANEventMapper.ToModel(entity);
         }
     }
 }
