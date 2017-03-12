@@ -44,6 +44,14 @@ namespace ActiveNetwork.Repository
                 return categoryRepository ?? (categoryRepository = new CategoryRepository(this));
             }
         }
+        private IANEventRepository anEventRepository;
+        public IANEventRepository ANEventRepository
+        {
+            get
+            {
+                return anEventRepository ?? (anEventRepository = new ANEventRepository(this));
+            }
+        }
         #endregion
     }
 }

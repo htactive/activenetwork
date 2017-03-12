@@ -31,6 +31,7 @@ namespace ActiveNetwork.Entities
         public virtual DbSet<ANEventCategory> ANEventCategories { get; set; }
         public virtual DbSet<ANEventImage> ANEventImages { get; set; }
         public virtual DbSet<ANEventInformation> ANEventInformations { get; set; }
+        public virtual DbSet<ANEventLocation> ANEventLocations { get; set; }
         public virtual DbSet<ANEventMember> ANEventMembers { get; set; }
         public virtual DbSet<ANEventRequestToJoin> ANEventRequestToJoins { get; set; }
         public virtual DbSet<ANEventRequirement> ANEventRequirements { get; set; }
