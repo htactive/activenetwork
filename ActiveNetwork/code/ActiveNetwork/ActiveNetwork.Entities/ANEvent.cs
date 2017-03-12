@@ -27,12 +27,8 @@ namespace ActiveNetwork.Entities
     
         public int Id { get; set; }
         public Nullable<int> UserId { get; set; }
-        public Nullable<int> EventMember { get; set; }
-        public Nullable<int> RequestToJoin { get; set; }
-        public Nullable<int> Images { get; set; }
-        public Nullable<int> Requirements { get; set; }
-        public Nullable<int> Categories { get; set; }
-        public Nullable<int> Information { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<System.DateTime> UpdatedDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ANEventRequirement> ANEventRequirements { get; set; }

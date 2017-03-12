@@ -17,7 +17,7 @@ namespace ActiveNetwork.Web.Mapper
                 UserId = entity.UserId,
                 ANEventMembers = Mapper.ANEventMemberMapper.ToModel(entity.ANEventMembers),
                 Images = Mapper.ANEventImageMapper.ToModel(entity.ANEventImages),
-                Information = entity.Information,
+                Information = Mapper.ANEventInformationMapper.ToModel(entity.ANEventInformations),
                 RequestToJoins = Mapper.ANEventRequestToJoinMapper.ToModel(entity.ANEventRequestToJoins)
             };
         }
@@ -35,7 +35,7 @@ namespace ActiveNetwork.Web.Mapper
                 UserId = model.UserId,
                 ANEventMembers = Mapper.ANEventMemberMapper.ToEntity(model.ANEventMembers),
                 ANEventImages = Mapper.ANEventImageMapper.ToEntity(model.Images),
-                Information = model.Information,
+                ANEventInformations = Mapper.ANEventInformationMapper.ToEntity(model.Information),
                 ANEventRequestToJoins = Mapper.ANEventRequestToJoinMapper.ToEntity(model.RequestToJoins)
             };
         }

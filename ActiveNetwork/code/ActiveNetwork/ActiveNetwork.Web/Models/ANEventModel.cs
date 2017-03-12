@@ -12,6 +12,6 @@ namespace ActiveNetwork.Web.Models
         public List<ANEventMemberModel> ANEventMembers { get; set; }
         public List<ANEventRequestToJoinModel> RequestToJoins { get; set; }
         public List<ANEventImageModel> Images { get; set; }
-        public int? Information { get; set; }
+        public List<ANEventInformationModel> Information { get; set; }
     }
 }

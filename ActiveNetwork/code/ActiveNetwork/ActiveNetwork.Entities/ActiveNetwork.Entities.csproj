@@ -79,6 +79,9 @@
     <Compile Include="ANEventInformation.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="ANEventLocation.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="ANEventMember.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
