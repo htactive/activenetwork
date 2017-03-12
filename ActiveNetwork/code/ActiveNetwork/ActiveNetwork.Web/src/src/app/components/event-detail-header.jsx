@@ -32,49 +32,6 @@ export class EventDetailHeaderComponent extends Component {
               <div className="image">
                 <img src="/img/Cover/profile-cover.jpg" className="show-in-modal" alt="people"/>
               </div>
-              <ul className="friends">
-                <li>
-                  <a href="#">
-                    <img src="/img/Friends/guy-6.jpg" alt="people" className="img-responsive"/>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="/img/Friends/woman-3.jpg" alt="people" className="img-responsive"/>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="/img/Friends/guy-2.jpg" alt="people" className="img-responsive"/>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="/img/Friends/guy-9.jpg" alt="people" className="img-responsive"/>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="/img/Friends/woman-9.jpg" alt="people" className="img-responsive"/>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="/img/Friends/guy-4.jpg" alt="people" className="img-responsive"/>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="/img/Friends/guy-1.jpg" alt="people" className="img-responsive"/>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="/img/Friends/woman-4.jpg" alt="people" className="img-responsive"/>
-                  </a>
-                </li>
-                <li><a href="#" className="group"><i className="fa fa-group"/></a></li>
-              </ul>
             </div>
             <div className="cover-info">
               <div className="name"><a href="#">Sự kiện nhậu mừng sinh nhật Bill Gate</a></div>

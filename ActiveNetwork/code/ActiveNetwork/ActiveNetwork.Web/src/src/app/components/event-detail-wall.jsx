@@ -5,7 +5,7 @@ export class EventDetailWallComponent extends Component {
       <div className="col-md-5">
         <div className="widget">
           <div className="widget-header">
-            <h3 className="widget-caption">About</h3>
+            <h3 className="widget-caption">Mô tả sự kiện</h3>
           </div>
           <div className="widget-body bordered-top bordered-sky">
             <ul className="list-unstyled profile-about margin-none">
