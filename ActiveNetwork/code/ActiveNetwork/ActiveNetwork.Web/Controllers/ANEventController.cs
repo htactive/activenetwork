@@ -1,4 +1,5 @@
-﻿using ActiveNetwork.Web.Models;
+﻿using ActiveNetwork.Entities;
+using ActiveNetwork.Web.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,31 @@ namespace ActiveNetwork.Web.Controllers
                 Id = x.Id,
                 Name = x.Name
             }).ToList();
+        }
+
+        [HttpPost, Route("anevent/create-dummy-anevents")]
+        public bool CreateDummyANEvents()
+        {
+            var entities = new List<ANEvent>();
+            for (int i = 0; i < 100; i++)
+            {
+                var en = new ANEvent()
+                {
+                    Id = 0,
+                    UpdatedDate = DateTime.Now,
+                    CreatedDate = DateTime.Now.AddHours((new Random(Guid.NewGuid().GetHashCode())).Next(-20, 20)),
+                    ANEventInformations = new List<ANEventInformation>() { new ANEventInformation(){
+                        Id = 0, 
+                        Description = string.Format("{0:00}",i) + " -- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla",
+                        
+                    } }
+
+                };
+                entities.Add(en);
+            }
+            this.ANDBUnitOfWork.ANEventRepository.Save(entities);
+            this.ANDBUnitOfWork.Commit();
+            return true;
         }
     }
 }
