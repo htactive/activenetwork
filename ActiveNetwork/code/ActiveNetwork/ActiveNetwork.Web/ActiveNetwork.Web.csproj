@@ -272,6 +272,10 @@
       <Project>{afed1bd8-fbcd-4086-a1a2-d8ac8c9b3b1b}</Project>
       <Name>ActiveNetwork.Repository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ActiveNetwork.SearchingSandbox\ActiveNetwork.SearchingSandbox.csproj">
+      <Project>{41016922-a9d9-483f-90d0-b87efafd80f5}</Project>
+      <Name>ActiveNetwork.SearchingSandbox</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

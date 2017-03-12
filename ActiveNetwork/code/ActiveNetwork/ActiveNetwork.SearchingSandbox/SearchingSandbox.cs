@@ -10,11 +10,11 @@ using System.Data.Entity;
 
 namespace ActiveNetwork.SearchingSandbox
 {
-    public class SearchingSandbox
+    public class ANEventSearchingSandbox
     {
         private List<ISearchingRule> rules;
         private ANDBUnitOfWork andbUnitOfWork;
-        public SearchingSandbox(ANDBUnitOfWork andbUnitOfWork)
+        public ANEventSearchingSandbox(ANDBUnitOfWork andbUnitOfWork)
         {
             rules = new List<ISearchingRule>();
             this.andbUnitOfWork = andbUnitOfWork;

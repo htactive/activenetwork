@@ -5,6 +5,11 @@ class ANEventService extends ServiceBase {
     let url = '/anevent/get-all-categories';
     return await super.executeFetch(url);
   }
+  async getANEvents(){
+    let url = '/anevent/get-events';
+    return await
+      super.executeFetch(url);
+  }
 }
 
 let ANEventServiceInstance = new ANEventService();

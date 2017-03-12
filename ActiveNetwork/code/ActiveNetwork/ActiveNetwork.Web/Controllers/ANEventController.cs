@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
+using ActiveNetwork.SearchingSandbox;
 using System.Web.Http;
 
 namespace ActiveNetwork.Web.Controllers
@@ -53,6 +54,15 @@ namespace ActiveNetwork.Web.Controllers
             this.ANDBUnitOfWork.ANEventRepository.Save(entities);
             this.ANDBUnitOfWork.Commit();
             return true;
+        }
+
+        [HttpGet, Route("anevent/get-events")]
+        public List<ANEventModel> GetEvents()
+        {
+            var sandbox = new ANEventSearchingSandbox(this.ANDBUnitOfWork);
+            var results = sandbox.Search(new SearchingSandbox.Model.SearchCriteria() { UserId = 1 });
+
+            return Mapper.ANEventMapper.ToModel(results);
         }
     }
 }
