@@ -16,8 +16,8 @@ namespace ActiveNetwork.Web.Controllers
         const string baseGoogleUrl = "https://maps.googleapis.com/maps/api/";
         const string googleApiKey = "AIzaSyAM-HP8n5wt6tBXPCp1pcrAmdhG3FQrjr0";
 
-        [HttpGet, Route("anevent/get-all-topics")]
-        public List<CategoryModel> GetAllTopics()
+        [HttpGet, Route("anevent/get-all-categories")]
+        public List<CategoryModel> GetAllCategories()
         {
             var entities = this.ANDBUnitOfWork.CategoryRepository.GetAll().Take(1000).ToList();
 

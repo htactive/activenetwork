@@ -7,10 +7,12 @@ import {getStates, matchStateToTerm, sortStates, styles, fakeRequest} from 'reac
 import {GoogleAPIServiceInstance} from '../services/location-service'
 import {ANEventServiceInstance} from '../services/anevent-service';
 import Select from 'react-select';
+
 import {
   Editor,
   createEditorState,
 } from 'medium-draft';
+import {HTMLEditorByMD} from '../components/html-editor-md';
 
 export class CreateEventDialog extends React.Component {
   componentWillMount() {
@@ -22,7 +24,8 @@ export class CreateEventDialog extends React.Component {
       event_coverImage: null,
       event_location: '',
       event_topics: [],
-      event_description: createEditorState()
+      event_description: createEditorState(),
+      event_description_placeholder: "Viết mô tả ngắn gọn về sự kiện"
     });
   }
 
@@ -42,7 +45,7 @@ export class CreateEventDialog extends React.Component {
   }
 
   async loadTopics() {
-    let topics = await ANEventServiceInstance.getAllTopics();
+    let topics = await ANEventServiceInstance.getAllCategories();
     this.setState({topicList: topics});
   }
 
@@ -91,10 +94,8 @@ export class CreateEventDialog extends React.Component {
         <Modal.Body>
           <form className="form-horizontal" style={{paddingTop: 10}}>
             <div className="form-group">
-              <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
-                Ảnh sự kiện
-              </div>
-              <div className="col-sm-7">
+              <label className="col-sm-3 control-label">Ảnh sự kiện</label>
+              <div className="col-sm-9">
                 <Dropzone
                   className="cover-image-upload-zone"
                   accept="image/*"
@@ -120,7 +121,7 @@ export class CreateEventDialog extends React.Component {
               <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
                 Tên sự kiện
               </div>
-              <div className="col-sm-7">
+              <div className="col-sm-9">
                 <input type="text" className="form-control" id="eventname" placeholder="Nhập vào tên của sự kiện"/>
               </div>
             </div>
@@ -129,7 +130,7 @@ export class CreateEventDialog extends React.Component {
               <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
                 Địa điểm
               </div>
-              <div className="col-sm-7">
+              <div className="col-sm-9">
                 <Autocomplete
                   wrapperProps={{className: "event-location"}}
                   wrapperStyle={{width: "100%"}}
@@ -197,7 +198,7 @@ export class CreateEventDialog extends React.Component {
               <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
                 Chủ đề
               </div>
-              <div className="col-sm-7">
+              <div className="col-sm-9">
                 <Select multi value={this.state.event_topics} placeholder="Gõ để chọn chủ đề"
                         options={this.state.topicList}
                         optionRenderer={(obj) =>
@@ -220,16 +221,22 @@ export class CreateEventDialog extends React.Component {
 
               </div>
             </div>
-
+            <hr/>
             <div className="form-group">
-              <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
-                Mô tả
-              </div>
-              <div className="col-sm-7">
-                <Editor
-                  ref="editor"
+              <div className="col-sm-12 text-center"><h3>Mô tả về sự kiện</h3></div>
+            </div>
+            <div className="form-group">
+              <div className="col-sm-12">
+                <HTMLEditorByMD
                   editorState={this.state.event_description}
-                  onChange={(e) => this.onEventDescriptionChanged(e)}/>
+                  placeholder={this.state.event_description_placeholder}
+                  onChange={(editorState, callback = null) => {
+                    this.setState({event_description: editorState}, () => {
+                      if (callback) {
+                        callback();
+                      }
+                    });
+                  }}/>
               </div>
             </div>
           </form>
@@ -255,5 +262,6 @@ export class CreateEventDialog extends React.Component {
 
   topicsOnChanged(v) {
     this.setState({event_topics: v});
+    console.log(v);
   }
 }

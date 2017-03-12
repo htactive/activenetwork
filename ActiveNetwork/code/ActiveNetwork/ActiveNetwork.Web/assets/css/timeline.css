@@ -1081,10 +1081,6 @@ h4, .h4 {
   background-color: #000;
 }
 
-.modal-body {
-  padding: 0px;
-}
-
 .modal-backdrop.in {
   zoom: 1;
   filter: alpha(opacity=75);

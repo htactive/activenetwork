@@ -1,8 +1,8 @@
 import {ServiceBase} from './ServiceBase';
 
 class ANEventService extends ServiceBase {
-  async getAllTopics(){
-    let url = '/anevent/get-all-topics';
+  async getAllCategories(){
+    let url = '/anevent/get-all-categories';
     return await super.executeFetch(url);
   }
 }
