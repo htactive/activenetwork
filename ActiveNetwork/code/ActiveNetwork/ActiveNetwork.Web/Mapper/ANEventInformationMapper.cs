@@ -17,7 +17,9 @@ namespace ActiveNetwork.Web.Mapper
                 ANEventId = entity.ANEventId,
                 Title = entity.Title,
                 Description = entity.Description,
-                Location = entity.EventLocation
+                Location = entity.EventLocation,
+                CreateDate = entity.CreateDate,
+                EndDate = entity.EndDate
             };
         }
 
@@ -34,7 +36,9 @@ namespace ActiveNetwork.Web.Mapper
                 ANEventId = model.ANEventId,
                 Title = model.Title,
                 Description = model.Description,
-                EventLocation = model.Location  
+                EventLocation = model.Location,
+                CreateDate = model.CreateDate,
+                EndDate = model.EndDate
             };
         }
 
