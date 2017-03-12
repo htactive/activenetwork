@@ -26,7 +26,7 @@ namespace ActiveNetwork.Web.Mapper
 
         public static List<UserProfileModel> ToModel(IEnumerable<UserProfile> entities)
         {
-            return entities == null ? null : entities.Select(x => ToModel(x)).ToList();
+            return entities == null ? null : entities.Select(ToModel).ToList();
         }
 
         public static UserProfile ToEntity(UserProfileModel model)
@@ -46,11 +46,6 @@ namespace ActiveNetwork.Web.Mapper
         public static List<UserProfile> ToEntity(IEnumerable<UserProfileModel> models)
         {
             return models == null ? null : models.Select(ToEntity).ToList();
-        }
-
-        internal static UserProfileModel ToModel(User entity)
-        {
-            throw new NotImplementedException();
         }
     }
 }

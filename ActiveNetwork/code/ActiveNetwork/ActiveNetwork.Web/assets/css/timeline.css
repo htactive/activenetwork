@@ -1612,3 +1612,23 @@ a, a:hover {
   color: #666970;
   z-index: 99;
 }
+
+.no-padding {
+    padding: 0px !important;
+}
+
+.no-margin {
+    margin: 0px !important;
+}
+
+.cutline {
+	display: block; /* Fallback for non-webkit */
+	display: -webkit-box;
+	height: 43px; /* Fallback for non-webkit */
+	margin: 0 auto;
+	line-height: 20px;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
