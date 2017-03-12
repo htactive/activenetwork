@@ -15,6 +15,15 @@ export class Header extends Component {
       <nav className="navbar navbar-dark navbar-fixed-top">
         <div className="container">
           <div className="navbar-header custom-header">
+            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+              <span className="sr-only">Toggle navigation</span>
+              <span className="icon-bar"/>
+              <span className="icon-bar"/>
+              <span className="icon-bar"/>
+            </button>
+            <div>
+            </div>
             <a className="navbar-brand an-logo" href="" onClick={(e)=>{
               e.preventDefault();
               browserHistory.push(`${virtualPath}`)
