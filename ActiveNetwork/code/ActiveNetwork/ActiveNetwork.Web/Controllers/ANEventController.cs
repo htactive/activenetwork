@@ -12,6 +12,8 @@ using System.Web;
 using ActiveNetwork.SearchingSandbox;
 using System.Web.Http;
 using System.Data.Entity;
+using HTActive.Authorize.Core;
+using ActiveNetwork.Common;
 
 namespace ActiveNetwork.Web.Controllers
 {
@@ -20,7 +22,7 @@ namespace ActiveNetwork.Web.Controllers
         const string baseGoogleUrl = "https://maps.googleapis.com/maps/api/";
         const string googleApiKey = "AIzaSyAM-HP8n5wt6tBXPCp1pcrAmdhG3FQrjr0";
 
-        [HttpGet, Route("anevent/get-all-categories")]
+        [HttpGet, Route("anevent/get-all-categories"), AllowAnonymous]
         public List<CategoryModel> GetAllCategories()
         {
             var entities = this.ANDBUnitOfWork.CategoryRepository.GetAll().Take(1000).ToList();
@@ -34,7 +36,7 @@ namespace ActiveNetwork.Web.Controllers
         }
 
         [HttpPost, Route("anevent/create-dummy-anevents")]
-        public bool CreateDummyANEvents()
+        private bool CreateDummyANEvents()
         {
             var entities = new List<ANEvent>();
             for (int i = 0; i < 100; i++)
@@ -59,7 +61,7 @@ namespace ActiveNetwork.Web.Controllers
         }
 
         [HttpGet, Route("anevent/get-events")]
-        [HTActive.Authorize.Core.HTActiveAuthorize(Roles="User")]
+        [HTActiveAuthorize(Roles=ANRoleConstant.USER)]
         public List<ANEventModel> GetEvents()
         {
             var sandbox = new ANEventSearchingSandbox(this.ANDBUnitOfWork);

@@ -8,20 +8,31 @@ using System.Data.Entity;
 using ActiveNetwork.Web.Models;
 using ActiveNetwork.Web.Mapper;
 using ActiveNetwork.Entities;
+using HTActive.Authorize.Core;
+using ActiveNetwork.Common;
 
 namespace ActiveNetwork.Web.Controllers
 {
     public class UserProfileController : BaseApiController
     {
         [Route("anprofile/get-user-profile"), HttpGet]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public UserProfileModel GetUserProfile(int Id)
         {
-            var entity = this.ANDBUnitOfWork.UserProfileRepository.GetAll().FirstOrDefault(x => x.Id == Id);
+            var entity = this.ANDBUnitOfWork.UserProfileRepository.GetAll()
+                .Include(x => x.Image)
+                .FirstOrDefault(x => x.Id == Id);
             if (entity == null) return null;
-            return UserProfileMapper.ToModel(entity);
+            var model = UserProfileMapper.ToModel(entity);
+            if (model != null)
+            {
+                model.Avatar = ImageMapper.ToModel(entity.Image);
+            }
+            return model;
         }
 
         [Route("anprofile/update-user-profile"), HttpPost]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public UserProfileModel UpdateUserProfile([FromBody]UserProfileModel model)
         {
             var entity = this.ANDBUnitOfWork.UserProfileRepository.GetObject(model.Id);
@@ -29,7 +40,7 @@ namespace ActiveNetwork.Web.Controllers
 
             if (entity.LastName != model.LastName)
                 entity.LastName = model.LastName;
-            
+
             if (entity.MiddleName != model.MiddleName)
                 entity.MiddleName = model.MiddleName;
 
@@ -57,6 +68,7 @@ namespace ActiveNetwork.Web.Controllers
         }
 
         [Route("anprofile/create-user-profile"), HttpPost]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public UserProfileModel CreateUserProfile([FromBody]UserProfileModel model)
         {
             var entity = new UserProfile()

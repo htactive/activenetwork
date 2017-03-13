@@ -1,4 +1,5 @@
 import {userStore} from '../store/user-store';
+import cookie from 'react-cookie';
 export class ServiceBase {
   async executeFetch(url){
     try {
@@ -16,6 +17,12 @@ export class ServiceBase {
         let currentUser = userStore.getState().currentUser;
         if (currentUser == undefined || currentUser == null) {
           window.location.href = '/login';
+          return null;
+        }
+        var cookieValue = cookie.load('ANLOGINCOOKIE');
+        if(cookieValue==undefined || cookieValue == null){
+          window.location.href = '/login';
+          return null;
         }
       }
       return null;

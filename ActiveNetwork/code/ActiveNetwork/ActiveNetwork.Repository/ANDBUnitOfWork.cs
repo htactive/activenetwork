@@ -12,8 +12,8 @@ namespace ActiveNetwork.Repository
         public ANDBUnitOfWork(ANDBEntities entity)
             : base(entity)
         {
-            //entity.Configuration.LazyLoadingEnabled = false;
-            //entity.Configuration.AutoDetectChangesEnabled = false;
+            entity.Configuration.LazyLoadingEnabled = false;
+            entity.Configuration.AutoDetectChangesEnabled = false;
             entity.Database.CommandTimeout = 180;
         }
         #region Repositories
