@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Index} from './app/index';
 import {PostGrid} from './app/modules/post-grid';
-import {ProfilePage} from './app/modules/profile'
+import {EditProfilePage} from './app/modules/edit-profile'
 import {Router, browserHistory, Route, IndexRoute} from 'react-router';
 import {virtualPath} from './commons/constant'
 import {EventDetailPage} from './app/modules/event-detail';
@@ -21,7 +21,7 @@ ReactDOM.render(
 
     <Route path={`${virtualPath}/`} component={Index}>
       <Route path={`${virtualPath}/post-grid`} component={PostGrid}/>
-      <Route path={`${virtualPath}/profile`} component={ProfilePage}/>
+      <Route path={`${virtualPath}/my-profile`} component={EditProfilePage}/>
       <Route path={`${virtualPath}/manage-event`} component={EventManager}/>
       <Route path={`${virtualPath}/event`} component={EventDetailPage}>
         <Route path={`${virtualPath}/event/wall`} component={EventDetailWallComponent}/>

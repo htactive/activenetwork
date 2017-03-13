@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {UserProfileServiceInstance} from '../services/user-profile-service'
 
-export class ProfilePage extends Component {
+export class EditProfilePage extends Component {
   componentWillMount() {
-    this.setState({userProfile: []});
+    this.setState({userProfile: {}});
   }
 
   async componentDidMount() {
@@ -11,7 +11,7 @@ export class ProfilePage extends Component {
   }
 
   async getData() {
-    return await UserProfileServiceInstance.getUserProfile('1');
+    return await UserProfileServiceInstance.getMyProfile();
   }
 
   render() {
@@ -21,11 +21,11 @@ export class ProfilePage extends Component {
           <div className="col-md-10 col-md-offset-1">
             <ul className="nav nav-tabs nav-tabs-custom-colored tabs-iconized">
               <li className="active"><a href="#profile-tab" data-toggle="tab" aria-expanded="true"><i
-                className="fa fa-user"></i> Profile</a></li>
+                className="fa fa-user"/> Profile</a></li>
               <li className=""><a href="#activity-tab" data-toggle="tab" aria-expanded="false"><i
-                className="fa fa-rss"></i> Recent Activity</a></li>
+                className="fa fa-rss"/> Recent Activity</a></li>
               <li className=""><a href="#settings-tab" data-toggle="tab" aria-expanded="false"><i
-                className="fa fa-gear"></i> Settings</a></li>
+                className="fa fa-gear"/> Settings</a></li>
             </ul>
             <div className="tab-content profile-page">
               <div className="tab-pane profile active" id="profile-tab">
@@ -46,9 +46,9 @@ export class ProfilePage extends Component {
                         </span>
                         </p>
                         <ul className="list-inline social">
-                          <li><a href="#" title="Facebook"><i className="fa fa-facebook-square"></i></a></li>
-                          <li><a href="#" title="Twitter"><i className="fa fa-twitter-square"></i></a></li>
-                          <li><a href="#" title="Google Plus"><i className="fa fa-google-plus-square"></i></a></li>
+                          <li><a href="#" title="Facebook"><i className="fa fa-facebook-square"/></a></li>
+                          <li><a href="#" title="Twitter"><i className="fa fa-twitter-square"/></a></li>
+                          <li><a href="#" title="Google Plus"><i className="fa fa-google-plus-square"/></a></li>
                         </ul>
                       </div>
                     </div>
@@ -56,7 +56,7 @@ export class ProfilePage extends Component {
                   <div className="col-md-9">
                     <div className="user-info-right">
                       <div className="basic-info">
-                        <h3><i className="fa fa-square"></i> Basic Information</h3>
+                        <h3><i className="fa fa-square"/> Basic Information</h3>
                         <p className="data-row">
                           <span className="data-name">Username</span>
                           <span className="data-value">{this.state.userProfile.FirstName}</span>
@@ -83,7 +83,7 @@ export class ProfilePage extends Component {
                         </p>
                       </div>
                       <div className="contact_info">
-                        <h3><i className="fa fa-square"></i> Contact Information</h3>
+                        <h3><i className="fa fa-square"/> Contact Information</h3>
                         <p className="data-row">
                           <span className="data-name">Email</span>
                           <span className="data-value">{this.state.userProfile.Email}</span>
@@ -98,7 +98,7 @@ export class ProfilePage extends Component {
                         </p>
                       </div>
                       <div className="about">
-                        <h3><i className="fa fa-square"></i> About Me</h3>
+                        <h3><i className="fa fa-square"/> About Me</h3>
                         <p>Dramatically facilitate proactive solutions whereas professional intellectual capital.
                           Holisticly utilize competitive e-markets through intermandated meta-services. Objectively.</p>
                         <p>Monotonectally foster future-proof infomediaries before principle-centered interfaces.
@@ -114,52 +114,52 @@ export class ProfilePage extends Component {
               <div className="tab-pane activity" id="activity-tab">
                 <ul className="list-unstyled activity-list">
                   <li>
-                    <i className="fa fa-times activity-icon pull-left"></i>
+                    <i className="fa fa-times activity-icon pull-left"/>
                     <p>
                       <a href="#">Jonathan</a> commented on <a href="#">Special Deal 2013</a> <span
                       className="timestamp">12 minutes ago</span>
                     </p>
                   </li>
                   <li>
-                    <i className="fa fa-times activity-icon pull-left"></i>
+                    <i className="fa fa-times activity-icon pull-left"/>
                     <p>
                       <a href="#">Jonathan</a> posted <a href="#">a new blog post</a> <span className="timestamp">4 hours ago</span>
                     </p>
                   </li>
                   <li>
-                    <i className="fa fa-times activity-icon pull-left"></i>
+                    <i className="fa fa-times activity-icon pull-left"/>
                     <p>
                       <a href="#">Jonathan</a> edited his profile <span className="timestamp">11 hours ago</span>
                     </p>
                   </li>
                   <li>
-                    <i className="fa fa-times activity-icon pull-left"></i>
+                    <i className="fa fa-times activity-icon pull-left"/>
                     <p>
                       <a href="#">Jonathan</a> has added review on <a href="#">jQuery Complete Guide</a> book <span
                       className="timestamp">Yesterday</span>
                     </p>
                   </li>
                   <li>
-                    <i className="fa fa-times activity-icon pull-left"></i>
+                    <i className="fa fa-times activity-icon pull-left"/>
                     <p>
                       <a href="#">Jonathan</a> liked <a href="#">a post</a> <span
                       className="timestamp">December 12</span>
                     </p>
                   </li>
                   <li>
-                    <i className="fa fa-times activity-icon pull-left"></i>
+                    <i className="fa fa-times activity-icon pull-left"/>
                     <p>
                       <a href="#">Jonathan</a> has completed one task <span className="timestamp">December 11</span>
                     </p>
                   </li>
                   <li>
-                    <i className="fa fa-times activity-icon pull-left"></i>
+                    <i className="fa fa-times activity-icon pull-left"/>
                     <p>
                       <a href="#">Jonathan</a> uploaded <a href="#">new photos</a> <span className="timestamp">December 5</span>
                     </p>
                   </li>
                   <li>
-                    <i className="fa fa-times activity-icon pull-left"></i>
+                    <i className="fa fa-times activity-icon pull-left"/>
                     <p>
                       <a href="#">Jonathan</a> has updated his credit card info <span
                       className="timestamp">September 28</span>
@@ -167,13 +167,13 @@ export class ProfilePage extends Component {
                   </li>
                 </ul>
                 <p className="text-center more"><a href="#" className="btn btn-custom-primary">View more <i
-                  className="fa fa-long-arrow-right"></i></a></p>
+                  className="fa fa-long-arrow-right"/></a></p>
               </div>
 
               <div className="tab-pane settings" id="settings-tab">
                 <form className="form-horizontal" role="form">
                   <fieldset>
-                    <h3><i className="fa fa-square"></i> Change Password</h3>
+                    <h3><i className="fa fa-square"/> Change Password</h3>
                     <div className="form-group">
                       <label htmlFor="old-password" className="col-sm-3 control-label">Old Password</label>
                       <div className="col-sm-4">
@@ -195,7 +195,7 @@ export class ProfilePage extends Component {
                     </div>
                   </fieldset>
                   <fieldset>
-                    <h3><i className="fa fa-square"></i> Privacy</h3>
+                    <h3><i className="fa fa-square"/> Privacy</h3>
                     <div className="checkbox">
                       <label>
                         <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
@@ -253,7 +253,7 @@ export class ProfilePage extends Component {
                   </fieldset>
                 </form>
                 <p className="text-center"><a href="#" className="btn btn-custom-primary"><i
-                  className="fa fa-floppy-o"></i> Save Changes</a></p>
+                  className="fa fa-floppy-o"/> Save Changes</a></p>
               </div>
             </div>
           </div>

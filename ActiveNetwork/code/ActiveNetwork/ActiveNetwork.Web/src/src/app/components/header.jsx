@@ -81,7 +81,7 @@ export class Header extends Component {
                 <ul className="dropdown-menu">
                   <li><a href="" onClick={(e) => {
                     e.preventDefault();
-                    browserHistory.push(`${virtualPath}/profile`)
+                    browserHistory.push(`${virtualPath}/my-profile`)
                   }}>Trang Cá Nhân</a></li>
                   <li><a href="" onClick={(e) => {
                     e.preventDefault();

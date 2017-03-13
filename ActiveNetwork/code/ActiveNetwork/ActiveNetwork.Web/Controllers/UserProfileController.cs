@@ -88,5 +88,12 @@ namespace ActiveNetwork.Web.Controllers
             this.ANDBUnitOfWork.Commit();
             return UserProfileMapper.ToModel(saveResult);
         }
+        [Route("anprofile/get-my-profile"), HttpGet]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public UserProfileModel GetMyProfile()
+        {
+            if (CurrentUser == null) return null;
+            return GetUserProfile(CurrentUser.Id);
+        }
     }
 }

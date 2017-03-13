@@ -1,10 +1,10 @@
 import {ServiceBase} from './ServiceBase';
+import {userStore} from '../store/user-store';
 
 class UserProfileService extends ServiceBase {
   async getUserProfile(userId){
     let url = '/anprofile/get-user-profile?id=' + userId;
-    let result = await super.executeFetch(url);
-    return result;
+    return await super.executeFetch(url);
   }
 
   async createUserProfile(userProfile){
@@ -17,6 +17,10 @@ class UserProfileService extends ServiceBase {
     let url = '/anprofile/update-user-profile';
     let result = await super.executeFetchPost(url, userProfile);
     return result;
+  }
+  async getMyProfile(){
+    let url = '/anprofile/get-my-profile';
+    return await super.executeFetch(url);
   }
 }
 
