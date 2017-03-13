@@ -41,7 +41,7 @@
           <Property Name="EventLocation" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar" MaxLength="2000" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" />
-          <Property Name="CreateDate" Type="date" />
+          <Property Name="StartDate" Type="date" />
           <Property Name="EndDate" Type="date" />
         </EntityType>
         <EntityType Name="ANEventLocation">
@@ -651,7 +651,7 @@
           <Property Name="EventLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreateDate" Type="DateTime" Precision="0" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventInformation_ANEvent" FromRole="ANEventInformation" ToRole="ANEvent" />
         </EntityType>
@@ -1059,7 +1059,7 @@
             <EntityTypeMapping TypeName="ANDBModel.ANEventInformation">
               <MappingFragment StoreEntitySet="ANEventInformation">
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="EventLocation" ColumnName="EventLocation" />

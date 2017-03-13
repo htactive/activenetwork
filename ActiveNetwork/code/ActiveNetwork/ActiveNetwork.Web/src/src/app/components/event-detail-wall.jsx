@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
+import {ANEventDetailServiceInstance} from '../services/anevent-detail-service'
+
 export class EventDetailWallComponent extends Component {
   componentWillMount() {
     this.setState({
       eventDecription: {
-        EventInformation : {},
-        Host : {
-          Profile : {
-            Avatar : {}
+        EventInformation: {},
+        Host: {
+          Profile: {
+            Avatar: {}
           },
         },
       }
@@ -34,31 +36,25 @@ export class EventDetailWallComponent extends Component {
               <li className="padding-v-5">
                 <div className="row">
                   <div className="col-sm-4"><span className="text-muted">Nguời tạo</span></div>
-                  <div className="col-sm-8">12 January 1990</div>
+                  <div className="col-sm-8">{this.state.eventDecription.Host.Username}</div>
                 </div>
               </li>
               <li className="padding-v-5">
                 <div className="row">
-                  <div className="col-sm-4"><span className="text-muted">Job</span></div>
-                  <div className="col-sm-8">Ninja developer</div>
+                  <div className="col-sm-4"><span className="text-muted">Địa điểm</span></div>
+                  <div className="col-sm-8">{this.state.eventDecription.EventInformation.Location}</div>
                 </div>
               </li>
               <li className="padding-v-5">
                 <div className="row">
-                  <div className="col-sm-4"><span className="text-muted">Gender</span></div>
-                  <div className="col-sm-8">Male</div>
+                  <div className="col-sm-4"><span className="text-muted">Thời gian bắt đầu</span></div>
+                  <div className="col-sm-8">{this.state.eventDecription.EventInformation.StartDate}</div>
                 </div>
               </li>
               <li className="padding-v-5">
                 <div className="row">
-                  <div className="col-sm-4"><span className="text-muted">Lives in</span></div>
-                  <div className="col-sm-8">Miami, FL, USA</div>
-                </div>
-              </li>
-              <li className="padding-v-5">
-                <div className="row">
-                  <div className="col-sm-4"><span className="text-muted">Credits</span></div>
-                  <div className="col-sm-8">249</div>
+                  <div className="col-sm-4"><span className="text-muted">Thời gian kết thúc</span></div>
+                  <div className="col-sm-8">{this.state.eventDecription.EventInformation.EndDate}</div>
                 </div>
               </li>
             </ul>

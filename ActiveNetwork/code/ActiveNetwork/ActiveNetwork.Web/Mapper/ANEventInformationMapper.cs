@@ -18,9 +18,8 @@ namespace ActiveNetwork.Web.Mapper
                 Title = entity.Title,
                 Description = entity.Description,
                 Location = entity.EventLocation,
-                CreateDate = entity.CreateDate,
-                EndDate = entity.EndDate,
-                
+                StartDate = entity.StartDate,
+                EndDate = entity.EndDate
             };
         }
 

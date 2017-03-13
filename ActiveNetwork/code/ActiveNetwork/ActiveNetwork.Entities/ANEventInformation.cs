@@ -19,7 +19,7 @@ namespace ActiveNetwork.Entities
         public string EventLocation { get; set; }
         public string Description { get; set; }
         public string Title { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
     
         public virtual ANEvent ANEvent { get; set; }
