@@ -33,7 +33,7 @@ export class ProfilePage extends Component {
                   <div className="col-md-3">
                     <div className="user-info-left">
                       <img src="/img/Friends/guy-3.jpg" alt="Profile Picture"/>
-                      <h2>{this.state.userProfile.UserName}</h2>
+                      <h2>{this.state.userProfile.FirstName}</h2>
                       <div className="contact">
                         <p>
                         <span className="file-input btn btn-azure btn-file">
@@ -59,7 +59,7 @@ export class ProfilePage extends Component {
                         <h3><i className="fa fa-square"></i> Basic Information</h3>
                         <p className="data-row">
                           <span className="data-name">Username</span>
-                          <span className="data-value">{this.state.userProfile.UserName}</span>
+                          <span className="data-value">{this.state.userProfile.FirstName}</span>
                         </p>
                         <p className="data-row">
                           <span className="data-name">Birth Date</span>

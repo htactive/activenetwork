@@ -178,6 +178,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ANEventController.cs" />
+    <Compile Include="Controllers\ANEventDetailController.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\GoogleServiceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -259,6 +260,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="src\" />
+    <Folder Include="Views\ANEventDetail\" />
     <Folder Include="Views\BaseApi\" />
     <Folder Include="Views\GoogleService\" />
   </ItemGroup>
