@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Data.Entity;
 using System.Threading;
+using HTActive.Authorize.Core;
+using ActiveNetwork.Common;
 
 
 namespace ActiveNetwork.Web.Controllers
@@ -14,6 +16,7 @@ namespace ActiveNetwork.Web.Controllers
     public class ANEventDetailController : BaseApiController
     {
         [Route("anevent-detail/get-event-detail"), HttpGet]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventModel GetEventDetail(int Id)
         {
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll().FirstOrDefault(x => x.Id == Id);
@@ -22,6 +25,7 @@ namespace ActiveNetwork.Web.Controllers
         }
 
         [Route("anevent-detail/get-event-detail-header"), HttpGet]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventDetailHeaderModel GetEventDetailHeader(int Id)
         {
             Thread.Sleep(2000);
@@ -43,6 +47,7 @@ namespace ActiveNetwork.Web.Controllers
         }
 
         [Route("anevent-detail/get-event-detail-information"), HttpGet]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventDetailInformationModel GetEventDetailInformation(int Id)
         {
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
@@ -59,6 +64,7 @@ namespace ActiveNetwork.Web.Controllers
         }
 
         [Route("anevent-detail/get-event-detail-member"), HttpGet]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventDetailMemberModel GetEventDetailMember(int Id)
         {
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()

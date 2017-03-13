@@ -21,10 +21,12 @@ namespace ActiveNetwork.Entities
             this.ANEventMembers = new HashSet<ANEventMember>();
             this.ANEventRequestToJoins = new HashSet<ANEventRequestToJoin>();
             this.UserProfiles = new HashSet<UserProfile>();
+            this.UserRoles = new HashSet<UserRole>();
         }
     
         public int Id { get; set; }
         public string Username { get; set; }
+        public string Password { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ANEvent> ANEvents { get; set; }
@@ -34,5 +36,7 @@ namespace ActiveNetwork.Entities
         public virtual ICollection<ANEventRequestToJoin> ANEventRequestToJoins { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserProfile> UserProfiles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }

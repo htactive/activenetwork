@@ -15,7 +15,7 @@ export class Header extends Component {
   componentWillMount() {
     this.setState({
       currentUser_avatar: '',
-      currentUser_fullName: ''
+      currentUser_firstName: ''
     });
 
     userStore.subscribe(async() => {
@@ -35,11 +35,9 @@ export class Header extends Component {
     }
 
     let userProfile = await UserProfileServiceInstance.getUserProfile(currentUser.Id);
-
-    console.log(userProfile);
     this.setState({
-      currentUser_avatar: '',
-      currentUser_fullName: ''
+      currentUser_avatar: (userProfile.Avatar||{}).Url,
+      currentUser_firstName: userProfile.FirstName
     });
   }
 
@@ -57,7 +55,7 @@ export class Header extends Component {
             </button>
             <div>
             </div>
-            <a className="navbar-brand an-logo" onClick={(e) => {
+            <a href="" className="navbar-brand an-logo" onClick={(e) => {
               e.preventDefault();
               browserHistory.push(`${virtualPath}`)
             }}>
@@ -76,8 +74,8 @@ export class Header extends Component {
                 <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                    aria-expanded="false">
                   <img src={this.state.currentUser_avatar} className="img-rounded img-responsive"
-                       alt={this.state.currentUser_fullName}/>
-                  <span>{this.state.currentUser_fullName}</span>
+                       alt={this.state.currentUser_firstName}/>
+                  <span>{this.state.currentUser_firstName}</span>
                   <span className="caret"/>
                 </a>
                 <ul className="dropdown-menu">

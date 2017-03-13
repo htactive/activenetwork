@@ -102,6 +102,9 @@
     <Compile Include="RequiredProfile.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Role.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
@@ -115,6 +118,9 @@
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
     <Compile Include="UserProfile.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserRole.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
   </ItemGroup>

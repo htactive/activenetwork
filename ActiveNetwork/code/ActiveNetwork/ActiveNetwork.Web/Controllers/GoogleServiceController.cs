@@ -16,7 +16,7 @@ namespace ActiveNetwork.Web.Controllers
         const string baseGoogleUrl = "https://maps.googleapis.com/maps/api/";
         const string googleApiKey = "AIzaSyCr5V_j_ANWtFzckOOb31L3PZKo8pdikqg";
         
-        [HttpGet,Route("google-api/search-places")]
+        [HttpGet,Route("google-api/search-places"), AllowAnonymous]
         public async Task<List<GooglePlaceModel>> SearchPlaces(string search)
         {
             var url = "place/textsearch/json?query=" + search + "&key=" + googleApiKey;
