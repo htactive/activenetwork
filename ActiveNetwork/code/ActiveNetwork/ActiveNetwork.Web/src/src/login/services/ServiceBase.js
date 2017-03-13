@@ -1,4 +1,3 @@
-import {userStore} from '../store/user-store';
 export class ServiceBase {
   async executeFetch(url){
     try {
@@ -11,12 +10,6 @@ export class ServiceBase {
       });
       if (result.ok) {
         return await result.json();
-      }
-      if(result.status == 403){
-        let currentUser = userStore.getState().currentUser;
-        if (currentUser == undefined || currentUser == null) {
-          window.location.href = '/login';
-        }
       }
       return null;
     }

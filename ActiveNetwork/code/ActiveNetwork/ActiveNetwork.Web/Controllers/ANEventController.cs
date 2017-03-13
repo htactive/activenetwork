@@ -59,6 +59,7 @@ namespace ActiveNetwork.Web.Controllers
         }
 
         [HttpGet, Route("anevent/get-events")]
+        [HTActive.Authorize.Core.HTActiveAuthorize(Roles="User")]
         public List<ANEventModel> GetEvents()
         {
             var sandbox = new ANEventSearchingSandbox(this.ANDBUnitOfWork);

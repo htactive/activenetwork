@@ -1,5 +1,14 @@
 import React, {Component} from 'react';
+import {UserServiceInstance} from './services/user-service';
 export class Login extends Component {
+  componentWillMount() {
+    this.setState({
+      email: '',
+      password: '',
+      hasError: false
+    });
+  }
+
   render() {
     return (
       <div className="wrapper">
@@ -14,21 +23,33 @@ export class Login extends Component {
                     <div className="center">
                       <h4 className="m-b-0"><span className="icon-text">Login</span></h4>
                       <p className="text-muted">Access your account</p>
+                      {this.state.hasError ?
+                        <div className="alert alert-danger" role="alert">
+                          <button type="button" className="close" onClick={() => this.setState({hasError: false})}><span
+                            aria-hidden="true">&times;</span></button>
+                          <strong>Lỗi!</strong> {this.state.message}
+                        </div> : null}
                     </div>
                     <div className="form-group">
-                      <input type="email" className="form-control" placeholder="Email Address"/>
+                      <input type="email" defaultValue={this.state.email} className="form-control"
+                             placeholder="Email Address" onChange={(v) => {
+                        this.setState({email: v.target["value"]});
+                      }}/>
                     </div>
                     <div className="form-group">
-                      <input type="password" className="form-control" placeholder="Password"/>
+                      <input type="password" defaultValue={this.state.password} className="form-control"
+                             placeholder="Password" onChange={(v) => {
+                        this.setState({password: v.target["value"]});
+                      }}/>
                       <a href="#" className="pull-xs-right">
                         <small>Forgot?</small>
                       </a>
                       <div className="clearfix"></div>
                     </div>
                     <div className="center">
-                      <a href="app.html" className="btn  btn-azure">
+                      <button onClick={() => this.loginClick()} className="btn  btn-azure">
                         Login
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -60,12 +81,34 @@ export class Login extends Component {
             </div>
           </div>
         </div>
-        
+
         <footer className="footer">
           <div className="container">
             <p className="text-muted"> Copyright © Company - All rights reserved </p>
           </div>
         </footer>
       </div>);
+  }
+
+  async loginClick() {
+    let username = this.state.email,
+      password = this.state.password,
+      isRememberMe = true;
+
+    let loginResult = await UserServiceInstance.login(username, password, isRememberMe);
+    if (loginResult && loginResult.Id > 0) {
+      localStorage.setItem("user", JSON.stringify(loginResult));
+      window.location.href = '/';
+    }
+    else {
+      this.messageLoginFailed();
+    }
+  }
+
+  messageLoginFailed() {
+    this.setState({
+      hasError: true,
+      message: 'Sai tên đăng nhập hoặc mật khẩu'
+    })
   }
 }

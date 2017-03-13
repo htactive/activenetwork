@@ -13,7 +13,7 @@ namespace ActiveNetwork.Web.Mapper
         {
             return entity == null ? null : new ANEventModel()
             {
-                Id = entity.Id,
+                Id = entity.Id,                
                 Host = new UserModel() { Id = entity.UserId.GetValueOrDefault() },
             };
         }

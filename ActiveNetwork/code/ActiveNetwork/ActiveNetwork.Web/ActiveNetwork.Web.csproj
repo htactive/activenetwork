@@ -176,6 +176,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Authentication\CustomAuthorizeAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ANEventController.cs" />
     <Compile Include="Controllers\ANEventDetailController.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Controllers\GoogleServiceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -266,6 +268,7 @@
     <Folder Include="Views\ANEventDetail\" />
     <Folder Include="Views\BaseApi\" />
     <Folder Include="Views\GoogleService\" />
+    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

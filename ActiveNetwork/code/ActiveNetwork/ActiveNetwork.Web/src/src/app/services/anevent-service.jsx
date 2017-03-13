@@ -13,7 +13,6 @@ class ANEventService extends ServiceBase {
 
   async getANEventsForNewFeed() {
     let entities = await this.getANEvents();
-
     return entities.map(x => {
       x.Host = x.Host || {Id: 0};
       x.Host.Profile = x.Host.Profile || {FirstName: '', LastName: '', MiddleName: ''};
