@@ -22,7 +22,8 @@ namespace ActiveNetwork.Web.Mapper
                 Email = entity.Email,
                 Phone = entity.Phone,
                 Address = entity.Address,
-                User = new UserModel() { Id = entity.UserId.GetValueOrDefault() }
+                User = new UserModel() { Id = entity.UserId.GetValueOrDefault() },
+                Avatar = new ImageModel() { Id = entity.Avatar.GetValueOrDefault() }
             };
         }
 

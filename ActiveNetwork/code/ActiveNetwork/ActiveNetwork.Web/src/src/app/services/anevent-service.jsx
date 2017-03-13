@@ -15,19 +15,25 @@ class ANEventService extends ServiceBase {
     let entities = await this.getANEvents();
 
     return entities.map(x => {
-      x.Host = x.Host || {Id: 0, UserProfiles: []};
-      x.Host.Profile = x.Host.UserProfiles[0] || {FirstName: '', LastName: '', MiddleName: ''};
+      x.Host = x.Host || {Id: 0};
+      x.Host.Profile = x.Host.Profile || {FirstName: '', LastName: '', MiddleName: ''};
       x.Host.Profile.Avatar = x.Host.Profile.Avatar || {Id: 0, Url: ''};
+      x.CoverPhoto = x.CoverPhoto || {Id: 0, Url: ''};
+      x.Information = x.Information || {
+          Id: 0,
+          Location: '',
+          Description: '',
+          Title: '',
+          CreateDate: new Date(),
+          EndDate: new Date()
+        };
       return {
         anevent_id: x.Id,
-        host_name: `${`${x.Host.LastName} ${x.Host.MiddleName}`.trim()} ${x.Host.FirstName}`.trim(),
+        host_name: `${`${x.Host.Profile.LastName} ${x.Host.Profile.MiddleName}`.trim()} ${x.Host.Profile.FirstName}`.trim(),
         host_avatar: x.Host.Profile.Avatar.Url,
-        cover_image: '/img/Photos/2.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
+        cover_image: x.CoverPhoto.Url,
+        title: x.Information.Title,
+        description: x.Information.Description,
       };
     });
   }

@@ -29,7 +29,6 @@ namespace ActiveNetwork.Entities
     
         public virtual DbSet<ANEvent> ANEvents { get; set; }
         public virtual DbSet<ANEventCategory> ANEventCategories { get; set; }
-        public virtual DbSet<ANEventImage> ANEventImages { get; set; }
         public virtual DbSet<ANEventInformation> ANEventInformations { get; set; }
         public virtual DbSet<ANEventLocation> ANEventLocations { get; set; }
         public virtual DbSet<ANEventMember> ANEventMembers { get; set; }
@@ -41,6 +40,7 @@ namespace ActiveNetwork.Entities
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserProfile> UserProfiles { get; set; }
+        public virtual DbSet<ANEventImage> ANEventImages { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

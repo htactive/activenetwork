@@ -193,6 +193,8 @@
     <Compile Include="Mapper\ANEventMemberMapper.cs" />
     <Compile Include="Mapper\ANEventRequestToJoinMapper.cs" />
     <Compile Include="Mapper\ANEventRequirementMapper.cs" />
+    <Compile Include="Mapper\ImageMapper.cs" />
+    <Compile Include="Mapper\UserMapper.cs" />
     <Compile Include="Mapper\UserProfileMapper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ANEventCategoryModel.cs" />
@@ -265,6 +267,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ActiveNetwork.Common\ActiveNetwork.Common.csproj">
+      <Project>{393814c2-c21e-4f53-b91c-2b750349f415}</Project>
+      <Name>ActiveNetwork.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ActiveNetwork.Entities\ActiveNetwork.Entities.csproj">
       <Project>{2452a885-1f81-480a-8950-7be495cea83e}</Project>
       <Name>ActiveNetwork.Entities</Name>

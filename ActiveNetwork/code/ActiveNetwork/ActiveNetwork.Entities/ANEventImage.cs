@@ -17,6 +17,8 @@ namespace ActiveNetwork.Entities
         public int Id { get; set; }
         public Nullable<int> ANEventId { get; set; }
         public Nullable<int> ImageId { get; set; }
+        public Nullable<int> ANEventImageType { get; set; }
+        public Nullable<int> SortPriority { get; set; }
     
         public virtual ANEvent ANEvent { get; set; }
         public virtual Image Image { get; set; }

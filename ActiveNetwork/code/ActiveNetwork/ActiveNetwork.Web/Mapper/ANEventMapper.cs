@@ -14,11 +14,7 @@ namespace ActiveNetwork.Web.Mapper
             return entity == null ? null : new ANEventModel()
             {
                 Id = entity.Id,
-                UserId = entity.UserId,
-                ANEventMembers = Mapper.ANEventMemberMapper.ToModel(entity.ANEventMembers),
-                Images = Mapper.ANEventImageMapper.ToModel(entity.ANEventImages),
-                Informations = Mapper.ANEventInformationMapper.ToModel(entity.ANEventInformations),
-                RequestToJoins = Mapper.ANEventRequestToJoinMapper.ToModel(entity.ANEventRequestToJoins),
+                Host = new UserModel() { Id = entity.UserId.GetValueOrDefault() },
             };
         }
 

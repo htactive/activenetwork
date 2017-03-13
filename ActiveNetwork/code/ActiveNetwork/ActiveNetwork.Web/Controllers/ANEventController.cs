@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using ActiveNetwork.SearchingSandbox;
 using System.Web.Http;
+using System.Data.Entity;
 
 namespace ActiveNetwork.Web.Controllers
 {
@@ -63,7 +64,51 @@ namespace ActiveNetwork.Web.Controllers
             var sandbox = new ANEventSearchingSandbox(this.ANDBUnitOfWork);
             var results = sandbox.Search(new SearchingSandbox.Model.SearchCriteria() { UserId = 1 });
 
-            return Mapper.ANEventMapper.ToModel(results);
+            var anEventEntities = this.ANDBUnitOfWork.ANEventRepository.GetAll()
+                .Include(x => x.User)
+                .Include(x => x.User.UserProfiles)
+                .Include("User.UserProfiles.Image")
+                .Include(x => x.ANEventImages)
+                .Include("ANEventImages.Image")
+                .Include(x => x.ANEventInformations)
+                .Where(x => results.Contains(x.Id)).ToList();
+
+            var anEventModels = new List<ANEventModel>();
+
+            foreach (var entity in anEventEntities)
+            {
+                var model = ANEventMapper.ToModel(entity);
+
+                // get host information
+                if (entity.User != null)
+                {
+                    model.Host = UserMapper.ToModel(entity.User);
+                    var firstProfile = entity.User.UserProfiles.FirstOrDefault();
+                    model.Host.Profile = UserProfileMapper.ToModel(firstProfile);
+                    if (model.Host.Profile != null)
+                    {
+                        model.Host.Profile.Avatar = ImageMapper.ToModel(firstProfile.Image);
+                    }
+                }
+                // get cover image
+                var coverImageEntity = entity.ANEventImages.Where(x => x.ANEventImageType == (int)Common.ANEventImageType.ANEventCoverImage).OrderBy(x => x.SortPriority).FirstOrDefault();
+                if (coverImageEntity != null)
+                {
+                    model.CoverPhoto = ImageMapper.ToModel(coverImageEntity.Image);
+                }
+                // get information
+                var information = entity.ANEventInformations.FirstOrDefault();
+                model.Information = ANEventInformationMapper.ToModel(information);
+
+
+
+                anEventModels.Add(model);
+            }
+
+            return anEventModels;
+
+
+
         }
 
         [Route("anevent/get-event"), HttpGet]
