@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {virtualPath} from '../commons/constant'
 import {browserHistory} from 'react-router';
+import {ANEventDetailServiceInstance} from '../services/anevent-detail-service'
 
 const CURRENT_TAB_WALL = 'wall',
   CURRENT_TAB_DESCRIPTION = 'description',
@@ -11,8 +12,18 @@ export class EventDetailHeaderComponent extends Component {
 
   componentWillMount() {
     this.setState({
-      currentTab: CURRENT_TAB_WALL
-    });
+      currentTab: CURRENT_TAB_WALL,
+      eventHeader: {EventCoverPhoto : {Url : ""} },
+  });
+  }
+
+  async componentDidMount() {
+    this.setState({eventHeader: await this.getData()});
+  }
+
+  async getData() {
+    let a = await ANEventDetailServiceInstance.getANEventDetailHeader('1');
+    return a;
   }
 
   changeTab(e, tab) {
@@ -30,11 +41,11 @@ export class EventDetailHeaderComponent extends Component {
           <div className="cover profile">
             <div className="wrapper">
               <div className="image">
-                <img src="/img/Cover/profile-cover.jpg" className="show-in-modal" alt="people"/>
+                <img src={this.state.eventHeader.EventCoverPhoto.Url} className="show-in-modal" alt="people"/>
               </div>
             </div>
             <div className="cover-info">
-              <div className="name"><a href="#">Sự kiện nhậu mừng sinh nhật Bill Gate</a></div>
+              <div className="name"><a href="#">{this.state.eventHeader.EventTitle}</a></div>
               <ul className="cover-nav">
                 <li className={this.state.currentTab == CURRENT_TAB_WALL ? 'active' : ''}><a href=""
                                                                                              onClick={(e) => this.changeTab(e, CURRENT_TAB_WALL)}><i

@@ -199,11 +199,14 @@
     <Compile Include="Mapper\UserProfileMapper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ANEventCategoryModel.cs" />
+    <Compile Include="Models\ANEventDetailInformationModel.cs" />
+    <Compile Include="Models\ANEventDetailMemberModel.cs" />
     <Compile Include="Models\ANEventImageModel.cs" />
     <Compile Include="Models\ANEventInformationModel.cs" />
     <Compile Include="Models\ANEventModel.cs" />
     <Compile Include="Models\ANEventMemberModel.cs" />
     <Compile Include="Models\ANEventRequirementModel.cs" />
+    <Compile Include="Models\ANEventDetailHeaderModel.cs" />
     <Compile Include="Models\GoogleServiceModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ImageModel.cs" />
