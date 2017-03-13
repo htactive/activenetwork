@@ -80,12 +80,12 @@ namespace ActiveNetwork.Web.Controllers
                 .Include("ANEventMembers")
                 .FirstOrDefault(x => x.Id == Id);
             if (entity == null) return null;
-            var firstInformation = entity.ANEventMembers.FirstOrDefault();
+            var listMember = entity.ANEventMembers;
             return new ANEventDetailMemberModel()
             {
                 EventId = entity.Id,
-                ANEventMembers = ANEventMemberMapper.ToModel(firstInformation != null ?
-                firstInformation : null),
+                ANEventMembers = ANEventMemberMapper.ToModel(listMember != null ?
+                listMember : null),
             };
         }
     }

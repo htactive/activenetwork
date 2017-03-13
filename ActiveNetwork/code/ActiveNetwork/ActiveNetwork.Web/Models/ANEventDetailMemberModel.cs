@@ -8,6 +8,6 @@ namespace ActiveNetwork.Web.Models
     public class ANEventDetailMemberModel
     {
         public int EventId { get; set; }
-        public ANEventMemberModel ANEventMembers { get; set; }
+        public List<ANEventMemberModel> ANEventMembers { get; set; }
     }
 }

@@ -16,6 +16,7 @@ class ANEventDetailService extends ServiceBase {
   async getANEventDetailInformation(eventId){
     let url = '/anevent-detail/get-event-detail-information?Id=' + eventId;
     let result = await super.executeFetch(url);
+
     return result;
   }
 

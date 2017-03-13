@@ -63,7 +63,7 @@ export class EventDetailWallComponent extends Component {
 
         <div className="widget widget-friends">
           <div className="widget-header">
-            <h3 className="widget-caption">Friends</h3>
+            <h3 className="widget-caption">Người tham gia</h3>
           </div>
           <div className="widget-body bordered-top  bordered-sky">
             <div className="row">
@@ -122,7 +122,7 @@ export class EventDetailWallComponent extends Component {
 
         <div className="widget">
           <div className="widget-header">
-            <h3 className="widget-caption">Groups</h3>
+            <h3 className="widget-caption">Sự kiện khác</h3>
           </div>
           <div className="widget-body bordered-top bordered-sky">
             <div className="card">
