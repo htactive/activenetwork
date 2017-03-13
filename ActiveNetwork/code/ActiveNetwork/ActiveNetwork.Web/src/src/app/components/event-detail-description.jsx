@@ -1,20 +1,6 @@
 import React, { Component } from 'react';
 
 export class EventDetailDescriptionComponent extends Component {
-  componentWillMount() {
-    this.setState({
-      evemtDecription: {}
-    });
-  }
-
-  async componentDidMount() {
-    this.setState({evemtDecription: await this.getData()});
-  }
-
-  async getData() {
-    let a = await ANEventDetailServiceInstance.getANEventDetailInformation('1');
-    return a;
-  }
 
   render() {
     return (<div className="row">

@@ -47,15 +47,33 @@ namespace ActiveNetwork.Web.Controllers
         {
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
                 .Include("ANEventInformations")
+                .Include("User")
+                .Include("User.UserProfiles")
+                .Include("User.UserProfiles.Image")
                 .FirstOrDefault(x => x.Id == Id);
             if (entity == null) return null;
+
             var firstInformation = entity.ANEventInformations.FirstOrDefault();
-            return new ANEventDetailInformationModel()
+
+            var host = UserMapper.ToModel(entity.User);
+            if (host != null)
+            {
+                host.Profile = UserProfileMapper.ToModel(entity.User.UserProfiles.FirstOrDefault());
+                host.Profile.Avatar = new ImageModel
+                {
+                    Id = entity.User.Id,
+                    Url = entity.User.UserProfiles.FirstOrDefault().Image.Url,
+                };
+            }
+
+            var informationModel = new ANEventDetailInformationModel()
             {
                 EventID = entity.Id,
-                EventInformation = ANEventInformationMapper.ToModel(firstInformation != null ? 
-                firstInformation : null),
+                EventInformation = firstInformation != null ? 
+                 ANEventInformationMapper.ToModel(firstInformation) : null,
+                Host = host
             };
+            return informationModel;
         }
 
         [Route("anevent-detail/get-event-detail-member"), HttpGet]

@@ -1,5 +1,27 @@
 import React, {Component} from 'react';
 export class EventDetailWallComponent extends Component {
+  componentWillMount() {
+    this.setState({
+      eventDecription: {
+        EventInformation : {},
+        Host : {
+          Profile : {
+            Avatar : {}
+          },
+        },
+      }
+    });
+  }
+
+  async componentDidMount() {
+    this.setState({eventDecription: await this.getData()});
+  }
+
+  async getData() {
+    let a = await ANEventDetailServiceInstance.getANEventDetailInformation('1');
+    return a;
+  }
+
   render() {
     return (<div className="row">
       <div className="col-md-5">
@@ -11,7 +33,7 @@ export class EventDetailWallComponent extends Component {
             <ul className="list-unstyled profile-about margin-none">
               <li className="padding-v-5">
                 <div className="row">
-                  <div className="col-sm-4"><span className="text-muted">Date of Birth</span></div>
+                  <div className="col-sm-4"><span className="text-muted">Nguời tạo</span></div>
                   <div className="col-sm-8">12 January 1990</div>
                 </div>
               </li>

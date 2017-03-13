@@ -9,5 +9,6 @@ namespace ActiveNetwork.Web.Models
     {
         public int EventID { get; set; }
         public ANEventInformationModel EventInformation { get; set; }
+        public UserModel Host { get; set; }
     }
 }
