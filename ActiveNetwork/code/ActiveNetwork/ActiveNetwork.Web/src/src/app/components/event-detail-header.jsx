@@ -13,8 +13,8 @@ export class EventDetailHeaderComponent extends Component {
   componentWillMount() {
     this.setState({
       currentTab: CURRENT_TAB_WALL,
-      eventHeader: {EventCoverPhoto : {Url : ""} },
-  });
+      eventHeader: {EventCoverPhoto: {Url: ""}},
+    });
   }
 
   async componentDidMount() {
