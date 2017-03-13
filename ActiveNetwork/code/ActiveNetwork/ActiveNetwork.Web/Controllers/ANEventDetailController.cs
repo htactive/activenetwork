@@ -47,7 +47,6 @@ namespace ActiveNetwork.Web.Controllers
         {
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
                 .Include("ANEventInformations")
-                .Include("User")
                 .Include("User.UserProfiles")
                 .Include("User.UserProfiles.Image")
                 .FirstOrDefault(x => x.Id == Id);

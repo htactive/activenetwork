@@ -12,21 +12,18 @@ namespace ActiveNetwork.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Image
+    public partial class Role
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Image()
+        public Role()
         {
-            this.ANEventImages = new HashSet<ANEventImage>();
-            this.UserProfiles = new HashSet<UserProfile>();
+            this.UserRoles = new HashSet<UserRole>();
         }
     
         public int Id { get; set; }
-        public string Url { get; set; }
+        public string RoleName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ANEventImage> ANEventImages { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserProfile> UserProfiles { get; set; }
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }
