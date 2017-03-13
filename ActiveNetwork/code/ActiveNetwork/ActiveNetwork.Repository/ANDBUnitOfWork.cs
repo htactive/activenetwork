@@ -52,6 +52,14 @@ namespace ActiveNetwork.Repository
                 return anEventRepository ?? (anEventRepository = new ANEventRepository(this));
             }
         }
+        private IRoleRepository roleRepository;
+        public IRoleRepository RoleRepository
+        {
+            get
+            {
+                return roleRepository ?? (roleRepository = new RoleRepository(this));
+            }
+        }
         #endregion
     }
 }

@@ -21,7 +21,7 @@ namespace ActiveNetwork.Web.Controllers
         {
             var entity = this.ANDBUnitOfWork.UserProfileRepository.GetAll()
                 .Include(x => x.Image)
-                .FirstOrDefault(x => x.Id == Id);
+                .FirstOrDefault(x => x.UserId.HasValue && x.UserId.Value == Id);
             if (entity == null) return null;
             var model = UserProfileMapper.ToModel(entity);
             if (model != null)

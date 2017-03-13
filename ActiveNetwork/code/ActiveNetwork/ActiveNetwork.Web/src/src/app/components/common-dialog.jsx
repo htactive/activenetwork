@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Modal, Button} from 'react-bootstrap';
-import {MessageBoxButton, MessageBoxResult, MessageBoxType, MessageBoxButtons} from '../commons/constant'
+import {MessageBoxButton, MessageBoxResult, MessageBoxType, MessageBoxButtons} from '../../commons/constant'
 
 export class MessageBox extends React.Component{
 

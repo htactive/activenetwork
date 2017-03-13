@@ -65,6 +65,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Include="IRepository\IRoleRepository.cs">
+      <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="IRepository\IUserProfileRepository.cs">
       <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
     </Compile>
@@ -81,6 +84,9 @@
     <Compile Include="Repository\RepositoryTemplate1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\RoleRepository.cs">
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\UserProfileRepository.cs">

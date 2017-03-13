@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {virtualPath} from '../commons/constant'
+import {virtualPath} from '../../commons/constant'
 import {browserHistory} from 'react-router';
 import {CreateEventDialog} from '../components/create-event-dialog';
 import {logoutAction, userStore} from '../store/user-store';
@@ -74,7 +74,7 @@ export class Header extends Component {
                 <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                    aria-expanded="false">
                   <img src={this.state.currentUser_avatar} className="img-rounded img-responsive"
-                       alt={this.state.currentUser_firstName}/>
+                       alt="x"/>
                   <span>{this.state.currentUser_firstName}</span>
                   <span className="caret"/>
                 </a>

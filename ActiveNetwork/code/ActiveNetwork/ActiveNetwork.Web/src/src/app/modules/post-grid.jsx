@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {virtualPath} from '../commons/constant'
+import {virtualPath} from '../../commons/constant'
 import {browserHistory} from 'react-router';
 import {ANEventServiceInstance} from '../services/anevent-service'
 

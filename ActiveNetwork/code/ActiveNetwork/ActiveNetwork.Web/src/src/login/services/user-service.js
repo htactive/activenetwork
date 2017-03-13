@@ -5,6 +5,18 @@ class UserService extends ServiceBase {
     let url = '/user/login';
     return await super.executeFetchPost(url, {Username: username, Password: password, IsRememberMe: remember});
   }
+
+  async registerNewUser(model) {
+    let url = '/user/register';
+    let request = {
+      Username: model.email,
+      FirstName: model.firstName,
+      LastName: model.lastName,
+      MiddleName: model.middleName,
+      Password: model.password
+    };
+    return await super.executeFetchPost(url, request);
+  }
 }
 
 let UserServiceInstance = new UserService();

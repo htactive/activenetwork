@@ -4,7 +4,7 @@ import {Index} from './app/index';
 import {PostGrid} from './app/modules/post-grid';
 import {ProfilePage} from './app/modules/profile'
 import {Router, browserHistory, Route, IndexRoute} from 'react-router';
-import {virtualPath} from './app/commons/constant'
+import {virtualPath} from './commons/constant'
 import {EventDetailPage} from './app/modules/event-detail';
 import {EventDetailWallComponent} from './app/components/event-detail-wall';
 import {EventDetailDescriptionComponent} from './app/components/event-detail-description';
