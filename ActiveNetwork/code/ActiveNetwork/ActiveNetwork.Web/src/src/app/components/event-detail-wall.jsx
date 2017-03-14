@@ -20,6 +20,7 @@ export class EventDetailWallComponent extends Component {
       eventDecription: await this.getInfor(),
       eventMember: await this.getMember(),
     });
+    debugger;
   }
 
   async getInfor() {
@@ -79,14 +80,14 @@ export class EventDetailWallComponent extends Component {
             <div className="row">
               <div className="col-md-12">
                 <ul className="img-grid" style={{margin: '0 auto'}}>
-                  {(this.state.eventMember.ANEventMembers != null && this.state.eventMember.ANEventMembers.User != null ) ?
-                    this.state.eventMember.ANEventMembers.User.map(x => {
+                  {(this.state.eventMember && this.state.eventMember.ANEventMembers) ?
+                    this.state.eventMember.ANEventMembers.map((x) => (
                       <li>
                         <a href="#">
-                          <img src={x.Profile.Avatar.Url} alt="image"/>
+                          <img src={x.User.Profile.Avatar.Url} alt="image"/>
                         </a>
                       </li>
-                    }) : null
+                    )) : null
                   }
                 </ul>
               </div>
