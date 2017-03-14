@@ -18,7 +18,7 @@ namespace ActiveNetwork.Web.Mapper
                 LastName = entity.LastName,
                 MiddleName = entity.MiddleName,
                 BirthDate = entity.BirthDate,
-                Gender = entity.Gender,
+                Gender = new GenderModel() { Id = entity.GenderId.GetValueOrDefault() },
                 Email = entity.Email,
                 Phone = entity.Phone,
                 Address = entity.Address,

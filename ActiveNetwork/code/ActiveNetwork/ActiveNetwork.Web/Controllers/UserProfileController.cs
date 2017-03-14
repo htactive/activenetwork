@@ -35,36 +35,47 @@ namespace ActiveNetwork.Web.Controllers
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public UserProfileModel UpdateUserProfile([FromBody]UserProfileModel model)
         {
-            var entity = this.ANDBUnitOfWork.UserProfileRepository.GetObject(model.Id);
-            if (entity == null) return null;
+            var profileEntity = this.ANDBUnitOfWork.UserProfileRepository.GetObject(model.Id);
+            if (profileEntity == null) return null;
 
-            if (entity.LastName != model.LastName)
-                entity.LastName = model.LastName;
 
-            if (entity.MiddleName != model.MiddleName)
-                entity.MiddleName = model.MiddleName;
+            if (profileEntity.Address != model.Address)
+            {
+                profileEntity.Address = model.Address;
+            }
+            if (profileEntity.BirthDate != model.BirthDate)
+            {
+                profileEntity.BirthDate = model.BirthDate;
+            }
+            if (profileEntity.Email != model.Email)
+            {
+                profileEntity.Email = model.Email;
+            }
+            if (profileEntity.FirstName != model.FirstName)
+            {
+                profileEntity.FirstName = model.FirstName;
+            }
+            if (model.Gender != null && profileEntity.GenderId.GetValueOrDefault() != model.Gender.Id)
+            {
+                profileEntity.GenderId = model.Gender.Id;
+            }
+            if (profileEntity.LastName != model.LastName)
+            {
+                profileEntity.LastName = model.LastName;
+            }
+            if (profileEntity.MiddleName != model.MiddleName)
+            {
+                profileEntity.MiddleName = model.MiddleName;
+            }
+            if (profileEntity.Phone != model.Phone)
+            {
+                profileEntity.Phone = model.Phone;
+            }
 
-            if (entity.Phone != model.Phone)
-                entity.Phone = model.Phone;
-
-            if (entity.Address != model.Address)
-                entity.Address = model.Address;
-
-            if (entity.BirthDate != model.BirthDate)
-                entity.BirthDate = model.BirthDate;
-
-            if (entity.Email != model.Email)
-                entity.Email = model.Email;
-
-            if (entity.FirstName != model.FirstName)
-                entity.FirstName = model.FirstName;
-
-            if (entity.Gender != model.Gender)
-                entity.Gender = model.Gender;
-
-            var saveResult = this.ANDBUnitOfWork.UserProfileRepository.Save(entity);
+            this.ANDBUnitOfWork.UserProfileRepository.Save(profileEntity);
             this.ANDBUnitOfWork.Commit();
-            return UserProfileMapper.ToModel(saveResult);
+
+            return UserProfileMapper.ToModel(profileEntity);
         }
 
         [Route("anprofile/create-user-profile"), HttpPost]
@@ -80,7 +91,7 @@ namespace ActiveNetwork.Web.Controllers
                 Address = model.Address,
                 BirthDate = model.BirthDate,
                 Email = model.Email,
-                Gender = model.Gender,
+                GenderId = (model.Gender != null && model.Gender.Id != 0) ? (int?)model.Gender.Id : null,
                 UserId = model.User.Id
             };
 
@@ -94,6 +105,17 @@ namespace ActiveNetwork.Web.Controllers
         {
             if (CurrentUser == null) return null;
             return GetUserProfile(CurrentUser.Id);
+        }
+        [Route("anprofile/update-my-profile"), HttpPost]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public UserProfileModel UpdateMyProfile(UserProfileModel model)
+        {
+            var profileEntity = this.ANDBUnitOfWork.UserProfileRepository.GetAll()
+                .FirstOrDefault(x => x.UserId.HasValue && x.UserId.Value == CurrentUser.Id);
+
+            if (profileEntity == null) return null;
+            model.Id = profileEntity.Id;
+            return UpdateUserProfile(model);
         }
     }
 }

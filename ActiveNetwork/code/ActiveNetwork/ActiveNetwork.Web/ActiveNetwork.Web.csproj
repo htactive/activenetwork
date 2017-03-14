@@ -209,6 +209,7 @@
     <Compile Include="Models\ANEventMemberModel.cs" />
     <Compile Include="Models\ANEventRequirementModel.cs" />
     <Compile Include="Models\ANEventDetailHeaderModel.cs" />
+    <Compile Include="Models\GenderModel.cs" />
     <Compile Include="Models\GoogleServiceModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ImageModel.cs" />

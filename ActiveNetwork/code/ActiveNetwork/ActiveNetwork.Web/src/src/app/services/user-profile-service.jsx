@@ -22,6 +22,11 @@ class UserProfileService extends ServiceBase {
     let url = '/anprofile/get-my-profile';
     return await super.executeFetch(url);
   }
+  async updateMyProfile(model){
+    let url = '/anprofile/update-my-profile';
+    let updateData = {};
+    return await super.executeFetchPost(url,updateData);
+  }
 }
 
 let UserProfileServiceInstance = new UserProfileService();

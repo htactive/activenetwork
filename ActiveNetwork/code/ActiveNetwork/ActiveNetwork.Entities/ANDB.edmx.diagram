@@ -19,7 +19,6 @@
         <EntityTypeShape EntityType="ANDBModel.Role" Width="1.5" PointX="0.75" PointY="10" />
         <EntityTypeShape EntityType="ANDBModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="ANDBModel.User" Width="1.5" PointX="0.75" PointY="12.5" />
-        <EntityTypeShape EntityType="ANDBModel.UserProfile" Width="1.5" PointX="6" PointY="8" />
         <EntityTypeShape EntityType="ANDBModel.UserRole" Width="1.5" PointX="3" PointY="11.75" />
         <AssociationConnector Association="ANDBModel.FK_ANEvent_Required_ANEvent" />
         <AssociationConnector Association="ANDBModel.FK_ANEvent_Topic_ANEvent" />
@@ -33,10 +32,13 @@
         <AssociationConnector Association="ANDBModel.FK_ANEventMember_User" />
         <AssociationConnector Association="ANDBModel.FK_RequestToJoin_User" />
         <AssociationConnector Association="ANDBModel.FK_ANEvent_Required_RequiredProfile" />
-        <AssociationConnector Association="ANDBModel.FK_UserProfile_Image" />
         <AssociationConnector Association="ANDBModel.FK_UserRole_Role" />
-        <AssociationConnector Association="ANDBModel.FK_UserProfile_User" />
         <AssociationConnector Association="ANDBModel.FK_UserRole_User" />
+        <EntityTypeShape EntityType="ANDBModel.Gender" Width="1.5" PointX="5.375" PointY="0.875" />
+        <EntityTypeShape EntityType="ANDBModel.UserProfile" Width="1.5" PointX="7.625" PointY="6.125" />
+        <AssociationConnector Association="ANDBModel.FK_UserProfile_Gender" />
+        <AssociationConnector Association="ANDBModel.FK_UserProfile_Image" />
+        <AssociationConnector Association="ANDBModel.FK_UserProfile_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

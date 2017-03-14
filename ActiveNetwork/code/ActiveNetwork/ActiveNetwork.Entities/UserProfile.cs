@@ -16,7 +16,6 @@ namespace ActiveNetwork.Entities
     {
         public int Id { get; set; }
         public Nullable<int> UserId { get; set; }
-        public string Gender { get; set; }
         public Nullable<System.DateTime> BirthDate { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
@@ -25,7 +24,9 @@ namespace ActiveNetwork.Entities
         public string LastName { get; set; }
         public string MiddleName { get; set; }
         public Nullable<int> Avatar { get; set; }
+        public Nullable<int> GenderId { get; set; }
     
+        public virtual Gender Gender { get; set; }
         public virtual Image Image { get; set; }
         public virtual User User { get; set; }
     }

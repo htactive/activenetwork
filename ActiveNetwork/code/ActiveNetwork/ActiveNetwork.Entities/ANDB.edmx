@@ -84,6 +84,13 @@
           <Property Name="Name" Type="nvarchar" MaxLength="500" />
           <Property Name="Description" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="Gender">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GenderName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Image">
           <Key>
             <PropertyRef Name="Id" />
@@ -128,7 +135,6 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
-          <Property Name="Gender" Type="nvarchar" MaxLength="50" />
           <Property Name="BirthDate" Type="date" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
@@ -137,6 +143,7 @@
           <Property Name="LastName" Type="nvarchar" MaxLength="500" />
           <Property Name="MiddleName" Type="nvarchar" MaxLength="500" />
           <Property Name="Avatar" Type="int" />
+          <Property Name="GenderId" Type="int" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -312,6 +319,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserProfile_Gender">
+          <End Role="Gender" Type="Self.Gender" Multiplicity="0..1" />
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gender">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="GenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserProfile_Image">
           <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
           <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
@@ -405,6 +424,7 @@
           <EntitySet Name="ANEventRequestToJoin" EntityType="Self.ANEventRequestToJoin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ANEventRequirement" EntityType="Self.ANEventRequirement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Gender" EntityType="Self.Gender" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RequiredProfile" EntityType="Self.RequiredProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
@@ -459,6 +479,10 @@
           <AssociationSet Name="FK_RequestToJoin_User" Association="Self.FK_RequestToJoin_User">
             <End Role="User" EntitySet="User" />
             <End Role="ANEventRequestToJoin" EntitySet="ANEventRequestToJoin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Gender" Association="Self.FK_UserProfile_Gender">
+            <End Role="Gender" EntitySet="Gender" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
           </AssociationSet>
           <AssociationSet Name="FK_UserProfile_Image" Association="Self.FK_UserProfile_Image">
             <End Role="Image" EntitySet="Image" />
@@ -526,7 +550,6 @@
           <EntitySet Name="Roles" EntityType="ANDBModel.Role" />
           <EntitySet Name="sysdiagrams" EntityType="ANDBModel.sysdiagram" />
           <EntitySet Name="Users" EntityType="ANDBModel.User" />
-          <EntitySet Name="UserProfiles" EntityType="ANDBModel.UserProfile" />
           <EntitySet Name="UserRoles" EntityType="ANDBModel.UserRole" />
           <AssociationSet Name="FK_ANEvent_Required_ANEvent" Association="ANDBModel.FK_ANEvent_Required_ANEvent">
             <End Role="ANEvent" EntitySet="ANEvents" />
@@ -576,21 +599,27 @@
             <End Role="RequiredProfile" EntitySet="RequiredProfiles" />
             <End Role="ANEventRequirement" EntitySet="ANEventRequirements" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserProfile_Image" Association="ANDBModel.FK_UserProfile_Image">
-            <End Role="Image" EntitySet="Images" />
-            <End Role="UserProfile" EntitySet="UserProfiles" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserRole_Role" Association="ANDBModel.FK_UserRole_Role">
             <End Role="Role" EntitySet="Roles" />
             <End Role="UserRole" EntitySet="UserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserProfile_User" Association="ANDBModel.FK_UserProfile_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserProfile" EntitySet="UserProfiles" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserRole_User" Association="ANDBModel.FK_UserRole_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <EntitySet Name="Genders" EntityType="ANDBModel.Gender" />
+          <EntitySet Name="UserProfiles" EntityType="ANDBModel.UserProfile" />
+          <AssociationSet Name="FK_UserProfile_Gender" Association="ANDBModel.FK_UserProfile_Gender">
+            <End Role="Gender" EntitySet="Genders" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Image" Association="ANDBModel.FK_UserProfile_Image">
+            <End Role="Image" EntitySet="Images" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_User" Association="ANDBModel.FK_UserProfile_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
@@ -746,26 +775,8 @@
           <NavigationProperty Name="ANEvents" Relationship="ANDBModel.FK_ANEvent_User" FromRole="User" ToRole="ANEvent" />
           <NavigationProperty Name="ANEventMembers" Relationship="ANDBModel.FK_ANEventMember_User" FromRole="User" ToRole="ANEventMember" />
           <NavigationProperty Name="ANEventRequestToJoins" Relationship="ANDBModel.FK_RequestToJoin_User" FromRole="User" ToRole="ANEventRequestToJoin" />
-          <NavigationProperty Name="UserProfiles" Relationship="ANDBModel.FK_UserProfile_User" FromRole="User" ToRole="UserProfile" />
           <NavigationProperty Name="UserRoles" Relationship="ANDBModel.FK_UserRole_User" FromRole="User" ToRole="UserRole" />
-        </EntityType>
-        <EntityType Name="UserProfile">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BirthDate" Type="DateTime" Precision="0" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="MiddleName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Avatar" Type="Int32" />
-          <NavigationProperty Name="Image" Relationship="ANDBModel.FK_UserProfile_Image" FromRole="UserProfile" ToRole="Image" />
-          <NavigationProperty Name="User" Relationship="ANDBModel.FK_UserProfile_User" FromRole="UserProfile" ToRole="User" />
+          <NavigationProperty Name="UserProfiles" Relationship="ANDBModel.FK_UserProfile_User" FromRole="User" ToRole="UserProfile" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -943,18 +954,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserProfile_Image">
-          <End Type="ANDBModel.Image" Role="Image" Multiplicity="0..1" />
-          <End Type="ANDBModel.UserProfile" Role="UserProfile" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Image">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserProfile">
-              <PropertyRef Name="Avatar" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserRole_Role">
           <End Type="ANDBModel.Role" Role="Role" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -969,18 +968,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserProfile_User">
-          <End Type="ANDBModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="ANDBModel.UserProfile" Role="UserProfile" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserProfile">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserRole_User">
           <End Type="ANDBModel.User" Role="User" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -991,6 +978,69 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="UserRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Gender">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GenderName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserProfiles" Relationship="ANDBModel.FK_UserProfile_Gender" FromRole="Gender" ToRole="UserProfile" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Avatar" Type="Int32" />
+          <Property Name="GenderId" Type="Int32" />
+          <NavigationProperty Name="Gender" Relationship="ANDBModel.FK_UserProfile_Gender" FromRole="UserProfile" ToRole="Gender" />
+          <NavigationProperty Name="Image" Relationship="ANDBModel.FK_UserProfile_Image" FromRole="UserProfile" ToRole="Image" />
+          <NavigationProperty Name="User" Relationship="ANDBModel.FK_UserProfile_User" FromRole="UserProfile" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_UserProfile_Gender">
+          <End Type="ANDBModel.Gender" Role="Gender" Multiplicity="0..1" />
+          <End Type="ANDBModel.UserProfile" Role="UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gender">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="GenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_Image">
+          <End Type="ANDBModel.Image" Role="Image" Multiplicity="0..1" />
+          <End Type="ANDBModel.UserProfile" Role="UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="Avatar" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_User">
+          <End Type="ANDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="ANDBModel.UserProfile" Role="UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1156,9 +1206,27 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="ANDBModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genders">
+            <EntityTypeMapping TypeName="ANDBModel.Gender">
+              <MappingFragment StoreEntitySet="Gender">
+                <ScalarProperty Name="GenderName" ColumnName="GenderName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="UserProfiles">
             <EntityTypeMapping TypeName="ANDBModel.UserProfile">
               <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="GenderId" ColumnName="GenderId" />
                 <ScalarProperty Name="Avatar" ColumnName="Avatar" />
                 <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -1167,16 +1235,6 @@
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserRoles">
-            <EntityTypeMapping TypeName="ANDBModel.UserRole">
-              <MappingFragment StoreEntitySet="UserRole">
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

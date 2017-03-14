@@ -95,6 +95,9 @@
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Class1.cs" />
+    <Compile Include="Gender.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Image.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
