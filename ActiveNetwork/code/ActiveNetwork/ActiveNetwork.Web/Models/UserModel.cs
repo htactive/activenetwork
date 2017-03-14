@@ -10,7 +10,6 @@ namespace ActiveNetwork.Web.Models
         public int Id { get; set; }
         public string Username { get; set; }
         public List<string> Roles { get; set; }
-        public List<UserProfileModel> Profiles { get; set; }
         public UserProfileModel Profile { get; set; }
     }
 

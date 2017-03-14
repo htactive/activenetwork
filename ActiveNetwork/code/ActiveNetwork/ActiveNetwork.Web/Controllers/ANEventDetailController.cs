@@ -77,15 +77,49 @@ namespace ActiveNetwork.Web.Controllers
         public ANEventDetailMemberModel GetEventDetailMember(int Id)
         {
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
-                .Include("ANEventMembers")
+                .Include("ANEventMembers.User.UserProfiles.Image")
                 .FirstOrDefault(x => x.Id == Id);
             if (entity == null) return null;
-            var listMember = entity.ANEventMembers;
+            var listMember = entity.ANEventMembers.Select(x =>
+                        new ANEventMemberModel()
+                        {
+                            Id = x.User.Id,
+                            ANEvent = new ANEventModel() { Id = x.ANEventId.GetValueOrDefault() },
+                            User = User != null ? new UserModel()
+                            {
+                                Id = x.User.Id,
+                                Username = x.User.Username,
+                                Profile = x.User.UserProfiles.FirstOrDefault() != null ?
+                                new UserProfileModel()
+                                {
+                                    Avatar = new ImageModel
+                                    {
+                                        Id = x.User.Id,
+                                        Url = x.User.UserProfiles.FirstOrDefault().Image != null ?
+                                        x.User.UserProfiles.FirstOrDefault().Image.Url : null,
+                                    },
+                                    FirstName = x.User.UserProfiles.FirstOrDefault().FirstName,
+                                    LastName = x.User.UserProfiles.FirstOrDefault().LastName,
+                                    MiddleName = x.User.UserProfiles.FirstOrDefault().MiddleName
+                                } :
+                                new UserProfileModel()
+                                {
+                                    Avatar = new ImageModel
+                                    {
+                                        Id = x.User.Id,
+                                        Url = null,
+                                    },
+                                    FirstName = null,
+                                    LastName = null,
+                                    MiddleName = null
+                                }
+                            } : null
+                        }
+                ).ToList();
             return new ANEventDetailMemberModel()
             {
                 EventId = entity.Id,
-                ANEventMembers = ANEventMemberMapper.ToModel(listMember != null ?
-                listMember : null),
+                ANEventMembers = listMember
             };
         }
     }

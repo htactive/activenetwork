@@ -244,7 +244,7 @@ const AtomicSeparatorComponent = (props) => (
 const AtomicBlock = (props) => {
   const {blockProps, block} = props;
   const entity = Entity.get(block.getEntityAt(0));
-  const data = entity.getData();
+  const data = entity.getInfor();
   const type = entity.getType();
   if (blockProps.components[type]) {
     const AtComponent = blockProps.components[type];

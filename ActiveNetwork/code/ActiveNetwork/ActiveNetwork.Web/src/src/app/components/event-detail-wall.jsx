@@ -16,11 +16,21 @@ export class EventDetailWallComponent extends Component {
   }
 
   async componentDidMount() {
-    this.setState({eventDecription: await this.getData()});
+    this.setState({
+      eventDecription: await this.getInfor(),
+      eventMember: await this.getMember(),
+    });
   }
 
-  async getData() {
+  async getInfor() {
     let a = await ANEventDetailServiceInstance.getANEventDetailInformation('1');
+    return a;
+  }
+
+  async getMember() {
+    let a = await ANEventDetailServiceInstance.getANEventDetailMember('1');
+    console.log(a.ANEventMembers);
+    console.log(a.ANEventMembers.User);
     return a;
   }
 
@@ -69,51 +79,15 @@ export class EventDetailWallComponent extends Component {
             <div className="row">
               <div className="col-md-12">
                 <ul className="img-grid" style={{margin: '0 auto'}}>
-                  <li>
-                    <a href="#">
-                      <img src="/img/Friends/guy-6.jpg" alt="image"/>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="/img/Friends/woman-3.jpg" alt="image"/>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="/img/Friends/guy-2.jpg" alt="image"/>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="/img/Friends/guy-9.jpg" alt="image"/>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="/img/Friends/woman-9.jpg" alt="image"/>
-                    </a>
-                  </li>
-                  <li className="clearfix">
-                    <a href="#">
-                      <img src="/img/Friends/guy-4.jpg" alt="image"/>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="/img/Friends/guy-1.jpg" alt="image"/>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="/img/Friends/woman-4.jpg" alt="image"/>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="/img/Friends/guy-6.jpg" alt="image"/>
-                    </a>
-                  </li>
+                  {(this.state.eventMember.ANEventMembers != null && this.state.eventMember.ANEventMembers.User != null ) ?
+                    this.state.eventMember.ANEventMembers.User.map(x => {
+                      <li>
+                        <a href="#">
+                          <img src={x.Profile.Avatar.Url} alt="image"/>
+                        </a>
+                      </li>
+                    }) : null
+                  }
                 </ul>
               </div>
             </div>
