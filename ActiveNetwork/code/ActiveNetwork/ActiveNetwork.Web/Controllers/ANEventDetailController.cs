@@ -44,6 +44,7 @@ namespace ActiveNetwork.Web.Controllers
         [Route("anevent-detail/get-event-detail-information"), HttpGet]
         public ANEventDetailInformationModel GetEventDetailInformation(int Id)
         {
+            Thread.Sleep(3000);
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
                 .Include("ANEventInformations")
                 .Include("User.UserProfiles.Image")
@@ -76,6 +77,7 @@ namespace ActiveNetwork.Web.Controllers
         [Route("anevent-detail/get-event-detail-member"), HttpGet]
         public ANEventDetailMemberModel GetEventDetailMember(int Id)
         {
+            Thread.Sleep(1000);
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
                 .Include("ANEventMembers.User.UserProfiles.Image")
                 .FirstOrDefault(x => x.Id == Id);

@@ -15,24 +15,23 @@ export class EventDetailWallComponent extends Component {
     });
   }
 
-  async componentDidMount() {
-    this.setState({
-      eventDecription: await this.getInfor(),
-      eventMember: await this.getMember(),
-    });
-    debugger;
+  componentDidMount() {
+    this.getInfoData();
+    this.getMemberData();
   }
 
-  async getInfor() {
+  async getInfoData(){
     let a = await ANEventDetailServiceInstance.getANEventDetailInformation('1');
-    return a;
+    this.setState({
+      eventDecription: a,
+    });
   }
 
-  async getMember() {
+  async getMemberData(){
     let a = await ANEventDetailServiceInstance.getANEventDetailMember('1');
-    console.log(a.ANEventMembers);
-    console.log(a.ANEventMembers.User);
-    return a;
+    this.setState({
+      eventMember: a,
+    });
   }
 
   render() {
