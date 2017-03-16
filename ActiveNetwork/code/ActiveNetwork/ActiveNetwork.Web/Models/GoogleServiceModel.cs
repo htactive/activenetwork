@@ -32,10 +32,16 @@ namespace ActiveNetwork.Web.Models
         public float lng { get; set; }
     }
 
+    public class GoogleLocationModel
+    {
+        public float lat { get; set; }
+        public float lng { get; set; }
+    }
     public class GooglePlaceModel
     {
         public string Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
+        public GoogleLocationModel location { get; set; }
     }
 }

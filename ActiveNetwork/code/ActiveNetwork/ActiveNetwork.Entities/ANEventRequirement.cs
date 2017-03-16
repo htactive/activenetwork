@@ -18,7 +18,7 @@ namespace ActiveNetwork.Entities
         public int ANEventId { get; set; }
         public int RequiredId { get; set; }
     
-        public virtual ANEvent ANEvent { get; set; }
         public virtual RequiredProfile RequiredProfile { get; set; }
+        public virtual ANEvent ANEvent { get; set; }
     }
 }

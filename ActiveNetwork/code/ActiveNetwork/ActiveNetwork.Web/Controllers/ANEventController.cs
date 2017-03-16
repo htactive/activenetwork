@@ -48,10 +48,8 @@ namespace ActiveNetwork.Web.Controllers
                     CreatedDate = DateTime.Now.AddHours((new Random(Guid.NewGuid().GetHashCode())).Next(-20, 20)),
                     ANEventInformations = new List<ANEventInformation>() { new ANEventInformation(){
                         Id = 0, 
-                        Description = string.Format("{0:00}",i) + " -- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla",
-                        
+                        Description = string.Format("{0:00}",i) + " -- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla",  
                     } }
-
                 };
                 entities.Add(en);
             }
@@ -61,7 +59,7 @@ namespace ActiveNetwork.Web.Controllers
         }
 
         [HttpGet, Route("anevent/get-events")]
-        [HTActiveAuthorize(Roles=ANRoleConstant.USER)]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public List<ANEventModel> GetEvents()
         {
             var sandbox = new ANEventSearchingSandbox(this.ANDBUnitOfWork);
@@ -102,16 +100,91 @@ namespace ActiveNetwork.Web.Controllers
                 // get information
                 var information = entity.ANEventInformations.FirstOrDefault();
                 model.Information = ANEventInformationMapper.ToModel(information);
-
-
-
                 anEventModels.Add(model);
             }
-
             return anEventModels;
+        }
 
+        [HttpPost, Route("anevent/join-event")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public ANEventRequestToJoinModel JoinEvent([FromBody]RequestToJoinModel model)
+        {
+            if (model == null || model.EventId == 0 || model.UserId == 0)
+            {
+                return null;
+            }
+            var RTJentity = this.ANDBUnitOfWork.RequestToJoinRepository.GetAll();
 
+            //check if already joined
+            if (RTJentity != null)
+            {
+                foreach (var tmp in RTJentity)
+                {
+                    if (tmp.ANEventId == model.EventId && tmp.UserId == model.UserId)
+                    {
+                        return null;
+                    }
+                }
+            }
 
+            var entity = new ANEventRequestToJoin()
+            {
+                UserId = model.UserId,
+                ANEventId = model.EventId,
+            };
+
+            this.ANDBUnitOfWork.RequestToJoinRepository.Save(entity);
+            this.ANDBUnitOfWork.Commit();
+
+            return ANEventRequestToJoinMapper.ToModel(entity);
+
+        }
+
+        [HttpGet, Route("anevent/get-events-by-host")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public List<ANEventModel> GetEventByHost(int? hostId)
+        {
+            var events = this.ANDBUnitOfWork.ANEventRepository.GetAll().Where(e => e.UserId == (hostId ?? 0));
+
+            return null;
+        }
+
+        [HttpPost, Route("anevent/create-event")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public bool CreateANEvent(ANEventModel model)
+        {
+            var eEvent = new ANEvent();
+            eEvent.UserId = CurrentUser.Id;
+            eEvent.CreatedDate = DateTime.Now;
+            eEvent.UpdatedDate = DateTime.Now;
+            var eInfo = new ANEventInformation();
+            eInfo.Title = model.Information.Title;
+            eInfo.StartDate = model.Information.StartDate;
+            eInfo.EndDate = model.Information.EndDate;
+            eInfo.Description = model.Information.Description;
+            var eLocation = new ANEventLocation();
+            eLocation.GGId = model.Information.EventLocationM.GGId;
+            eLocation.Address = model.Information.EventLocationM.Address;
+            eLocation.Name = model.Information.EventLocationM.Name;
+            eLocation.Lat = model.Information.EventLocationM.Lat;
+            eLocation.Lng = model.Information.EventLocationM.Lng;
+            var eCategories = model.Categories.Select(x => new Category() {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description
+            }).ToList();
+            eInfo.ANEventLocation = eLocation;
+            eInfo.ANEvent = eEvent;
+            eEvent.ANEventCategories = model.Categories.Select(x=> new ANEventCategory()
+            {
+                CategoryId = x.Id
+            }).ToList();
+            var elstInfo = new List<ANEventInformation>();
+            elstInfo.Add(eInfo);
+            eEvent.ANEventInformations = elstInfo;
+            this.ANDBUnitOfWork.ANEventRepository.Save(eEvent);
+            this.ANDBUnitOfWork.Commit();
+            return true;
         }
     }
 }

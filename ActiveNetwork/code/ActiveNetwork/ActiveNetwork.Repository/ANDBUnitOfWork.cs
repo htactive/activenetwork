@@ -68,6 +68,15 @@ namespace ActiveNetwork.Repository
                 return genderRepository ?? (genderRepository = new GenderRepository(this));
             }
         }
+
+        private IANEventRequestToJoinRepository requestToJoinRepository;
+        public IANEventRequestToJoinRepository RequestToJoinRepository
+        {
+            get
+            {
+                return requestToJoinRepository ?? (requestToJoinRepository = new ANEventRequestToJoinRepository(this));
+            }
+        }
         #endregion
     }
 }

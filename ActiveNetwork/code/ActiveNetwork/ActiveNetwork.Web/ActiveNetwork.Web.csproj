@@ -205,6 +205,7 @@
     <Compile Include="Models\ANEventCategoryModel.cs" />
     <Compile Include="Models\ANEventDetailInformationModel.cs" />
     <Compile Include="Models\ANEventDetailMemberModel.cs" />
+    <Compile Include="Models\ANEventGroupModel.cs" />
     <Compile Include="Models\ANEventImageModel.cs" />
     <Compile Include="Models\ANEventInformationModel.cs" />
     <Compile Include="Models\ANEventModel.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\ANEventRequestToJoinModel.cs" />
+    <Compile Include="Models\RequestToJoinModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

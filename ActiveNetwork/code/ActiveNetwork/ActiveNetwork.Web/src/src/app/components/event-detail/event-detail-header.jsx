@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {virtualPath} from '../../commons/constant'
+import {virtualPath} from '../../../commons/constant'
 import {browserHistory} from 'react-router';
-import {ANEventDetailServiceInstance} from '../services/anevent-detail-service'
-import {JoinEventDialog} from '../components/join-event-dialog';
+import {ANEventDetailServiceInstance} from '../../services/anevent-detail-service'
+import {JoinEventDialog} from '../join-event-dialog';
+import {userStore} from '../../store/user-store';
 
 const CURRENT_TAB_WALL = 'wall',
   CURRENT_TAB_DESCRIPTION = 'description',
@@ -11,8 +12,8 @@ const CURRENT_TAB_WALL = 'wall',
 
 export class EventDetailHeaderComponent extends Component {
   joinEventDialog;
-
   componentWillMount() {
+
     this.setState({
       currentTab: CURRENT_TAB_WALL,
       eventHeader: {EventCoverPhoto: {Url: "/img/cover/loading.jpg"}},
@@ -24,7 +25,7 @@ export class EventDetailHeaderComponent extends Component {
   }
 
   async getData() {
-    let a = await ANEventDetailServiceInstance.getANEventDetailHeader('1');
+    let a = await ANEventDetailServiceInstance.getANEventDetailHeader(this.props.eventId);
     return a;
   }
 
@@ -33,11 +34,11 @@ export class EventDetailHeaderComponent extends Component {
       currentTab: tab
     });
     e.preventDefault();
-    browserHistory.push(`${virtualPath}/event/${tab}`)
+    browserHistory.push(`${virtualPath}/event/${this.props.eventId}/${tab}`)
   }
 
-  clickJoinEventDialog() {
-    this.joinEventDialog && this.joinEventDialog.show();
+  clickJoinEventDialog(eventId) {
+    this.joinEventDialog && this.joinEventDialog.show(eventId);
   }
 
   render() {
@@ -73,13 +74,13 @@ export class EventDetailHeaderComponent extends Component {
               </ul>
               <ul className="thamgia">
                 <li>
-                  <button type="button" onClick={this.clickJoinEventDialog.bind(this)} className="btn btn-lg btn-primary pull-right">Tham gia</button>
+                  <button type="button" onClick={() => this.clickJoinEventDialog(this.props.eventId)} className="btn btn-lg btn-primary pull-right">Tham gia</button>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        <JoinEventDialog ref={(e) => this.joinEventDialog = e}/>
+        <JoinEventDialog ref={(e) => this.joinEventDialog = e} currentUser={userStore.getState().currentUser.Id}/>
       </div>
     );
   }
