@@ -6,10 +6,10 @@ import {EditProfilePage} from './app/modules/edit-profile'
 import {Router, browserHistory, Route, IndexRoute} from 'react-router';
 import {virtualPath} from './commons/constant'
 import {EventDetailPage} from './app/modules/event-detail';
-import {EventDetailWallComponent} from './app/components/event-detail-wall';
-import {EventDetailDescriptionComponent} from './app/components/event-detail-description';
-import {EventDetailPeopleComponent} from './app/components/event-detail-people';
-import {EventDetailPhotosComponent} from './app/components/event-detail-photos';
+import {EventDetailWallComponent} from './app/components/event-detail/event-detail-wall';
+import {EventDetailDescriptionComponent} from './app/components/event-detail/event-detail-description';
+import {EventDetailPeopleComponent} from './app/components/event-detail/event-detail-people';
+import {EventDetailPhotosComponent} from './app/components/event-detail/event-detail-photos';
 import {EventManager} from './app/modules/event-manager';
 import {Error404Page} from './app/modules/404-page';
 import {Error500Page} from './app/modules/500-page';

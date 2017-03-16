@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
-import {ANEventDetailServiceInstance} from '../services/anevent-detail-service'
+import {ANEventDetailServiceInstance} from '../../services/anevent-detail-service';
+import {EventDetailWallDescriptionComponent} from './event-detail-wall-description';
+import {EventDetailWallMembersComponent} from './event-detail-wall-members';
 
 export class EventDetailWallComponent extends Component {
+  eventId;
   componentWillMount() {
     this.setState({
       eventDecription: {
@@ -13,6 +16,8 @@ export class EventDetailWallComponent extends Component {
         },
       }
     });
+
+    this.eventId = this.props.params.id;
   }
 
   componentDidMount() {
@@ -21,14 +26,14 @@ export class EventDetailWallComponent extends Component {
   }
 
   async getInfoData(){
-    let a = await ANEventDetailServiceInstance.getANEventDetailInformation(this.props.params.id);
+    let a = await ANEventDetailServiceInstance.getANEventDetailInformation(this.eventId);
     this.setState({
       eventDecription: a,
     });
   }
 
   async getMemberData(){
-    let a = await ANEventDetailServiceInstance.getANEventDetailMember(this.props.params.id);
+    let a = await ANEventDetailServiceInstance.getANEventDetailMember(this.eventId);
     this.setState({
       eventMember: a,
     });
@@ -37,62 +42,11 @@ export class EventDetailWallComponent extends Component {
   render() {
     return (<div className="row">
       <div className="col-md-5">
-        <div className="widget">
-          <div className="widget-header">
-            <h3 className="widget-caption">Mô tả sự kiện</h3>
-          </div>
-          <div className="widget-body bordered-top bordered-sky">
-            <ul className="list-unstyled profile-about margin-none">
-              <li className="padding-v-5">
-                <div className="row">
-                  <div className="col-sm-4"><span className="text-muted">Nguời tạo</span></div>
-                  <div className="col-sm-8">{this.state.eventDecription.Host.Username}</div>
-                </div>
-              </li>
-              <li className="padding-v-5">
-                <div className="row">
-                  <div className="col-sm-4"><span className="text-muted">Địa điểm</span></div>
-                  <div className="col-sm-8">{this.state.eventDecription.EventInformation.Location}</div>
-                </div>
-              </li>
-              <li className="padding-v-5">
-                <div className="row">
-                  <div className="col-sm-4"><span className="text-muted">Thời gian bắt đầu</span></div>
-                  <div className="col-sm-8">{this.state.eventDecription.EventInformation.StartDate}</div>
-                </div>
-              </li>
-              <li className="padding-v-5">
-                <div className="row">
-                  <div className="col-sm-4"><span className="text-muted">Thời gian kết thúc</span></div>
-                  <div className="col-sm-8">{this.state.eventDecription.EventInformation.EndDate}</div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <EventDetailWallDescriptionComponent eventDecription={this.state.eventDecription} />
 
-        <div className="widget widget-friends">
-          <div className="widget-header">
-            <h3 className="widget-caption">Người tham gia</h3>
-          </div>
-          <div className="widget-body bordered-top  bordered-sky">
-            <div className="row">
-              <div className="col-md-12">
-                <ul className="img-grid" style={{margin: '0 auto'}}>
-                  {(this.state.eventMember && this.state.eventMember.ANEventMembers) ?
-                    this.state.eventMember.ANEventMembers.map((x) => (
-                      <li key={x.Id}>
-                        <a href="#">
-                          <img src={x.User.Profile.Avatar.Url} alt="image"/>
-                        </a>
-                      </li>
-                    )) : null
-                  }
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
+        <EventDetailWallMembersComponent eventMember={this.state.eventMember} />
+
+
 
         <div className="widget">
           <div className="widget-header">

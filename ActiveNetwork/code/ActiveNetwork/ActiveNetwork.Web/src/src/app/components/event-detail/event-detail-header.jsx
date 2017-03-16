@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {virtualPath} from '../../commons/constant'
+import {virtualPath} from '../../../commons/constant'
 import {browserHistory} from 'react-router';
-import {ANEventDetailServiceInstance} from '../services/anevent-detail-service'
-import {JoinEventDialog} from '../components/join-event-dialog';
-import {userStore} from '../store/user-store';
+import {ANEventDetailServiceInstance} from '../../services/anevent-detail-service'
+import {JoinEventDialog} from '../join-event-dialog';
+import {userStore} from '../../store/user-store';
 
 const CURRENT_TAB_WALL = 'wall',
   CURRENT_TAB_DESCRIPTION = 'description',
