@@ -23,6 +23,7 @@
     "react-autocomplete": "^1.4.0",
     "react-bootstrap": "^0.30.7",
     "react-cookie": "^1.0.4",
+    "react-datepicker": "^0.41.1",
     "react-datetime": "^2.8.8",
     "react-dom": "^15.4.2",
     "react-dropzone": "^3.11.0",

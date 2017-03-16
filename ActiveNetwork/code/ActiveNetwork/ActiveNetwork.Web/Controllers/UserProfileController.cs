@@ -39,19 +39,19 @@ namespace ActiveNetwork.Web.Controllers
             if (profileEntity == null) return null;
 
 
-            if (profileEntity.Address != model.Address)
+            if (model.Address != null && profileEntity.Address != model.Address)
             {
                 profileEntity.Address = model.Address;
             }
-            if (profileEntity.BirthDate != model.BirthDate)
+            if (model.BirthDate.HasValue && profileEntity.BirthDate != model.BirthDate)
             {
                 profileEntity.BirthDate = model.BirthDate;
             }
-            if (profileEntity.Email != model.Email)
+            if (model.Email != null && profileEntity.Email != model.Email)
             {
                 profileEntity.Email = model.Email;
             }
-            if (profileEntity.FirstName != model.FirstName)
+            if (model.FirstName != null && profileEntity.FirstName != model.FirstName)
             {
                 profileEntity.FirstName = model.FirstName;
             }
@@ -59,15 +59,15 @@ namespace ActiveNetwork.Web.Controllers
             {
                 profileEntity.GenderId = model.Gender.Id;
             }
-            if (profileEntity.LastName != model.LastName)
+            if (model.LastName != null && profileEntity.LastName != model.LastName)
             {
                 profileEntity.LastName = model.LastName;
             }
-            if (profileEntity.MiddleName != model.MiddleName)
+            if (model.MiddleName != null && profileEntity.MiddleName != model.MiddleName)
             {
                 profileEntity.MiddleName = model.MiddleName;
             }
-            if (profileEntity.Phone != model.Phone)
+            if (model.Phone != null && profileEntity.Phone != model.Phone)
             {
                 profileEntity.Phone = model.Phone;
             }

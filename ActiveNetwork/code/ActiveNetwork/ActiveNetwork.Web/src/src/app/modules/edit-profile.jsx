@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {UserProfileServiceInstance} from '../services/user-profile-service'
 import {FullNameEditor} from '../components/edit-profile-control/full-name-editor';
+import {BirthdayEditor} from '../components/edit-profile-control/birth-date-editor';
 
 export class EditProfilePage extends Component {
   componentWillMount() {
@@ -8,7 +9,13 @@ export class EditProfilePage extends Component {
   }
 
   async componentDidMount() {
-    this.setState({userProfile: await this.getData()});
+    let profile = await this.getData();
+    let birthDate = new Date(profile.BirthDate);
+    if (!profile.BirthDate) {
+      birthDate = null;
+    }
+
+    this.setState({userProfile: profile, user_birthDate: birthDate});
   }
 
   async getData() {
@@ -66,18 +73,22 @@ export class EditProfilePage extends Component {
                           firstName={this.state.userProfile.FirstName}
                           middleName={this.state.userProfile.MiddleName}
                           lastName={this.state.userProfile.LastName}
+                          afterSaveChanged={(model) => {
+                            this.state.userProfile.FirstName = model.firstName;
+                            this.state.userProfile.LastName = model.lastName;
+                            this.state.userProfile.MiddleName = model.middleName;
+                            this.forceUpdate();
+                          }}
+                        />
+                        <BirthdayEditor
+                          birthDate={this.state.user_birthDate}
+                          afterSaveChanged={(model) => {
+                            this.setState({user_birthDate:model.birthDate});
+                          }}
                         />
                         <p className="data-row">
-                          <span className="data-name">Birth Date</span>
-                          <span className="data-value">{this.state.userProfile.BirthDate}</span>
-                        </p>
-                        <p className="data-row">
-                          <span className="data-name">Gender</span>
-                          <span className="data-value">{this.state.userProfile.Gender}</span>
-                        </p>
-                        <p className="data-row">
                           <span className="data-name">Website</span>
-                          <span className="data-value"><a href="#">www.jonasmith.com</a></span>
+                          <span className="data-value"><a href="#">www.jonasmith.com1</a></span>
                         </p>
                         <p className="data-row">
                           <span className="data-name">Last Login</span>

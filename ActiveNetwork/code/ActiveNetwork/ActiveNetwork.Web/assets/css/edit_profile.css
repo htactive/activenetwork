@@ -58,7 +58,6 @@
 }
 
 .data-row .data-name {
-  width: 12em;
   color: #fff;
   background-color: #3ecdf1;
   border-color: #3ecdf1;
@@ -111,14 +110,14 @@ hr {
   box-shadow: none;
 }
 
-p.data-row {
+.data-row {
   padding-top: 5px;
   padding-bottom: 5px;
   margin: 0px;
   border-bottom: 1px solid #dddfe2;
 }
 
-p.header-row {
+.header-row {
   padding-top: 25px;
   padding-bottom: 5px;
   margin: 0px;
@@ -130,6 +129,14 @@ p.header-row {
 }
 
 .data-row .data-action {
-  margin-right: 20px;
   float: right;
+}
+
+.edit-menu {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.edit-menu .btn {
+  margin-right: 5px;
 }
