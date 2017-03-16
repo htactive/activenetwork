@@ -24,12 +24,12 @@ import {
   NOT_HANDLED
 } from 'medium-draft';
 
-import {
+const {
   setRenderOptions,
   blockToHTML,
   entityToHTML,
   styleToHTML,
-} from 'medium-draft/lib/exporter.js';
+} = MediumDraftExporter;
 
 
 const newTypeMap = StringToTypeMap;
@@ -415,7 +415,7 @@ export class HTMLEditorByMD extends React.Component {
       <Editor
         editorState={this.props.editorState}
         placeholder={this.state.placeholder}
-        onChange={(v,c)=>this.props.onChange(v,c)}
+        onChange={(v, c) => this.props.onChange(v, c)}
         editorEnabled={editorEnabled}
         handleDroppedFiles={this.handleDroppedFiles.bind(this)}
         handleKeyCommand={this.handleKeyCommand.bind(this)}
