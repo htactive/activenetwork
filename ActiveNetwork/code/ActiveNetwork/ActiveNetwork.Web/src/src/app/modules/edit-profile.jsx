@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {UserProfileServiceInstance} from '../services/user-profile-service'
+import {FullNameEditor} from '../components/edit-profile-control/full-name-editor';
 
 export class EditProfilePage extends Component {
   componentWillMount() {
@@ -56,11 +57,16 @@ export class EditProfilePage extends Component {
                   <div className="col-md-9">
                     <div className="user-info-right">
                       <div className="basic-info">
-                        <h3><i className="fa fa-square"/> Basic Information</h3>
+                        <p className="header-row"><i className="fa fa-square"/> THÔNG TIN CƠ BẢN</p>
                         <p className="data-row">
-                          <span className="data-name">Username</span>
+                          <span className="data-name">Định danh</span>
                           <span className="data-value">{this.state.userProfile.FirstName}</span>
                         </p>
+                        <FullNameEditor
+                          firstName={this.state.userProfile.FirstName}
+                          middleName={this.state.userProfile.MiddleName}
+                          lastName={this.state.userProfile.LastName}
+                        />
                         <p className="data-row">
                           <span className="data-name">Birth Date</span>
                           <span className="data-value">{this.state.userProfile.BirthDate}</span>
@@ -83,7 +89,7 @@ export class EditProfilePage extends Component {
                         </p>
                       </div>
                       <div className="contact_info">
-                        <h3><i className="fa fa-square"/> Contact Information</h3>
+                        <p className="header-row"><i className="fa fa-square"/> THÔNG TIN LIÊN LẠC</p>
                         <p className="data-row">
                           <span className="data-name">Email</span>
                           <span className="data-value">{this.state.userProfile.Email}</span>
@@ -98,7 +104,7 @@ export class EditProfilePage extends Component {
                         </p>
                       </div>
                       <div className="about">
-                        <h3><i className="fa fa-square"/> About Me</h3>
+                        <p className="header-row"><i className="fa fa-square"/> VỀ BẢN THÂN</p>
                         <p>Dramatically facilitate proactive solutions whereas professional intellectual capital.
                           Holisticly utilize competitive e-markets through intermandated meta-services. Objectively.</p>
                         <p>Monotonectally foster future-proof infomediaries before principle-centered interfaces.

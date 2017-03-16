@@ -18,7 +18,7 @@ module.exports = {
       rewrites: [
         {from: /^\//, to: '/app.html'},
         {from: /^\/login.html\//, to: '/login.html'},
-         {from: /^\/recoverpassword.html\//, to: '/recoverpassword.html'}
+        {from: /^\/recoverpassword.html\//, to: '/recoverpassword.html'}
       ]
     },
     contentBase: "../",
@@ -39,6 +39,12 @@ module.exports = {
   devtool: "source-map",
   externals: {
     "react": "React",
-    "react-dom": "ReactDOM"
+    "react-dom": "ReactDOM",
+    "medium-draft": "MediumDraft",
+    "draft-convert":"draft",
+    "draft-js":"Draft",
+    "react-bootstrap": "ReactBootstrap",
+    "redux": "Redux",
+    "moment": "moment"
   }
 };

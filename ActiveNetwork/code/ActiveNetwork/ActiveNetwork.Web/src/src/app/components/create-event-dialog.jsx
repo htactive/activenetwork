@@ -3,13 +3,12 @@ var Datetime = require('react-datetime');
 import {Modal, Button, Form, FormGroup, Col, FormControl} from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
 import Autocomplete from 'react-autocomplete';
+import Select from 'react-select';
 import {getStates, matchStateToTerm, sortStates, styles, fakeRequest} from 'react-autocomplete/build/lib/utils'
 import {GoogleAPIServiceInstance} from '../services/location-service'
 import {ANEventServiceInstance} from '../services/anevent-service';
-import Select from 'react-select';
 
 import {
-  Editor,
   createEditorState,
 } from 'medium-draft';
 import {HTMLEditorByMD} from '../components/html-editor-md';
