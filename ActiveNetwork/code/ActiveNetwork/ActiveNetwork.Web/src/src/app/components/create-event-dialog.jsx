@@ -1,6 +1,6 @@
 import * as React from 'react';
 var Datetime = require('react-datetime');
-import {Modal, Button, Form, FormGroup, Col, FormControl} from 'react-bootstrap';
+import {Modal, Button} from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
 import Autocomplete from 'react-autocomplete';
 import {getStates, matchStateToTerm, sortStates, styles, fakeRequest} from 'react-autocomplete/build/lib/utils'

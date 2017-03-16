@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {virtualPath} from '../../commons/constant'
 import {browserHistory} from 'react-router';
-import {ANEventServiceInstance} from '../services/anevent-service'
+import {ANEventServiceInstance} from '../services/anevent-service';
+import {JoinEventDialog} from '../components/join-event-dialog';
 
 export class PostGrid extends Component {
+  joinEventDialog;
 
   componentWillMount() {
     this.setState({
@@ -33,6 +35,11 @@ export class PostGrid extends Component {
   goToEventDetail(e) {
     e.preventDefault();
     browserHistory.push(`${virtualPath}/event`)
+  }
+
+  clickJoinEventDialog(){
+    debugger;
+    this.joinEventDialog && this.joinEventDialog.show();
   }
 
   render() {
@@ -83,7 +90,6 @@ export class PostGrid extends Component {
           </div>
         </div>
       </div>
-
     </div>);
   }
 }
