@@ -13,6 +13,7 @@ const CURRENT_TAB_WALL = 'wall',
 export class EventDetailHeaderComponent extends Component {
   joinEventDialog;
   componentWillMount() {
+
     this.setState({
       currentTab: CURRENT_TAB_WALL,
       eventHeader: {EventCoverPhoto: {Url: "/img/cover/loading.jpg"}},
@@ -33,7 +34,7 @@ export class EventDetailHeaderComponent extends Component {
       currentTab: tab
     });
     e.preventDefault();
-    browserHistory.push(`${virtualPath}/event/${tab}`)
+    browserHistory.push(`${virtualPath}/event/${this.props.eventId}/${tab}`)
   }
 
   clickJoinEventDialog(eventId) {

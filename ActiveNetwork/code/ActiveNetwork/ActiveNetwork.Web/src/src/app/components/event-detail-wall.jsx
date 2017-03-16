@@ -21,14 +21,14 @@ export class EventDetailWallComponent extends Component {
   }
 
   async getInfoData(){
-    let a = await ANEventDetailServiceInstance.getANEventDetailInformation('1');
+    let a = await ANEventDetailServiceInstance.getANEventDetailInformation(this.props.params.id);
     this.setState({
       eventDecription: a,
     });
   }
 
   async getMemberData(){
-    let a = await ANEventDetailServiceInstance.getANEventDetailMember('1');
+    let a = await ANEventDetailServiceInstance.getANEventDetailMember(this.props.params.id);
     this.setState({
       eventMember: a,
     });

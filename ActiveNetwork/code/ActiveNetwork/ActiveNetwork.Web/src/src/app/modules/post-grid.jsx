@@ -35,7 +35,7 @@ export class PostGrid extends Component {
 
   goToEventDetail(e, eventId) {
     e.preventDefault();
-    browserHistory.push(`${virtualPath}/event?id=` + eventId)
+    browserHistory.push(`${virtualPath}/event/${eventId}`)
   }
 
   clickJoinEventDialog(eventId){

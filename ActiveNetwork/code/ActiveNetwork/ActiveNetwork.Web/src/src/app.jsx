@@ -25,11 +25,11 @@ ReactDOM.render(
       <Route path={`${virtualPath}/post-grid`} component={PostGrid}/>
       <Route path={`${virtualPath}/my-profile`} component={EditProfilePage}/>
       <Route path={`${virtualPath}/manage-event`} component={EventManager}/>
-      <Route path={`${virtualPath}/event`} component={EventDetailPage}>
-        <Route path={`${virtualPath}/event/wall`} component={EventDetailWallComponent}/>
-        <Route path={`${virtualPath}/event/description`} component={EventDetailDescriptionComponent}/>
-        <Route path={`${virtualPath}/event/people`} component={EventDetailPeopleComponent}/>
-        <Route path={`${virtualPath}/event/photos`} component={EventDetailPhotosComponent}/>
+      <Route path={`${virtualPath}/event/:id`} component={EventDetailPage}>
+        <Route path={`${virtualPath}/event/:id/wall`} component={EventDetailWallComponent}/>
+        <Route path={`${virtualPath}/event/:id/description`} component={EventDetailDescriptionComponent}/>
+        <Route path={`${virtualPath}/event/:id/people`} component={EventDetailPeopleComponent}/>
+        <Route path={`${virtualPath}/event/:id/photos`} component={EventDetailPhotosComponent}/>
         <IndexRoute component={EventDetailWallComponent}/>
       </Route>
       <IndexRoute component={PostGrid}/>
