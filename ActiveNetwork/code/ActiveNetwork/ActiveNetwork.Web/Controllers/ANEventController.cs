@@ -48,10 +48,8 @@ namespace ActiveNetwork.Web.Controllers
                     CreatedDate = DateTime.Now.AddHours((new Random(Guid.NewGuid().GetHashCode())).Next(-20, 20)),
                     ANEventInformations = new List<ANEventInformation>() { new ANEventInformation(){
                         Id = 0, 
-                        Description = string.Format("{0:00}",i) + " -- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla",
-                        
+                        Description = string.Format("{0:00}",i) + " -- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla",  
                     } }
-
                 };
                 entities.Add(en);
             }
@@ -61,7 +59,7 @@ namespace ActiveNetwork.Web.Controllers
         }
 
         [HttpGet, Route("anevent/get-events")]
-        [HTActiveAuthorize(Roles=ANRoleConstant.USER)]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public List<ANEventModel> GetEvents()
         {
             var sandbox = new ANEventSearchingSandbox(this.ANDBUnitOfWork);
@@ -102,15 +100,36 @@ namespace ActiveNetwork.Web.Controllers
                 // get information
                 var information = entity.ANEventInformations.FirstOrDefault();
                 model.Information = ANEventInformationMapper.ToModel(information);
-
-
-
                 anEventModels.Add(model);
             }
-
             return anEventModels;
+        }
 
+        [HttpPost, Route("anevent/join-event")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public ANEventRequestToJoinModel JoinEvent([FromBody]RequestToJoinModel model)
+        {
+            var RTJentity = this.ANDBUnitOfWork.RequestToJoinRepository.GetAll();
+            if (RTJentity != null)
+            {
+                foreach (var tmp in RTJentity)
+                {
+                    if (tmp.ANEventId == model.EventId && tmp.UserId == model.UserId)
+                    {
+                        return null;
+                    }
+                }
+            }
+            var entity = new ANEventRequestToJoin()
+            {
+                UserId = model.UserId,
+                ANEventId = model.EventId,
+            };
 
+            this.ANDBUnitOfWork.RequestToJoinRepository.Save(entity);
+            this.ANDBUnitOfWork.Commit();
+
+            return ANEventRequestToJoinMapper.ToModel(entity);
 
         }
     }

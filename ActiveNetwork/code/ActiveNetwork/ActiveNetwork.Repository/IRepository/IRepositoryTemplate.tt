@@ -7,6 +7,7 @@ new EntityMetadataRender(){Name = "UserProfile"},
 new EntityMetadataRender(){Name = "Category"},
 new EntityMetadataRender(){Name = "ANEvent"},
 new EntityMetadataRender(){Name = "Role"},
+new EntityMetadataRender(){Name = "ANEventRequestToJoin"},
 };
   var fileManager = EntityFrameworkTemplateFileManager.Create(this); 
   fileManager.StartHeader(); 

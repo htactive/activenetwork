@@ -216,6 +216,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\ANEventRequestToJoinModel.cs" />
+    <Compile Include="Models\RequestToJoinModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

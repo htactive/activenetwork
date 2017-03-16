@@ -60,6 +60,15 @@ namespace ActiveNetwork.Repository
                 return roleRepository ?? (roleRepository = new RoleRepository(this));
             }
         }
+
+        private IANEventRequestToJoinRepository requestToJoinRepository;
+        public IANEventRequestToJoinRepository RequestToJoinRepository
+        {
+            get
+            {
+                return requestToJoinRepository ?? (requestToJoinRepository = new ANEventRequestToJoinRepository(this));
+            }
+        }
         #endregion
     }
 }
