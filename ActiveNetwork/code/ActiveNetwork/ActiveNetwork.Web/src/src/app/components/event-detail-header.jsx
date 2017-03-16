@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {virtualPath} from '../../commons/constant'
 import {browserHistory} from 'react-router';
 import {ANEventDetailServiceInstance} from '../services/anevent-detail-service'
+import {JoinEventDialog} from '../components/join-event-dialog';
 
 const CURRENT_TAB_WALL = 'wall',
   CURRENT_TAB_DESCRIPTION = 'description',
@@ -9,6 +10,7 @@ const CURRENT_TAB_WALL = 'wall',
   CURRENT_TAB_PHOTOS = 'photos';
 
 export class EventDetailHeaderComponent extends Component {
+  joinEventDialog;
 
   componentWillMount() {
     this.setState({
@@ -32,6 +34,10 @@ export class EventDetailHeaderComponent extends Component {
     });
     e.preventDefault();
     browserHistory.push(`${virtualPath}/event/${tab}`)
+  }
+
+  clickJoinEventDialog() {
+    this.joinEventDialog && this.joinEventDialog.show();
   }
 
   render() {
@@ -65,9 +71,15 @@ export class EventDetailHeaderComponent extends Component {
                   className="fa fa-fw fa-image"/>
                   Hình ảnh</a></li>
               </ul>
+              <ul className="thamgia">
+                <li>
+                  <button type="button" onClick={this.clickJoinEventDialog.bind(this)} className="btn btn-lg btn-primary pull-right">Tham gia</button>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
+        <JoinEventDialog ref={(e) => this.joinEventDialog = e}/>
       </div>
     );
   }

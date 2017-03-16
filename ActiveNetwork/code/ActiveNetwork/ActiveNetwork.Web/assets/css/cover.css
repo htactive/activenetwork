@@ -88,6 +88,14 @@
   margin: 0;
   padding-left: 0;
 }
+
+.cover.profile .cover-info .thamgia {
+  list-style: none;
+  margin-right: 10px;
+  margin-top: 10px;
+  float: right;
+}
+
 .cover.profile .cover-info .cover-nav li {
   float: left;
   display: block;

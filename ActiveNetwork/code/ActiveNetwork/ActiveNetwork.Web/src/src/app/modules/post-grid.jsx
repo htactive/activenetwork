@@ -38,7 +38,6 @@ export class PostGrid extends Component {
   }
 
   clickJoinEventDialog(){
-    debugger;
     this.joinEventDialog && this.joinEventDialog.show();
   }
 
@@ -74,7 +73,7 @@ export class PostGrid extends Component {
                     </div>
                     <img className="img-responsive show-in-modal" src={post.cover_image} alt="Photo"/>
                     <div className="box-footer">
-                      <a type="button"><i className="fa fa-plus"/> Tham gia
+                      <a type="button" onClick={this.clickJoinEventDialog.bind(this)}><i className="fa fa-plus"/> Tham gia
                       </a>
                       <a type="button"><i className="fa fa-heart"/>
                         Yêu thích
@@ -90,6 +89,7 @@ export class PostGrid extends Component {
           </div>
         </div>
       </div>
+      <JoinEventDialog ref={(e) => this.joinEventDialog = e}/>
     </div>);
   }
 }

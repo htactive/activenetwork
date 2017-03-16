@@ -81,7 +81,7 @@ export class EventDetailWallComponent extends Component {
                 <ul className="img-grid" style={{margin: '0 auto'}}>
                   {(this.state.eventMember && this.state.eventMember.ANEventMembers) ?
                     this.state.eventMember.ANEventMembers.map((x) => (
-                      <li>
+                      <li key={x.Id}>
                         <a href="#">
                           <img src={x.User.Profile.Avatar.Url} alt="image"/>
                         </a>
