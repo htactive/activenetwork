@@ -16,12 +16,15 @@ import {HTMLEditorByMD} from '../components/html-editor-md';
 export class CreateEventDialog extends React.Component {
   componentWillMount() {
     this.setState({
+      title: "",
       startDate: '03/08/2017',
+      endDate: '',
       isLocationLoading: false,
       locationList: [],
       topicList: [],
       event_coverImage: null,
-      event_location: '',
+      event_locationDisplay: '',
+      event_location: {},
       event_topics: [],
       event_description: createEditorState(),
       event_description_placeholder: "Viết mô tả ngắn gọn về sự kiện"
@@ -121,7 +124,11 @@ export class CreateEventDialog extends React.Component {
                 Tên sự kiện
               </div>
               <div className="col-sm-9">
-                <input type="text" className="form-control" id="eventname" placeholder="Nhập vào tên của sự kiện"/>
+                <input type="text" className="form-control" 
+
+                      defaultValue={this.state.title}
+                                   onChange={(v) => this.titleOnChange(v)}
+                      placeholder="Nhập vào tên của sự kiện"/>
               </div>
             </div>
 
@@ -133,7 +140,7 @@ export class CreateEventDialog extends React.Component {
                 <Autocomplete
                   wrapperProps={{className: "event-location"}}
                   wrapperStyle={{width: "100%"}}
-                  value={this.state.event_location}
+                  value={this.state.event_locationDisplay}
                   inputProps={{
                     name: "Event Location",
                     id: "eventplace",
@@ -141,8 +148,8 @@ export class CreateEventDialog extends React.Component {
                     placeholder: "Nhập một địa điểm"
                   }}
                   items={this.state.locationList}
-                  getItemValue={(item) => item.Address}
-                  onSelect={(value, state) => this.setState({event_location: value, locationList: [state]}) }
+                  getItemValue={(item) => item.Id}
+                  onSelect={(value, state) => this.eventLocationOnSelect(value,state) }
                   onChange={(event, value) => this.eventLocationOnChange(event, value)}
                   renderItem={(item, isHighlighted) => (
                     <div
@@ -171,6 +178,9 @@ export class CreateEventDialog extends React.Component {
               <div className="col-sm-4">
                 <Datetime
                   defaultValue={new Date()}
+                  onChange={(value)=>this.startDateOnSelect(value)}
+                  dateFormat="DD/MM/YYYY"
+                  id="StartDate"
                 />
               </div>
               {this.state.showEndDate ? null :
@@ -186,6 +196,8 @@ export class CreateEventDialog extends React.Component {
               <div className="col-sm-4">
                 <Datetime
                   defaultValue={new Date()}
+                  onSelect={(value)=>this.endDateOnSelect(value)}
+                   dateFormat="DD/MM/YYYY"
                 />
               </div>
               <div className="col-sm-3">
@@ -241,7 +253,7 @@ export class CreateEventDialog extends React.Component {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button bsStyle="primary">Tạo sự kiện</Button>
+          <Button bsStyle="primary" onClick={() => this.createEvent()}>Tạo sự kiện</Button>
           <Button onClick={() => this.close()}>Hủy</Button>
         </Modal.Footer>
       </Modal>);
@@ -253,14 +265,36 @@ export class CreateEventDialog extends React.Component {
   }
 
   async eventLocationOnChange(event, value) {
-    this.setState({event_location: value, isLocationLoading: true});
+    this.setState({event_locationDisplay: value, isLocationLoading: true});
     let items = await GoogleAPIServiceInstance.searchPlaces(value);
     items.push({Id: '__ju__', Name: 'Chỉ dùng "' + value + '"', Address: value})
     this.setState({locationList: items, isLocationLoading: false});
   }
+  eventLocationOnSelect(value, state)
+  {
+    debugger;
+    this.setState({event_location: state,
+      event_locationDisplay: state.Name,
+       locationList: [state]});
 
+  }
   topicsOnChanged(v) {
     this.setState({event_topics: v});
     console.log(v);
+  }
+  titleOnChange(v){
+    this.setState({title: v.target.value});
+    console.log(v.target.value);
+  }
+  startDateOnSelect(v){
+    
+    this.setState({startDate: v._d});
+    console.log(v._d);
+  }
+  endDateOnSelect(v){
+    this.setState({endDate: v.toObject()});
+  }
+  createEvent(){
+    
   }
 }
