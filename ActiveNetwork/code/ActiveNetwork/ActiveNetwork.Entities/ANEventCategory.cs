@@ -18,7 +18,7 @@ namespace ActiveNetwork.Entities
         public Nullable<int> ANEventId { get; set; }
         public Nullable<int> CategoryId { get; set; }
     
-        public virtual ANEvent ANEvent { get; set; }
         public virtual Category Category { get; set; }
+        public virtual ANEvent ANEvent { get; set; }
     }
 }

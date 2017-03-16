@@ -39,6 +39,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ANEventId" Type="int" />
           <Property Name="EventLocation" Type="nvarchar" MaxLength="50" />
+          <Property Name="EventLocationId" Type="int" />
           <Property Name="Description" Type="nvarchar" MaxLength="2000" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" />
           <Property Name="StartDate" Type="date" />
@@ -49,8 +50,11 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GGId" Type="nvarchar" MaxLength="50" />
           <Property Name="Address" Type="nvarchar" MaxLength="256" />
-          <Property Name="Coordinate" Type="nvarchar" MaxLength="256" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" />
+          <Property Name="Lat" Type="nvarchar" MaxLength="50" />
+          <Property Name="Lng" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ANEventMember">
           <Key>
@@ -263,6 +267,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ANEventInformation_ANEventLocation">
+          <End Role="ANEventLocation" Type="Self.ANEventLocation" Multiplicity="0..1" />
+          <End Role="ANEventInformation" Type="Self.ANEventInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEventLocation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventInformation">
+              <PropertyRef Name="EventLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ANEventMember_ANEvent">
           <End Role="ANEvent" Type="Self.ANEvent" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -464,6 +480,10 @@
             <End Role="ANEvent" EntitySet="ANEvent" />
             <End Role="ANEventInformation" EntitySet="ANEventInformation" />
           </AssociationSet>
+          <AssociationSet Name="FK_ANEventInformation_ANEventLocation" Association="Self.FK_ANEventInformation_ANEventLocation">
+            <End Role="ANEventLocation" EntitySet="ANEventLocation" />
+            <End Role="ANEventInformation" EntitySet="ANEventInformation" />
+          </AssociationSet>
           <AssociationSet Name="FK_ANEventMember_ANEvent" Association="Self.FK_ANEventMember_ANEvent">
             <End Role="ANEvent" EntitySet="ANEvent" />
             <End Role="ANEventMember" EntitySet="ANEventMember" />
@@ -536,11 +556,8 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
-          <EntitySet Name="ANEvents" EntityType="ANDBModel.ANEvent" />
           <EntitySet Name="ANEventCategories" EntityType="ANDBModel.ANEventCategory" />
           <EntitySet Name="ANEventImages" EntityType="ANDBModel.ANEventImage" />
-          <EntitySet Name="ANEventInformations" EntityType="ANDBModel.ANEventInformation" />
-          <EntitySet Name="ANEventLocations" EntityType="ANDBModel.ANEventLocation" />
           <EntitySet Name="ANEventMembers" EntityType="ANDBModel.ANEventMember" />
           <EntitySet Name="ANEventRequestToJoins" EntityType="ANDBModel.ANEventRequestToJoin" />
           <EntitySet Name="ANEventRequirements" EntityType="ANDBModel.ANEventRequirement" />
@@ -551,34 +568,6 @@
           <EntitySet Name="sysdiagrams" EntityType="ANDBModel.sysdiagram" />
           <EntitySet Name="Users" EntityType="ANDBModel.User" />
           <EntitySet Name="UserRoles" EntityType="ANDBModel.UserRole" />
-          <AssociationSet Name="FK_ANEvent_Required_ANEvent" Association="ANDBModel.FK_ANEvent_Required_ANEvent">
-            <End Role="ANEvent" EntitySet="ANEvents" />
-            <End Role="ANEventRequirement" EntitySet="ANEventRequirements" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ANEvent_Topic_ANEvent" Association="ANDBModel.FK_ANEvent_Topic_ANEvent">
-            <End Role="ANEvent" EntitySet="ANEvents" />
-            <End Role="ANEventCategory" EntitySet="ANEventCategories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ANEvent_User" Association="ANDBModel.FK_ANEvent_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ANEvent" EntitySet="ANEvents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ANEventImage_ANEvent" Association="ANDBModel.FK_ANEventImage_ANEvent">
-            <End Role="ANEvent" EntitySet="ANEvents" />
-            <End Role="ANEventImage" EntitySet="ANEventImages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ANEventInformation_ANEvent" Association="ANDBModel.FK_ANEventInformation_ANEvent">
-            <End Role="ANEvent" EntitySet="ANEvents" />
-            <End Role="ANEventInformation" EntitySet="ANEventInformations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ANEventMember_ANEvent" Association="ANDBModel.FK_ANEventMember_ANEvent">
-            <End Role="ANEvent" EntitySet="ANEvents" />
-            <End Role="ANEventMember" EntitySet="ANEventMembers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RequestToJoin_ANEvent" Association="ANDBModel.FK_RequestToJoin_ANEvent">
-            <End Role="ANEvent" EntitySet="ANEvents" />
-            <End Role="ANEventRequestToJoin" EntitySet="ANEventRequestToJoins" />
-          </AssociationSet>
           <AssociationSet Name="FK_ANEvent_Topic_Topic" Association="ANDBModel.FK_ANEvent_Topic_Topic">
             <End Role="Category" EntitySet="Categories" />
             <End Role="ANEventCategory" EntitySet="ANEventCategories" />
@@ -621,6 +610,41 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserProfile" EntitySet="UserProfiles" />
           </AssociationSet>
+          <EntitySet Name="ANEvents" EntityType="ANDBModel.ANEvent" />
+          <AssociationSet Name="FK_ANEvent_Required_ANEvent" Association="ANDBModel.FK_ANEvent_Required_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvents" />
+            <End Role="ANEventRequirement" EntitySet="ANEventRequirements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEvent_Topic_ANEvent" Association="ANDBModel.FK_ANEvent_Topic_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvents" />
+            <End Role="ANEventCategory" EntitySet="ANEventCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEvent_User" Association="ANDBModel.FK_ANEvent_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ANEvent" EntitySet="ANEvents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEventImage_ANEvent" Association="ANDBModel.FK_ANEventImage_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvents" />
+            <End Role="ANEventImage" EntitySet="ANEventImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANEventMember_ANEvent" Association="ANDBModel.FK_ANEventMember_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvents" />
+            <End Role="ANEventMember" EntitySet="ANEventMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestToJoin_ANEvent" Association="ANDBModel.FK_RequestToJoin_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvents" />
+            <End Role="ANEventRequestToJoin" EntitySet="ANEventRequestToJoins" />
+          </AssociationSet>
+          <EntitySet Name="ANEventInformations" EntityType="ANDBModel.ANEventInformation" />
+          <AssociationSet Name="FK_ANEventInformation_ANEvent" Association="ANDBModel.FK_ANEventInformation_ANEvent">
+            <End Role="ANEvent" EntitySet="ANEvents" />
+            <End Role="ANEventInformation" EntitySet="ANEventInformations" />
+          </AssociationSet>
+          <EntitySet Name="ANEventLocations" EntityType="ANDBModel.ANEventLocation" />
+          <AssociationSet Name="FK_ANEventInformation_ANEventLocation" Association="ANDBModel.FK_ANEventInformation_ANEventLocation">
+            <End Role="ANEventLocation" EntitySet="ANEventLocations" />
+            <End Role="ANEventInformation" EntitySet="ANEventInformations" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -633,22 +657,6 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
-        <EntityType Name="ANEvent">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="ANEventRequirements" Relationship="ANDBModel.FK_ANEvent_Required_ANEvent" FromRole="ANEvent" ToRole="ANEventRequirement" />
-          <NavigationProperty Name="ANEventCategories" Relationship="ANDBModel.FK_ANEvent_Topic_ANEvent" FromRole="ANEvent" ToRole="ANEventCategory" />
-          <NavigationProperty Name="User" Relationship="ANDBModel.FK_ANEvent_User" FromRole="ANEvent" ToRole="User" />
-          <NavigationProperty Name="ANEventImages" Relationship="ANDBModel.FK_ANEventImage_ANEvent" FromRole="ANEvent" ToRole="ANEventImage" />
-          <NavigationProperty Name="ANEventInformations" Relationship="ANDBModel.FK_ANEventInformation_ANEvent" FromRole="ANEvent" ToRole="ANEventInformation" />
-          <NavigationProperty Name="ANEventMembers" Relationship="ANDBModel.FK_ANEventMember_ANEvent" FromRole="ANEvent" ToRole="ANEventMember" />
-          <NavigationProperty Name="ANEventRequestToJoins" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="ANEvent" ToRole="ANEventRequestToJoin" />
-        </EntityType>
         <EntityType Name="ANEventCategory">
           <Key>
             <PropertyRef Name="Id" />
@@ -656,8 +664,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ANEventId" Type="Int32" />
           <Property Name="CategoryId" Type="Int32" />
-          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEvent_Topic_ANEvent" FromRole="ANEventCategory" ToRole="ANEvent" />
           <NavigationProperty Name="Category" Relationship="ANDBModel.FK_ANEvent_Topic_Topic" FromRole="ANEventCategory" ToRole="Category" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEvent_Topic_ANEvent" FromRole="ANEventCategory" ToRole="ANEvent" />
         </EntityType>
         <EntityType Name="ANEventImage">
           <Key>
@@ -668,29 +676,8 @@
           <Property Name="ImageId" Type="Int32" />
           <Property Name="ANEventImageType" Type="Int32" />
           <Property Name="SortPriority" Type="Int32" />
-          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventImage_ANEvent" FromRole="ANEventImage" ToRole="ANEvent" />
           <NavigationProperty Name="Image" Relationship="ANDBModel.FK_ANEventImage_Image" FromRole="ANEventImage" ToRole="Image" />
-        </EntityType>
-        <EntityType Name="ANEventInformation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ANEventId" Type="Int32" />
-          <Property Name="EventLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="StartDate" Type="DateTime" Precision="0" />
-          <Property Name="EndDate" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventInformation_ANEvent" FromRole="ANEventInformation" ToRole="ANEvent" />
-        </EntityType>
-        <EntityType Name="ANEventLocation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="Coordinate" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventImage_ANEvent" FromRole="ANEventImage" ToRole="ANEvent" />
         </EntityType>
         <EntityType Name="ANEventMember">
           <Key>
@@ -699,8 +686,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ANEventId" Type="Int32" />
           <Property Name="UserId" Type="Int32" />
-          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventMember_ANEvent" FromRole="ANEventMember" ToRole="ANEvent" />
           <NavigationProperty Name="User" Relationship="ANDBModel.FK_ANEventMember_User" FromRole="ANEventMember" ToRole="User" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventMember_ANEvent" FromRole="ANEventMember" ToRole="ANEvent" />
         </EntityType>
         <EntityType Name="ANEventRequestToJoin">
           <Key>
@@ -709,8 +696,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ANEventId" Type="Int32" />
           <Property Name="UserId" Type="Int32" />
-          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="ANEventRequestToJoin" ToRole="ANEvent" />
           <NavigationProperty Name="User" Relationship="ANDBModel.FK_RequestToJoin_User" FromRole="ANEventRequestToJoin" ToRole="User" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="ANEventRequestToJoin" ToRole="ANEvent" />
         </EntityType>
         <EntityType Name="ANEventRequirement">
           <Key>
@@ -719,8 +706,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ANEventId" Type="Int32" Nullable="false" />
           <Property Name="RequiredId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEvent_Required_ANEvent" FromRole="ANEventRequirement" ToRole="ANEvent" />
           <NavigationProperty Name="RequiredProfile" Relationship="ANDBModel.FK_ANEvent_Required_RequiredProfile" FromRole="ANEventRequirement" ToRole="RequiredProfile" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEvent_Required_ANEvent" FromRole="ANEventRequirement" ToRole="ANEvent" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -772,11 +759,11 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Username" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ANEvents" Relationship="ANDBModel.FK_ANEvent_User" FromRole="User" ToRole="ANEvent" />
           <NavigationProperty Name="ANEventMembers" Relationship="ANDBModel.FK_ANEventMember_User" FromRole="User" ToRole="ANEventMember" />
           <NavigationProperty Name="ANEventRequestToJoins" Relationship="ANDBModel.FK_RequestToJoin_User" FromRole="User" ToRole="ANEventRequestToJoin" />
           <NavigationProperty Name="UserRoles" Relationship="ANDBModel.FK_UserRole_User" FromRole="User" ToRole="UserRole" />
           <NavigationProperty Name="UserProfiles" Relationship="ANDBModel.FK_UserProfile_User" FromRole="User" ToRole="UserProfile" />
+          <NavigationProperty Name="ANEvents" Relationship="ANDBModel.FK_ANEvent_User" FromRole="User" ToRole="ANEvent" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -788,102 +775,6 @@
           <NavigationProperty Name="Role" Relationship="ANDBModel.FK_UserRole_Role" FromRole="UserRole" ToRole="Role" />
           <NavigationProperty Name="User" Relationship="ANDBModel.FK_UserRole_User" FromRole="UserRole" ToRole="User" />
         </EntityType>
-        <Association Name="FK_ANEvent_Required_ANEvent">
-          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ANDBModel.ANEventRequirement" Role="ANEventRequirement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ANEvent">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ANEventRequirement">
-              <PropertyRef Name="ANEventId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ANEvent_Topic_ANEvent">
-          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ANDBModel.ANEventCategory" Role="ANEventCategory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ANEvent">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ANEventCategory">
-              <PropertyRef Name="ANEventId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ANEvent_User">
-          <End Type="ANDBModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ANEvent">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ANEventImage_ANEvent">
-          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ANDBModel.ANEventImage" Role="ANEventImage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ANEvent">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ANEventImage">
-              <PropertyRef Name="ANEventId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ANEventInformation_ANEvent">
-          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ANDBModel.ANEventInformation" Role="ANEventInformation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ANEvent">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ANEventInformation">
-              <PropertyRef Name="ANEventId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ANEventMember_ANEvent">
-          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ANDBModel.ANEventMember" Role="ANEventMember" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ANEvent">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ANEventMember">
-              <PropertyRef Name="ANEventId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_RequestToJoin_ANEvent">
-          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ANDBModel.ANEventRequestToJoin" Role="ANEventRequestToJoin" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ANEvent">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ANEventRequestToJoin">
-              <PropertyRef Name="ANEventId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ANEvent_Topic_Topic">
           <End Type="ANDBModel.Category" Role="Category" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -1045,6 +936,157 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ANEvent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ANEventRequirements" Relationship="ANDBModel.FK_ANEvent_Required_ANEvent" FromRole="ANEvent" ToRole="ANEventRequirement" />
+          <NavigationProperty Name="ANEventCategories" Relationship="ANDBModel.FK_ANEvent_Topic_ANEvent" FromRole="ANEvent" ToRole="ANEventCategory" />
+          <NavigationProperty Name="User" Relationship="ANDBModel.FK_ANEvent_User" FromRole="ANEvent" ToRole="User" />
+          <NavigationProperty Name="ANEventImages" Relationship="ANDBModel.FK_ANEventImage_ANEvent" FromRole="ANEvent" ToRole="ANEventImage" />
+          <NavigationProperty Name="ANEventMembers" Relationship="ANDBModel.FK_ANEventMember_ANEvent" FromRole="ANEvent" ToRole="ANEventMember" />
+          <NavigationProperty Name="ANEventRequestToJoins" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="ANEvent" ToRole="ANEventRequestToJoin" />
+          <NavigationProperty Name="ANEventInformations" Relationship="ANDBModel.FK_ANEventInformation_ANEvent" FromRole="ANEvent" ToRole="ANEventInformation" />
+        </EntityType>
+        <Association Name="FK_ANEvent_Required_ANEvent">
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventRequirement" Role="ANEventRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventRequirement">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEvent_Topic_ANEvent">
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventCategory" Role="ANEventCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventCategory">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEvent_User">
+          <End Type="ANDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEvent">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEventImage_ANEvent">
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventImage" Role="ANEventImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventImage">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANEventMember_ANEvent">
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventMember" Role="ANEventMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventMember">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestToJoin_ANEvent">
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventRequestToJoin" Role="ANEventRequestToJoin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventRequestToJoin">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ANEventInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ANEventId" Type="Int32" />
+          <Property Name="EventLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EventLocationId" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventInformation_ANEvent" FromRole="ANEventInformation" ToRole="ANEvent" />
+          <NavigationProperty Name="ANEventLocation" Relationship="ANDBModel.FK_ANEventInformation_ANEventLocation" FromRole="ANEventInformation" ToRole="ANEventLocation" />
+        </EntityType>
+        <Association Name="FK_ANEventInformation_ANEvent">
+          <End Type="ANDBModel.ANEvent" Role="ANEvent" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventInformation" Role="ANEventInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventInformation">
+              <PropertyRef Name="ANEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ANEventLocation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GGId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Lat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Lng" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ANEventInformations" Relationship="ANDBModel.FK_ANEventInformation_ANEventLocation" FromRole="ANEventLocation" ToRole="ANEventInformation" />
+        </EntityType>
+        <Association Name="FK_ANEventInformation_ANEventLocation">
+          <End Type="ANDBModel.ANEventLocation" Role="ANEventLocation" Multiplicity="0..1" />
+          <End Type="ANDBModel.ANEventInformation" Role="ANEventInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANEventLocation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventInformation">
+              <PropertyRef Name="EventLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1075,16 +1117,6 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ANDBModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="ANDBModel.Store.sp_upgraddiagrams" />
-          <EntitySetMapping Name="ANEvents">
-            <EntityTypeMapping TypeName="ANDBModel.ANEvent">
-              <MappingFragment StoreEntitySet="ANEvent">
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ANEventCategories">
             <EntityTypeMapping TypeName="ANDBModel.ANEventCategory">
               <MappingFragment StoreEntitySet="ANEventCategory">
@@ -1101,28 +1133,6 @@
                 <ScalarProperty Name="ANEventImageType" ColumnName="ANEventImageType" />
                 <ScalarProperty Name="ImageId" ColumnName="ImageId" />
                 <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ANEventInformations">
-            <EntityTypeMapping TypeName="ANDBModel.ANEventInformation">
-              <MappingFragment StoreEntitySet="ANEventInformation">
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="EventLocation" ColumnName="EventLocation" />
-                <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ANEventLocations">
-            <EntityTypeMapping TypeName="ANDBModel.ANEventLocation">
-              <MappingFragment StoreEntitySet="ANEventLocation">
-                <ScalarProperty Name="Coordinate" ColumnName="Coordinate" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1236,6 +1246,42 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ANEvents">
+            <EntityTypeMapping TypeName="ANDBModel.ANEvent">
+              <MappingFragment StoreEntitySet="ANEvent">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ANEventInformations">
+            <EntityTypeMapping TypeName="ANDBModel.ANEventInformation">
+              <MappingFragment StoreEntitySet="ANEventInformation">
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="EventLocationId" ColumnName="EventLocationId" />
+                <ScalarProperty Name="EventLocation" ColumnName="EventLocation" />
+                <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ANEventLocations">
+            <EntityTypeMapping TypeName="ANDBModel.ANEventLocation">
+              <MappingFragment StoreEntitySet="ANEventLocation">
+                <ScalarProperty Name="Lng" ColumnName="Lng" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="GGId" ColumnName="GGId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

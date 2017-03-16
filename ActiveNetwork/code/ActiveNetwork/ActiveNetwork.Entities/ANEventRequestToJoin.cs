@@ -18,7 +18,7 @@ namespace ActiveNetwork.Entities
         public Nullable<int> ANEventId { get; set; }
         public Nullable<int> UserId { get; set; }
     
-        public virtual ANEvent ANEvent { get; set; }
         public virtual User User { get; set; }
+        public virtual ANEvent ANEvent { get; set; }
     }
 }

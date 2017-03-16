@@ -17,19 +17,17 @@ namespace ActiveNetwork.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.ANEvents = new HashSet<ANEvent>();
             this.ANEventMembers = new HashSet<ANEventMember>();
             this.ANEventRequestToJoins = new HashSet<ANEventRequestToJoin>();
             this.UserRoles = new HashSet<UserRole>();
             this.UserProfiles = new HashSet<UserProfile>();
+            this.ANEvents = new HashSet<ANEvent>();
         }
     
         public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ANEvent> ANEvents { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ANEventMember> ANEventMembers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -38,5 +36,7 @@ namespace ActiveNetwork.Entities
         public virtual ICollection<UserRole> UserRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserProfile> UserProfiles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ANEvent> ANEvents { get; set; }
     }
 }

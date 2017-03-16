@@ -17,7 +17,7 @@ export class CreateEventDialog extends React.Component {
   componentWillMount() {
     this.setState({
       title: "",
-      startDate: '03/08/2017',
+      startDate: new Date(),
       endDate: '',
       isLocationLoading: false,
       locationList: [],
@@ -272,7 +272,6 @@ export class CreateEventDialog extends React.Component {
   }
   eventLocationOnSelect(value, state)
   {
-    debugger;
     this.setState({event_location: state,
       event_locationDisplay: state.Name,
        locationList: [state]});
@@ -294,7 +293,27 @@ export class CreateEventDialog extends React.Component {
   endDateOnSelect(v){
     this.setState({endDate: v.toObject()});
   }
-  createEvent(){
-    
+ async createEvent(){
+     let model = {
+      Information: {
+        EventLocationM:{
+          GGId: this.state.event_location.Id,
+          Name: this.state.event_location.Name,
+          Address: this.state.event_location.Address,
+          Lat: this.state.event_location.location != null ? this.state.event_location.location.lat : '',
+          Lng: this.state.event_location.location != null ? this.state.event_location.location.lng : ''
+        },
+        Description: "",
+        Title: this.state.title,
+        StartDate: this.state.startDate,
+        EndDate: this.state.EndDate
+      },
+      Categories: this.state.event_topics
+     };
+     console.log(model); 
+      let result = await ANEventServiceInstance.createANEvent(model);
+       if (result) {
+         this.close();
+       }
   }
 }

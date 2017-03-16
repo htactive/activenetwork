@@ -14,8 +14,20 @@ namespace ActiveNetwork.Entities
     
     public partial class ANEventLocation
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ANEventLocation()
+        {
+            this.ANEventInformations = new HashSet<ANEventInformation>();
+        }
+    
         public int Id { get; set; }
+        public string GGId { get; set; }
         public string Address { get; set; }
-        public string Coordinate { get; set; }
+        public string Name { get; set; }
+        public string Lat { get; set; }
+        public string Lng { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ANEventInformation> ANEventInformations { get; set; }
     }
 }

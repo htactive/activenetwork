@@ -148,5 +148,43 @@ namespace ActiveNetwork.Web.Controllers
 
             return null;
         }
+
+        [HttpPost, Route("anevent/create-event")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public bool CreateANEvent(ANEventModel model)
+        {
+            var eEvent = new ANEvent();
+            eEvent.UserId = CurrentUser.Id;
+            eEvent.CreatedDate = DateTime.Now;
+            eEvent.UpdatedDate = DateTime.Now;
+            var eInfo = new ANEventInformation();
+            eInfo.Title = model.Information.Title;
+            eInfo.StartDate = model.Information.StartDate;
+            eInfo.EndDate = model.Information.EndDate;
+            eInfo.Description = model.Information.Description;
+            var eLocation = new ANEventLocation();
+            eLocation.GGId = model.Information.EventLocationM.GGId;
+            eLocation.Address = model.Information.EventLocationM.Address;
+            eLocation.Name = model.Information.EventLocationM.Name;
+            eLocation.Lat = model.Information.EventLocationM.Lat;
+            eLocation.Lng = model.Information.EventLocationM.Lng;
+            var eCategories = model.Categories.Select(x => new Category() {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description
+            }).ToList();
+            eInfo.ANEventLocation = eLocation;
+            eInfo.ANEvent = eEvent;
+            eEvent.ANEventCategories = model.Categories.Select(x=> new ANEventCategory()
+            {
+                CategoryId = x.Id
+            }).ToList();
+            var elstInfo = new List<ANEventInformation>();
+            elstInfo.Add(eInfo);
+            eEvent.ANEventInformations = elstInfo;
+            this.ANDBUnitOfWork.ANEventRepository.Save(eEvent);
+            this.ANDBUnitOfWork.Commit();
+            return true;
+        }
     }
 }

@@ -8,9 +8,11 @@ namespace ActiveNetwork.Web.Models
     public class ANEventModel
     {
         public int Id { get; set; }
+        public int UserId { get; set; }
         public UserModel Host { get; set; }
         public ImageModel CoverPhoto { get; set; }
         public ANEventInformationModel Information { get; set; }
+        public List<CategoryModel> Categories { get; set; }
 
         public List<ANEventRequirementModel> ANEventRequirements { get; set; }
         public List<ANEventCategoryModel> ANEventCategories { get; set; }
