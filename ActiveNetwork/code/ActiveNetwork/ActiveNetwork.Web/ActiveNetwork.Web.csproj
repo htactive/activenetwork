@@ -181,6 +181,7 @@
     <Compile Include="Controllers\ANEventController.cs" />
     <Compile Include="Controllers\ANEventDetailController.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\GenderController.cs" />
     <Compile Include="Controllers\GoogleServiceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="Mapper\ANEventRequestToJoinMapper.cs" />
     <Compile Include="Mapper\ANEventRequirementMapper.cs" />
     <Compile Include="Mapper\ImageMapper.cs" />
+    <Compile Include="Mapper\GenderMapper.cs" />
     <Compile Include="Mapper\UserMapper.cs" />
     <Compile Include="Mapper\UserProfileMapper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -268,6 +270,7 @@
     <Folder Include="src\" />
     <Folder Include="Views\ANEventDetail\" />
     <Folder Include="Views\BaseApi\" />
+    <Folder Include="Views\Gender\" />
     <Folder Include="Views\GoogleService\" />
     <Folder Include="Views\User\" />
   </ItemGroup>

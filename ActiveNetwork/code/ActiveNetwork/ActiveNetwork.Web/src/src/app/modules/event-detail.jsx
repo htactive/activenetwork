@@ -3,7 +3,6 @@ import {EventDetailHeaderComponent} from '../components/event-detail-header';
 
 export class EventDetailPage extends Component {
 
-
   render() {
     return (
       <div className="row page-content">

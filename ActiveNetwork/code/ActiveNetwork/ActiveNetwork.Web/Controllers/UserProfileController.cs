@@ -55,7 +55,7 @@ namespace ActiveNetwork.Web.Controllers
             {
                 profileEntity.FirstName = model.FirstName;
             }
-            if (model.Gender != null && profileEntity.GenderId.GetValueOrDefault() != model.Gender.Id)
+            if (model.Gender != null && model.Gender.Id!=0 && profileEntity.GenderId.GetValueOrDefault() != model.Gender.Id)
             {
                 profileEntity.GenderId = model.Gender.Id;
             }
@@ -70,6 +70,10 @@ namespace ActiveNetwork.Web.Controllers
             if (model.Phone != null && profileEntity.Phone != model.Phone)
             {
                 profileEntity.Phone = model.Phone;
+            }
+            if (model.Introduction != null && model.Introduction != profileEntity.Introduction)
+            {
+                profileEntity.Introduction = model.Introduction;
             }
 
             this.ANDBUnitOfWork.UserProfileRepository.Save(profileEntity);

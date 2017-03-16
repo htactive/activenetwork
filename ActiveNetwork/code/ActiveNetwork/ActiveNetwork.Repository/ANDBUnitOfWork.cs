@@ -60,6 +60,14 @@ namespace ActiveNetwork.Repository
                 return roleRepository ?? (roleRepository = new RoleRepository(this));
             }
         }
+        private IGenderRepository genderRepository;
+        public IGenderRepository GenderRepository
+        {
+            get
+            {
+                return genderRepository ?? (genderRepository = new GenderRepository(this));
+            }
+        }
         #endregion
     }
 }

@@ -35,6 +35,7 @@ class UserProfileService extends ServiceBase {
       Email: model.email,
       Phone: model.phone,
       Address: model.address,
+      Introduction:model.introduction
     };
     return await super.executeFetchPost(url, updateData);
   }
