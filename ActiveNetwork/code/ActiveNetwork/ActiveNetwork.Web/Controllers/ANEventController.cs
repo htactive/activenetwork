@@ -132,5 +132,14 @@ namespace ActiveNetwork.Web.Controllers
             return ANEventRequestToJoinMapper.ToModel(entity);
 
         }
+
+        [HttpGet, Route("anevent/get-events-by-host")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public List<ANEventModel> GetEventByHost(int? hostId)
+        {
+            var events = this.ANDBUnitOfWork.ANEventRepository.GetAll().Where(e => e.UserId == (hostId ?? 0));
+
+            return null;
+        }
     }
 }
