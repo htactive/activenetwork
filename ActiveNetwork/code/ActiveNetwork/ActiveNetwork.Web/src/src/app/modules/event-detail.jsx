@@ -2,13 +2,15 @@ import React, {Component} from 'react';
 import {EventDetailHeaderComponent} from '../components/event-detail-header';
 
 export class EventDetailPage extends Component {
-
+  componentWillMount() {
+    console.log(this.props.location.query.id);
+  }
 
   render() {
     return (
       <div className="row page-content">
         <div className="col-md-8 col-md-offset-2">
-          <EventDetailHeaderComponent/>
+          <EventDetailHeaderComponent eventId={this.props.location.query.id}/>
           {this.props.children}
         </div>
       </div>

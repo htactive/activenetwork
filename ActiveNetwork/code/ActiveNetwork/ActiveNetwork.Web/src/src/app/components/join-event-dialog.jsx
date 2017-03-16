@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Modal, Button} from 'react-bootstrap';
-
+import {ANEventServiceInstance} from '../services/anevent-service';
 export class JoinEventDialog extends React.Component {
   componentWillMount() {
     this.setState({
@@ -8,8 +8,9 @@ export class JoinEventDialog extends React.Component {
       target: {},
     });
   }
-
-  show() {
+  eventId;
+  show(eventId) {
+    this.eventId = eventId;
     this.setState({
       showModal: true,
     });
@@ -23,6 +24,14 @@ export class JoinEventDialog extends React.Component {
 
   toggle() {
     this.setState({showModal: !this.state.showModal})
+  }
+
+  async join() {
+    let userId = this.props.currentUser;
+    let result = await ANEventServiceInstance.joinANEvents(this.eventId, userId);
+    if (result){
+      this.close();
+    }
   }
 
   render() {
@@ -44,7 +53,7 @@ export class JoinEventDialog extends React.Component {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button bsStyle="primary">Tham gia sự kiện</Button>
+          <Button bsStyle="primary" onClick={()=>this.join()}>Tham gia sự kiện</Button>
           <Button onClick={() => this.close()}>Hủy</Button>
         </Modal.Footer>
       </Modal>

@@ -109,7 +109,13 @@ namespace ActiveNetwork.Web.Controllers
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventRequestToJoinModel JoinEvent([FromBody]RequestToJoinModel model)
         {
+            if (model == null || model.EventId == 0 || model.UserId == 0)
+            {
+                return null;
+            }
             var RTJentity = this.ANDBUnitOfWork.RequestToJoinRepository.GetAll();
+
+            //check if already joined
             if (RTJentity != null)
             {
                 foreach (var tmp in RTJentity)
@@ -120,6 +126,7 @@ namespace ActiveNetwork.Web.Controllers
                     }
                 }
             }
+
             var entity = new ANEventRequestToJoin()
             {
                 UserId = model.UserId,
