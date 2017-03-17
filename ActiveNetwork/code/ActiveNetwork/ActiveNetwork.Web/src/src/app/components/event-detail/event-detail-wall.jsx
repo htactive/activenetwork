@@ -43,10 +43,7 @@ export class EventDetailWallComponent extends Component {
     return (<div className="row">
       <div className="col-md-5">
         <EventDetailWallDescriptionComponent eventDecription={this.state.eventDecription} />
-
         <EventDetailWallMembersComponent eventMember={this.state.eventMember} />
-
-
 
         <div className="widget">
           <div className="widget-header">

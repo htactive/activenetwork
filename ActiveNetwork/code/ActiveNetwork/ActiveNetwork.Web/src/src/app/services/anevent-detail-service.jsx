@@ -26,6 +26,11 @@ class ANEventDetailService extends ServiceBase {
     return result;
   }
 
+  async getANEventDetailRequestToJoin(eventId){
+    let url = '/anevent-detail/get-event-detail-request-to-join?Id=' + eventId;
+    let result = await super.executeFetch(url);
+    return result;
+  }
 }
 
 let ANEventDetailServiceInstance = new ANEventDetailService();
