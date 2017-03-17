@@ -10,5 +10,6 @@ namespace ActiveNetwork.Web.Models
         public int Id { get; set; }
         public ANEventModel ANEvent { get; set; }
         public UserModel User { get; set; }
+        public DateTime RequestDate { get; set; }
     }
 }
