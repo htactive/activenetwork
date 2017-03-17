@@ -63,6 +63,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ANEventId" Type="int" />
           <Property Name="UserId" Type="int" />
+          <Property Name="JoinDate" Type="date" />
         </EntityType>
         <EntityType Name="ANEventRequestToJoin">
           <Key>
@@ -71,6 +72,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ANEventId" Type="int" />
           <Property Name="UserId" Type="int" />
+          <Property Name="RequestDate" Type="date" />
         </EntityType>
         <EntityType Name="ANEventRequirement">
           <Key>
@@ -101,6 +103,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Url" Type="nvarchar" MaxLength="500" />
+          <Property Name="S3FileKey" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="RequiredProfile">
           <Key>
@@ -567,7 +570,6 @@
           <EntitySet Name="ANEventRequirements" EntityType="ANDBModel.ANEventRequirement" />
           <EntitySet Name="Categories" EntityType="ANDBModel.Category" />
           <EntitySet Name="Genders" EntityType="ANDBModel.Gender" />
-          <EntitySet Name="Images" EntityType="ANDBModel.Image" />
           <EntitySet Name="RequiredProfiles" EntityType="ANDBModel.RequiredProfile" />
           <EntitySet Name="Roles" EntityType="ANDBModel.Role" />
           <EntitySet Name="sysdiagrams" EntityType="ANDBModel.sysdiagram" />
@@ -606,10 +608,6 @@
             <End Role="Category" EntitySet="Categories" />
             <End Role="ANEventCategory" EntitySet="ANEventCategories" />
           </AssociationSet>
-          <AssociationSet Name="FK_ANEventImage_Image" Association="ANDBModel.FK_ANEventImage_Image">
-            <End Role="Image" EntitySet="Images" />
-            <End Role="ANEventImage" EntitySet="ANEventImages" />
-          </AssociationSet>
           <AssociationSet Name="FK_ANEventInformation_ANEventLocation" Association="ANDBModel.FK_ANEventInformation_ANEventLocation">
             <End Role="ANEventLocation" EntitySet="ANEventLocations" />
             <End Role="ANEventInformation" EntitySet="ANEventInformations" />
@@ -630,10 +628,6 @@
             <End Role="Gender" EntitySet="Genders" />
             <End Role="UserProfile" EntitySet="UserProfiles" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserProfile_Image" Association="ANDBModel.FK_UserProfile_Image">
-            <End Role="Image" EntitySet="Images" />
-            <End Role="UserProfile" EntitySet="UserProfiles" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserRole_Role" Association="ANDBModel.FK_UserRole_Role">
             <End Role="Role" EntitySet="Roles" />
             <End Role="UserRole" EntitySet="UserRoles" />
@@ -645,6 +639,15 @@
           <AssociationSet Name="FK_UserRole_User" Association="ANDBModel.FK_UserRole_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <EntitySet Name="Images" EntityType="ANDBModel.Image" />
+          <AssociationSet Name="FK_ANEventImage_Image" Association="ANDBModel.FK_ANEventImage_Image">
+            <End Role="Image" EntitySet="Images" />
+            <End Role="ANEventImage" EntitySet="ANEventImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Image" Association="ANDBModel.FK_UserProfile_Image">
+            <End Role="Image" EntitySet="Images" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
@@ -732,6 +735,7 @@
           <Property Name="UserId" Type="Int32" />
           <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventMember_ANEvent" FromRole="ANEventMember" ToRole="ANEvent" />
           <NavigationProperty Name="User" Relationship="ANDBModel.FK_ANEventMember_User" FromRole="ANEventMember" ToRole="User" />
+          <Property Name="JoinDate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="ANEventRequestToJoin">
           <Key>
@@ -742,6 +746,7 @@
           <Property Name="UserId" Type="Int32" />
           <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="ANEventRequestToJoin" ToRole="ANEvent" />
           <NavigationProperty Name="User" Relationship="ANDBModel.FK_RequestToJoin_User" FromRole="ANEventRequestToJoin" ToRole="User" />
+          <Property Name="RequestDate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="ANEventRequirement">
           <Key>
@@ -769,15 +774,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="GenderName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="UserProfiles" Relationship="ANDBModel.FK_UserProfile_Gender" FromRole="Gender" ToRole="UserProfile" />
-        </EntityType>
-        <EntityType Name="Image">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ANEventImages" Relationship="ANDBModel.FK_ANEventImage_Image" FromRole="Image" ToRole="ANEventImage" />
-          <NavigationProperty Name="UserProfiles" Relationship="ANDBModel.FK_UserProfile_Image" FromRole="Image" ToRole="UserProfile" />
         </EntityType>
         <EntityType Name="RequiredProfile">
           <Key>
@@ -834,8 +830,8 @@
           <Property Name="GenderId" Type="Int32" />
           <Property Name="Introduction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Gender" Relationship="ANDBModel.FK_UserProfile_Gender" FromRole="UserProfile" ToRole="Gender" />
-          <NavigationProperty Name="Image" Relationship="ANDBModel.FK_UserProfile_Image" FromRole="UserProfile" ToRole="Image" />
           <NavigationProperty Name="User" Relationship="ANDBModel.FK_UserProfile_User" FromRole="UserProfile" ToRole="User" />
+          <NavigationProperty Name="Image" Relationship="ANDBModel.FK_UserProfile_Image" FromRole="UserProfile" ToRole="Image" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -957,20 +953,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ANEventImage_Image">
-          <End Type="ANDBModel.Image" Role="Image" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ANDBModel.ANEventImage" Role="ANEventImage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Image">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ANEventImage">
-              <PropertyRef Name="ImageId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ANEventInformation_ANEventLocation">
           <End Type="ANDBModel.ANEventLocation" Role="ANEventLocation" Multiplicity="0..1" />
           <End Type="ANDBModel.ANEventInformation" Role="ANEventInformation" Multiplicity="*" />
@@ -1037,18 +1019,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserProfile_Image">
-          <End Type="ANDBModel.Image" Role="Image" Multiplicity="0..1" />
-          <End Type="ANDBModel.UserProfile" Role="UserProfile" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Image">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserProfile">
-              <PropertyRef Name="Avatar" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserRole_Role">
           <End Type="ANDBModel.Role" Role="Role" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -1086,6 +1056,42 @@
             </Principal>
             <Dependent Role="UserRole">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="S3FileKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ANEventImages" Relationship="ANDBModel.FK_ANEventImage_Image" FromRole="Image" ToRole="ANEventImage" />
+          <NavigationProperty Name="UserProfiles" Relationship="ANDBModel.FK_UserProfile_Image" FromRole="Image" ToRole="UserProfile" />
+        </EntityType>
+        <Association Name="FK_ANEventImage_Image">
+          <End Type="ANDBModel.Image" Role="Image" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ANDBModel.ANEventImage" Role="ANEventImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ANEventImage">
+              <PropertyRef Name="ImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_Image">
+          <End Type="ANDBModel.Image" Role="Image" Multiplicity="0..1" />
+          <End Type="ANDBModel.UserProfile" Role="UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="Avatar" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1178,6 +1184,7 @@
           <EntitySetMapping Name="ANEventMembers">
             <EntityTypeMapping TypeName="ANDBModel.ANEventMember">
               <MappingFragment StoreEntitySet="ANEventMember">
+                <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -1187,6 +1194,7 @@
           <EntitySetMapping Name="ANEventRequestToJoins">
             <EntityTypeMapping TypeName="ANDBModel.ANEventRequestToJoin">
               <MappingFragment StoreEntitySet="ANEventRequestToJoin">
+                <ScalarProperty Name="RequestDate" ColumnName="RequestDate" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -1215,14 +1223,6 @@
             <EntityTypeMapping TypeName="ANDBModel.Gender">
               <MappingFragment StoreEntitySet="Gender">
                 <ScalarProperty Name="GenderName" ColumnName="GenderName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Images">
-            <EntityTypeMapping TypeName="ANDBModel.Image">
-              <MappingFragment StoreEntitySet="Image">
-                <ScalarProperty Name="Url" ColumnName="Url" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1285,6 +1285,15 @@
               <MappingFragment StoreEntitySet="UserRole">
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Images">
+            <EntityTypeMapping TypeName="ANDBModel.Image">
+              <MappingFragment StoreEntitySet="Image">
+                <ScalarProperty Name="S3FileKey" ColumnName="S3FileKey" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

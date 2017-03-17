@@ -39,6 +39,12 @@ class UserProfileService extends ServiceBase {
     };
     return await super.executeFetchPost(url, updateData);
   }
+
+  async uploadUserAvatar(model){
+    let url = '/anprofile/upload-my-avatar';
+    let image = model.avatar;
+    return await super.executeFetchPostImage(url,image);
+  }
 }
 
 let UserProfileServiceInstance = new UserProfileService();

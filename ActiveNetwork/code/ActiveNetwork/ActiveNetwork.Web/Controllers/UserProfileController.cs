@@ -10,6 +10,7 @@ using ActiveNetwork.Web.Mapper;
 using ActiveNetwork.Entities;
 using HTActive.Authorize.Core;
 using ActiveNetwork.Common;
+using System.Threading.Tasks;
 
 namespace ActiveNetwork.Web.Controllers
 {
@@ -55,7 +56,7 @@ namespace ActiveNetwork.Web.Controllers
             {
                 profileEntity.FirstName = model.FirstName;
             }
-            if (model.Gender != null && model.Gender.Id!=0 && profileEntity.GenderId.GetValueOrDefault() != model.Gender.Id)
+            if (model.Gender != null && model.Gender.Id != 0 && profileEntity.GenderId.GetValueOrDefault() != model.Gender.Id)
             {
                 profileEntity.GenderId = model.Gender.Id;
             }
@@ -121,5 +122,32 @@ namespace ActiveNetwork.Web.Controllers
             model.Id = profileEntity.Id;
             return UpdateUserProfile(model);
         }
+
+        [Route("anprofile/upload-my-avatar"), HttpPost]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public async Task<ImageModel> UploadMyAvatar()
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                return null;
+            }
+            var currentProfile = this.ANDBUnitOfWork.UserProfileRepository.GetAll().FirstOrDefault(x => x.UserId.HasValue && x.UserId.Value == CurrentUser.Id);
+            if (currentProfile == null) return null;
+            var filesReadToProvider = await Request.Content.ReadAsMultipartAsync();
+
+            if (filesReadToProvider.Contents.Count == 0) return null;
+            var stream = await filesReadToProvider.Contents[0].ReadAsStreamAsync();
+            var fileKey = string.Format("user/avatar/av_{0}.png", Guid.NewGuid().ToString());
+
+            var image = await this.CreateNewImage(stream, fileKey);
+
+            currentProfile.Avatar = image.Id;
+            this.ANDBUnitOfWork.UserProfileRepository.Save(currentProfile);
+            this.ANDBUnitOfWork.Commit();
+
+
+            return ImageMapper.ToModel(image);
+        }
+
     }
 }

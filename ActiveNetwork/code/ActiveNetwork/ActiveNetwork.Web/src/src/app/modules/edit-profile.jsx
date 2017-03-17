@@ -52,12 +52,13 @@ export class EditProfilePage extends Component {
                 <div className="row">
                   <div className="col-md-3">
                     <div className="user-info-left">
-                      <img src="/img/Friends/guy-3.jpg" alt="Profile Picture"/>
+                      <img src={(this.state.userProfile.Avatar || {Url: ''}).Url} alt="Profile Picture"/>
                       <div className="contact">
                         <p>
-                        <a className="file-input btn btn-link btn-file">
-                          Đổi hình đại diện <input type="file" multiple=""/>
-                        </a>
+                          <a className="file-input btn btn-link btn-file">
+                            Đổi hình đại diện <input type="file" multiple="" accept="image/*"
+                                                     onChange={v => this.startUploadMyAvatar(v)}/>
+                          </a>
                         </p>
                         <ul className="list-inline social">
                           <li><a href="#" title="Facebook"><i className="fa fa-facebook-square"/></a></li>
@@ -284,5 +285,16 @@ export class EditProfilePage extends Component {
         </div>
       </div>
     </div>;
+  }
+
+  async startUploadMyAvatar(v) {
+    if (v.target.files && v.target.files[0]) {
+      let image = v.target.files[0];
+      let uploadResult = await UserProfileServiceInstance.uploadUserAvatar({avatar: image});
+      if(uploadResult){
+        this.state.userProfile.Avatar = uploadResult;
+        this.forceUpdate();
+      }
+    }
   }
 }

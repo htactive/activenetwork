@@ -11,10 +11,15 @@ namespace ActiveNetwork.Web.Mapper
     {
         public static ImageModel ToModel(Image entity)
         {
+            var imageUrl = entity.Url;
+            if (!string.IsNullOrEmpty(entity.S3FileKey))
+            {
+                imageUrl = string.Format("https://s3-ap-southeast-1.amazonaws.com/anresource//{0}", entity.S3FileKey);
+            }
             return entity == null ? null : new ImageModel()
             {
                 Id = entity.Id,
-                Url = entity.Url
+                Url = imageUrl
             };
         }
 

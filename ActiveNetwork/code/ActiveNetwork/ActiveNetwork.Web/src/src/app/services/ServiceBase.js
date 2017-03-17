@@ -45,7 +45,7 @@ export class ServiceBase {
       if (!ignoreBlockUI) {
         UIBlocker.instance.block();
       }
-      let result = await await fetch(url,
+      let result = await fetch(url,
         {
           headers: {
             'Accept': 'application/json',
@@ -54,6 +54,45 @@ export class ServiceBase {
           method: 'POST',
           credentials: 'include',
           body: JSON.stringify(data)
+        });
+
+      if (!ignoreBlockUI) {
+        UIBlocker.instance.unblock();
+      }
+      if (result.ok) {
+        return await result.json();
+      }
+      if (result.status == 403) {
+        let currentUser = userStore.getState().currentUser;
+        if (currentUser == undefined || currentUser == null) {
+          window.location.href = '/login';
+          return null;
+        }
+        let cookieValue = cookie.load('ANLOGINCOOKIE');
+        if (cookieValue == undefined || cookieValue == null) {
+          window.location.href = '/login';
+          return null;
+        }
+      }
+      return null;
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+  async executeFetchPostImage(url, image, ignoreBlockUI) {
+    try {
+
+      if (!ignoreBlockUI) {
+        UIBlocker.instance.block();
+      }
+      const formData = new FormData();
+      formData.append('file', image);
+      let result = await fetch(url,
+        {
+          method: 'POST',
+          credentials: 'include',
+          body: formData
         });
 
       if (!ignoreBlockUI) {

@@ -77,6 +77,15 @@ namespace ActiveNetwork.Repository
                 return requestToJoinRepository ?? (requestToJoinRepository = new ANEventRequestToJoinRepository(this));
             }
         }
+        private IImageRepository imageRepository;
+        public IImageRepository ImageRepository
+        {
+            get
+            {
+                return imageRepository ?? (imageRepository = new ImageRepository(this));
+            }
+        }
+
         #endregion
     }
 }
