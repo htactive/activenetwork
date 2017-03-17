@@ -8,6 +8,7 @@ import {PhoneNumberEditor} from '../components/edit-profile-control/phone-number
 import {AddressEditor} from '../components/edit-profile-control/address-editor';
 import {GenderEditor} from '../components/edit-profile-control/gender-editor';
 import {SelfIntroductionEditor} from '../components/edit-profile-control/self-introduction-editor';
+import {ChangePassword} from '../components/edit-profile-control/change-password';
 import {userStore} from '../store/user-store';
 
 export class EditProfilePage extends Component {
@@ -26,7 +27,7 @@ export class EditProfilePage extends Component {
     this.setState({
       userProfile: profile,
       user_birthDate: birthDate,
-      user_username: currentUser.Username
+      user_username: currentUser.Username,
     });
   }
 
@@ -41,11 +42,11 @@ export class EditProfilePage extends Component {
           <div className="col-md-10 col-md-offset-1">
             <ul className="nav nav-tabs nav-tabs-custom-colored tabs-iconized">
               <li className="active"><a href="#profile-tab" data-toggle="tab" aria-expanded="true"><i
-                className="fa fa-user"/> Profile</a></li>
-              <li className=""><a href="#activity-tab" data-toggle="tab" aria-expanded="false"><i
-                className="fa fa-rss"/> Recent Activity</a></li>
+                className="fa fa-user"/> Hồ sơ cá nhân</a></li>
               <li className=""><a href="#settings-tab" data-toggle="tab" aria-expanded="false"><i
-                className="fa fa-gear"/> Settings</a></li>
+                className="fa fa-gear"/> Thiết đặt</a></li>
+              <li className=""><a href="#activity-tab" data-toggle="tab" aria-expanded="false"><i
+                className="fa fa-rss"/> Thông báo</a></li>
             </ul>
             <div className="tab-content profile-page">
               <div className="tab-pane profile active" id="profile-tab">
@@ -136,6 +137,10 @@ export class EditProfilePage extends Component {
                 </div>
               </div>
 
+              <div className="tab-pane settings" id="settings-tab">
+                <ChangePassword/>
+              </div>
+
               <div className="tab-pane activity" id="activity-tab">
                 <ul className="list-unstyled activity-list">
                   <li>
@@ -193,92 +198,6 @@ export class EditProfilePage extends Component {
                 </ul>
                 <p className="text-center more"><a href="#" className="btn btn-custom-primary">View more <i
                   className="fa fa-long-arrow-right"/></a></p>
-              </div>
-
-              <div className="tab-pane settings" id="settings-tab">
-                <form className="form-horizontal" role="form">
-                  <fieldset>
-                    <h3><i className="fa fa-square"/> Change Password</h3>
-                    <div className="form-group">
-                      <label htmlFor="old-password" className="col-sm-3 control-label">Old Password</label>
-                      <div className="col-sm-4">
-                        <input type="password" id="old-password" name="old-password" className="form-control"/>
-                      </div>
-                    </div>
-                    <hr/>
-                    <div className="form-group">
-                      <label htmlFor="password" className="col-sm-3 control-label">New Password</label>
-                      <div className="col-sm-4">
-                        <input type="password" id="password" name="password" className="form-control"/>
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="password2" className="col-sm-3 control-label">Repeat Password</label>
-                      <div className="col-sm-4">
-                        <input type="password" id="password2" name="password2" className="form-control"/>
-                      </div>
-                    </div>
-                  </fieldset>
-                  <fieldset>
-                    <h3><i className="fa fa-square"/> Privacy</h3>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Show my display name</span>
-                      </label>
-                    </div>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Show my birth date</span>
-                      </label>
-                    </div>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Show my email</span>
-                      </label>
-                    </div>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Show my online status on chat</span>
-                      </label>
-                    </div>
-                  </fieldset>
-                  <h3><i className="fa fa-square"> </i>Notifications</h3>
-                  <fieldset>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Receive message from administrator</span>
-                      </label>
-                    </div>
-
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">New product has been added</span>
-                      </label>
-                    </div>
-
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Product review has been approved</span>
-                      </label>
-                    </div>
-
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Others liked your post</span>
-                      </label>
-                    </div>
-                  </fieldset>
-                </form>
-                <p className="text-center"><a href="#" className="btn btn-custom-primary"><i
-                  className="fa fa-floppy-o"/> Save Changes</a></p>
               </div>
             </div>
           </div>

@@ -28,8 +28,8 @@ export class GenderEditor extends Component {
     if (this.state.isEditing) {
       return (
         <div className="row data-row">
-          <span className="data-name col-lg-3 col-md-3">Giới tính</span>
-          <div className="form-horizontal col-lg-9 col-md-9">
+          <span className="data-name col-lg-3 col-md-3 col-sm-12 col-xs-12">Giới tính</span>
+          <div className="form-horizontal col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <div
               className={`form-group no-margin col-lg-12 col-md-12${this.state.edit_genderIdInvalid ? ' has-error' : ''}`}>
 
@@ -44,15 +44,6 @@ export class GenderEditor extends Component {
                 {this.state.genderList != null ? this.state.genderList.map(x => <option key={x.Id} value={x.Id}>
                   {x.GenderName}</option>) : null}
               </select>
-
-              {/*<input type="text" className="form-control" placeholder="Thư điện tử"*/}
-                     {/*defaultValue={this.state.edit_genderId}*/}
-                     {/*onChange={(e) => {*/}
-                       {/*let val = e.target.value;*/}
-                       {/*this.setState({edit_genderId: val});*/}
-                       {/*this.validateGender(val);*/}
-                     {/*}}*/}
-              {/*/>*/}
               {this.state.edit_genderIdInvalid ?
                 <span className="help-block">{this.state.edit_genderIdInvalidMessage}</span> : null}
             </div>
@@ -68,8 +59,8 @@ export class GenderEditor extends Component {
     return (
       <div>
         <div className="row data-row">
-          <span className="data-name col-lg-3 col-md-3">Giới tính</span>
-          <div className="col-lg-9 col-md-9">
+          <span className="data-name col-lg-3 col-md-3 col-sm-12 col-xs-12">Giới tính</span>
+          <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <span className="data-value">{(this.state.genderList.filter(x=>x.Id == this.state.genderId)[0] || {}).GenderName}</span>
             <span className="data-action">
             <a className="btn btn-link" onClick={() => this.editClick()}><i className="fa fa-edit"/> Chỉnh sửa</a>

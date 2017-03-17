@@ -17,8 +17,8 @@ export class UsernameEditor extends Component {
     return (
       <div>
         <div className="row data-row">
-          <span className="data-name col-lg-3 col-md-3">Tên đăng nhập</span>
-          <div className="col-lg-9 col-md-9">
+          <span className="data-name col-lg-3 col-md-3 col-sm-12 col-xs-12">Tên đăng nhập</span>
+          <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12">
           <span
             className="data-value">{this.state.username}</span>
           </div>

@@ -112,7 +112,18 @@ namespace ActiveNetwork.Web.Controllers
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                 HttpContext.Current.Response.Cookies.Add(authCookie);
             }
-            return new RegisterResponseModel() { IsSuccessed = true,User = userModel };
+            return new RegisterResponseModel() { IsSuccessed = true, User = userModel };
+        }
+        [HttpPost, Route("user/change-password")]
+        [HTActive.Authorize.Core.HTActiveAuthorize(Roles = Common.ANRoleConstant.USER)]
+        public bool ChangePassword(ChangePasswordRequest request)
+        {
+            var user = this.ANDBUnitOfWork.UserRepository.GetAll().FirstOrDefault(x => x.Id == CurrentUser.Id && x.Password == request.OldPassword);
+            if (user == null) return false;
+            user.Password = request.NewPassword;
+            this.ANDBUnitOfWork.UserRepository.Save(user);
+            this.ANDBUnitOfWork.Commit();
+            return true;
         }
     }
 }

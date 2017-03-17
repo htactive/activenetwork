@@ -2,9 +2,9 @@ import {userStore} from '../store/user-store';
 import {UIBlocker} from '../components/ui-blocker';
 import cookie from 'react-cookie';
 export class ServiceBase {
-  async executeFetch(url, ignoreBlockUI) {
+  async executeFetch(url, shouldBlockUI) {
     try {
-      if (!ignoreBlockUI) {
+      if (shouldBlockUI) {
         UIBlocker.instance.block();
       }
       let result = await fetch(url, {
@@ -14,7 +14,7 @@ export class ServiceBase {
          */
         credentials: 'include'
       });
-      if (!ignoreBlockUI) {
+      if (shouldBlockUI) {
         UIBlocker.instance.unblock();
       }
       if (result.ok) {
@@ -39,10 +39,9 @@ export class ServiceBase {
     }
   }
 
-  async executeFetchPost(url, data, ignoreBlockUI) {
+  async executeFetchPost(url, data, shouldBlockUI = true) {
     try {
-
-      if (!ignoreBlockUI) {
+      if (shouldBlockUI) {
         UIBlocker.instance.block();
       }
       let result = await fetch(url,
@@ -56,7 +55,7 @@ export class ServiceBase {
           body: JSON.stringify(data)
         });
 
-      if (!ignoreBlockUI) {
+      if (shouldBlockUI) {
         UIBlocker.instance.unblock();
       }
       if (result.ok) {
@@ -80,10 +79,11 @@ export class ServiceBase {
       console.log(e);
     }
   }
-  async executeFetchPostImage(url, image, ignoreBlockUI) {
+
+  async executeFetchPostImage(url, image, shouldBlockUI = true) {
     try {
 
-      if (!ignoreBlockUI) {
+      if (shouldBlockUI) {
         UIBlocker.instance.block();
       }
       const formData = new FormData();
@@ -95,7 +95,7 @@ export class ServiceBase {
           body: formData
         });
 
-      if (!ignoreBlockUI) {
+      if (shouldBlockUI) {
         UIBlocker.instance.unblock();
       }
       if (result.ok) {

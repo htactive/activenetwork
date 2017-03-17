@@ -23,8 +23,8 @@ export class PhoneNumberEditor extends Component {
     if (this.state.isEditing) {
       return (
         <div className="row data-row">
-          <span className="data-name col-lg-3 col-md-3">Số điện thoại</span>
-          <div className="form-horizontal col-lg-9 col-md-9">
+          <span className="data-name col-lg-3 col-md-3 col-sm-12 col-xs-12">Số điện thoại</span>
+          <div className="form-horizontal col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <div
               className={`form-group no-margin col-lg-12 col-md-12${this.state.edit_phoneInvalid ? ' has-error' : ''}`}>
               <input type="text" className="form-control" placeholder="Số điện thoại"
@@ -49,8 +49,8 @@ export class PhoneNumberEditor extends Component {
     return (
       <div>
         <div className="row data-row">
-          <span className="data-name col-lg-3 col-md-3">Số điện thoại</span>
-          <div className="col-lg-9 col-md-9">
+          <span className="data-name col-lg-3 col-md-3 col-sm-12 col-xs-12">Số điện thoại</span>
+          <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <a href={`mailto:${this.state.phone}`} className="data-value">{this.state.phone}</a>
             <span className="data-action">
             <a className="btn btn-link" onClick={() => this.editClick()}><i className="fa fa-edit"/> Chỉnh sửa</a>

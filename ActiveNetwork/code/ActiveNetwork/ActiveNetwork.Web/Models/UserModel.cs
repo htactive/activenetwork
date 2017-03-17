@@ -35,4 +35,9 @@ namespace ActiveNetwork.Web.Models
         public string ErrorMessage { get; set; }
         public UserModel User { get; set; }
     }
+    public class ChangePasswordRequest
+    {
+        public string OldPassword { get; set; }
+        public string NewPassword { get; set; }
+    }
 }

@@ -26,8 +26,8 @@ export class FullNameEditor extends Component {
     if (this.state.isEditing) {
       return (
         <div className="row data-row">
-          <span className="data-name col-lg-3 col-md-3">Họ và tên</span>
-          <div className="form-horizontal col-lg-9 col-md-9">
+          <span className="data-name col-lg-3 col-md-3 col-sm-12 col-xs-12">Họ và tên</span>
+          <div className="form-horizontal col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <div className="col-lg-4 col-md-4">
               <input type="text" className="form-control" placeholder="Họ"
                      defaultValue={this.state.edit_lastName}
@@ -55,8 +55,8 @@ export class FullNameEditor extends Component {
     return (
       <div>
         <div className="row data-row">
-          <span className="data-name col-lg-3 col-md-3">Họ và tên</span>
-          <div className="col-lg-9 col-md-9">
+          <span className="data-name col-lg-3 col-md-3 col-sm-12 col-xs-12">Họ và tên</span>
+          <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12">
           <span
             className="data-value">{`${`${this.state.lastName} ${this.state.middleName}`.trim()} ${this.state.firstName}`.trim()}</span>
             <span className="data-action">
