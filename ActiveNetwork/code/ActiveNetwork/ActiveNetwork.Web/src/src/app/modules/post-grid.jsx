@@ -68,8 +68,7 @@ export class PostGrid extends Component {
                       </div>
                     </div>
                     <div className="box-body">
-                      <a className="event-name" href="" onClick={(e) => this.goToEventDetail(e)}>Sự kiện nhậu mừng sinh
-                        nhật Bill Gate</a>
+                      <a className="event-name" href="" onClick={(e) => this.goToEventDetail(e, post.anevent_id)}>{post.title}</a>
                       <p dangerouslySetInnerHTML={{__html: post.description}}/>
                     </div>
                     <img className="img-responsive show-in-modal" src={post.cover_image} alt="Photo"/>
