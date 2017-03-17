@@ -131,6 +131,7 @@ namespace ActiveNetwork.Web.Controllers
             {
                 UserId = model.UserId,
                 ANEventId = model.EventId,
+                RequestDate = DateTimeHelper.DateTimeNow,
             };
 
             this.ANDBUnitOfWork.RequestToJoinRepository.Save(entity);

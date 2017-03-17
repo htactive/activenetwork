@@ -27,7 +27,7 @@ class ANEventDetailService extends ServiceBase {
   }
 
   async getANEventDetailRequestToJoin(eventId){
-    let url = '/anevent-detail/get-event-detail-request-to-join?Id=' + eventId;
+    let url = '/anevent-detail/get-event-detail-joiner?Id=' + eventId;
     let result = await super.executeFetch(url);
     return result;
   }

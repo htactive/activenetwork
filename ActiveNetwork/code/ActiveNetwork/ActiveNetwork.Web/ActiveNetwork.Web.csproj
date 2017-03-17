@@ -205,6 +205,7 @@
     <Compile Include="Models\ANEventCategoryModel.cs" />
     <Compile Include="Models\ANEventDetailInformationModel.cs" />
     <Compile Include="Models\ANEventDetailMemberModel.cs" />
+    <Compile Include="Models\ANEventDetailRequestToJoinModel.cs" />
     <Compile Include="Models\ANEventGroupModel.cs" />
     <Compile Include="Models\ANEventImageModel.cs" />
     <Compile Include="Models\ANEventInformationModel.cs" />

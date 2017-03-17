@@ -63,6 +63,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ANEventId" Type="int" />
           <Property Name="UserId" Type="int" />
+          <Property Name="JoinDate" Type="date" />
         </EntityType>
         <EntityType Name="ANEventRequestToJoin">
           <Key>
@@ -71,6 +72,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ANEventId" Type="int" />
           <Property Name="UserId" Type="int" />
+          <Property Name="RequestDate" Type="date" />
         </EntityType>
         <EntityType Name="ANEventRequirement">
           <Key>
@@ -732,6 +734,7 @@
           <Property Name="UserId" Type="Int32" />
           <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_ANEventMember_ANEvent" FromRole="ANEventMember" ToRole="ANEvent" />
           <NavigationProperty Name="User" Relationship="ANDBModel.FK_ANEventMember_User" FromRole="ANEventMember" ToRole="User" />
+          <Property Name="JoinDate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="ANEventRequestToJoin">
           <Key>
@@ -742,6 +745,7 @@
           <Property Name="UserId" Type="Int32" />
           <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="ANEventRequestToJoin" ToRole="ANEvent" />
           <NavigationProperty Name="User" Relationship="ANDBModel.FK_RequestToJoin_User" FromRole="ANEventRequestToJoin" ToRole="User" />
+          <Property Name="RequestDate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="ANEventRequirement">
           <Key>
@@ -1178,6 +1182,7 @@
           <EntitySetMapping Name="ANEventMembers">
             <EntityTypeMapping TypeName="ANDBModel.ANEventMember">
               <MappingFragment StoreEntitySet="ANEventMember">
+                <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -1187,6 +1192,7 @@
           <EntitySetMapping Name="ANEventRequestToJoins">
             <EntityTypeMapping TypeName="ANDBModel.ANEventRequestToJoin">
               <MappingFragment StoreEntitySet="ANEventRequestToJoin">
+                <ScalarProperty Name="RequestDate" ColumnName="RequestDate" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

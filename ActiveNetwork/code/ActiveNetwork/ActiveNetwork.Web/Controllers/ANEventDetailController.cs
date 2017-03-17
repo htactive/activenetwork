@@ -24,7 +24,7 @@ namespace ActiveNetwork.Web.Controllers
         [Route("anevent-detail/get-event-detail-header"), HttpGet]
         public ANEventDetailHeaderModel GetEventDetailHeader(int Id)
         {
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
                 .Include("ANEventInformations")
                 .Include("ANEventImages.Image")
@@ -44,7 +44,7 @@ namespace ActiveNetwork.Web.Controllers
         [Route("anevent-detail/get-event-detail-information"), HttpGet]
         public ANEventDetailInformationModel GetEventDetailInformation(int Id)
         {
-            Thread.Sleep(3000);
+            //Thread.Sleep(3000);
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
                 .Include("ANEventInformations")
                 .Include("User.UserProfiles.Image")
@@ -77,7 +77,7 @@ namespace ActiveNetwork.Web.Controllers
         [Route("anevent-detail/get-event-detail-member"), HttpGet]
         public ANEventDetailMemberModel GetEventDetailMember(int Id)
         {
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
                 .Include("ANEventMembers.User.UserProfiles.Image")
                 .FirstOrDefault(x => x.Id == Id);
@@ -122,6 +122,58 @@ namespace ActiveNetwork.Web.Controllers
             {
                 EventId = entity.Id,
                 ANEventMembers = listMember
+            };
+        }
+
+
+        [Route("anevent-detail/get-event-detail-joiner"), HttpGet]
+        public ANEventDetailRequestToJoinModel GetEventDetailRequestToJoin(int Id)
+        {
+            var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
+                .Include("ANEventRequestToJoins.User.UserProfiles.Image")
+                .FirstOrDefault(x => x.Id == Id);
+
+            if (entity == null) return null;
+            var listRTJ = entity.ANEventRequestToJoins.Select(x =>
+                        new ANEventRequestToJoinModel()
+                        {
+                            Id = x.User.Id,
+                            ANEvent = new ANEventModel() { Id = x.ANEventId.GetValueOrDefault() },
+                            User = User != null ? new UserModel()
+                            {
+                                Id = x.User.Id,
+                                Username = x.User.Username,
+                                Profile = x.User.UserProfiles.FirstOrDefault() != null ?
+                                new UserProfileModel()
+                                {
+                                    Avatar = new ImageModel
+                                    {
+                                        Id = x.User.Id,
+                                        Url = x.User.UserProfiles.FirstOrDefault().Image != null ?
+                                        x.User.UserProfiles.FirstOrDefault().Image.Url : null,
+                                    },
+                                    FirstName = x.User.UserProfiles.FirstOrDefault().FirstName,
+                                    LastName = x.User.UserProfiles.FirstOrDefault().LastName,
+                                    MiddleName = x.User.UserProfiles.FirstOrDefault().MiddleName
+                                } :
+                                new UserProfileModel()
+                                {
+                                    Avatar = new ImageModel
+                                    {
+                                        Id = x.User.Id,
+                                        Url = null,
+                                    },
+                                    FirstName = null,
+                                    LastName = null,
+                                    MiddleName = null
+                                }
+                            } : null
+                        }).ToList();
+
+            return new ANEventDetailRequestToJoinModel()
+            {
+                EventId = entity.Id,
+                ANEventRequestToJoins = listRTJ
             };
         }
     }
