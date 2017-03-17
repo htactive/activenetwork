@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Data.Entity;
 using System.Threading;
+using HTActive.Authorize.Core;
+using ActiveNetwork.Common;
 
 
 namespace ActiveNetwork.Web.Controllers
@@ -14,6 +16,7 @@ namespace ActiveNetwork.Web.Controllers
     public class ANEventDetailController : BaseApiController
     {
         [Route("anevent-detail/get-event-detail"), HttpGet]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventModel GetEventDetail(int Id)
         {
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll().FirstOrDefault(x => x.Id == Id);
@@ -22,6 +25,7 @@ namespace ActiveNetwork.Web.Controllers
         }
 
         [Route("anevent-detail/get-event-detail-header"), HttpGet]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventDetailHeaderModel GetEventDetailHeader(int Id)
         {
             //Thread.Sleep(2000);
@@ -42,6 +46,7 @@ namespace ActiveNetwork.Web.Controllers
         }
 
         [Route("anevent-detail/get-event-detail-information"), HttpGet]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventDetailInformationModel GetEventDetailInformation(int Id)
         {
             //Thread.Sleep(3000);
@@ -52,16 +57,19 @@ namespace ActiveNetwork.Web.Controllers
             if (entity == null) return null;
 
             var firstInformation = entity.ANEventInformations.FirstOrDefault();
-
+            var firstUserProfile = entity.User.UserProfiles.FirstOrDefault();
             var host = UserMapper.ToModel(entity.User);
             if (host != null)
             {
-                host.Profile = UserProfileMapper.ToModel(entity.User.UserProfiles.FirstOrDefault());
-                host.Profile.Avatar = new ImageModel
+                if (firstUserProfile != null)
                 {
-                    Id = entity.User.Id,
-                    Url = entity.User.UserProfiles.FirstOrDefault().Image.Url,
-                };
+                    host.Profile = UserProfileMapper.ToModel(firstUserProfile);
+                }
+
+                if (firstUserProfile.Image != null)
+                {
+                    host.Profile.Avatar = ImageMapper.ToModel(firstUserProfile.Image);
+                }
             }
 
             var informationModel = new ANEventDetailInformationModel()
@@ -75,6 +83,7 @@ namespace ActiveNetwork.Web.Controllers
         }
 
         [Route("anevent-detail/get-event-detail-member"), HttpGet]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventDetailMemberModel GetEventDetailMember(int Id)
         {
             //Thread.Sleep(1000);
@@ -83,40 +92,21 @@ namespace ActiveNetwork.Web.Controllers
                 .FirstOrDefault(x => x.Id == Id);
             if (entity == null) return null;
             var listMember = entity.ANEventMembers.Select(x =>
-                        new ANEventMemberModel()
+                {
+                    var firstUserProfile = x.User.UserProfiles.FirstOrDefault();
+
+                    var anEventMemberModel = ANEventMemberMapper.ToModel(x);
+                    anEventMemberModel.User = UserMapper.ToModel(x.User);
+                    if (anEventMemberModel.User != null)
+                    {
+                        anEventMemberModel.User.Profile = UserProfileMapper.ToModel(firstUserProfile);
+                        if (anEventMemberModel.User.Profile != null)
                         {
-                            Id = x.User.Id,
-                            ANEvent = new ANEventModel() { Id = x.ANEventId.GetValueOrDefault() },
-                            User = User != null ? new UserModel()
-                            {
-                                Id = x.User.Id,
-                                Username = x.User.Username,
-                                Profile = x.User.UserProfiles.FirstOrDefault() != null ?
-                                new UserProfileModel()
-                                {
-                                    Avatar = new ImageModel
-                                    {
-                                        Id = x.User.Id,
-                                        Url = x.User.UserProfiles.FirstOrDefault().Image != null ?
-                                        x.User.UserProfiles.FirstOrDefault().Image.Url : null,
-                                    },
-                                    FirstName = x.User.UserProfiles.FirstOrDefault().FirstName,
-                                    LastName = x.User.UserProfiles.FirstOrDefault().LastName,
-                                    MiddleName = x.User.UserProfiles.FirstOrDefault().MiddleName
-                                } :
-                                new UserProfileModel()
-                                {
-                                    Avatar = new ImageModel
-                                    {
-                                        Id = x.User.Id,
-                                        Url = null,
-                                    },
-                                    FirstName = null,
-                                    LastName = null,
-                                    MiddleName = null
-                                }
-                            } : null
+                            anEventMemberModel.User.Profile.Avatar = ImageMapper.ToModel(firstUserProfile.Image);
                         }
+                    }
+                    return anEventMemberModel;
+                }
                 ).ToList();
             return new ANEventDetailMemberModel()
             {
@@ -127,6 +117,7 @@ namespace ActiveNetwork.Web.Controllers
 
 
         [Route("anevent-detail/get-event-detail-joiner"), HttpGet]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventDetailRequestToJoinModel GetEventDetailRequestToJoin(int Id)
         {
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
@@ -135,40 +126,21 @@ namespace ActiveNetwork.Web.Controllers
 
             if (entity == null) return null;
             var listRTJ = entity.ANEventRequestToJoins.Select(x =>
-                        new ANEventRequestToJoinModel()
+                {
+                    var firstUserProfile = x.User.UserProfiles.FirstOrDefault();
+                    var anEventRTJModel = ANEventRequestToJoinMapper.ToModel(x);
+                    anEventRTJModel.User = UserMapper.ToModel(x.User);
+
+                    if (anEventRTJModel.User != null)
+                    {
+                        anEventRTJModel.User.Profile = UserProfileMapper.ToModel(firstUserProfile);
+                        if (anEventRTJModel.User.Profile != null)
                         {
-                            Id = x.User.Id,
-                            ANEvent = new ANEventModel() { Id = x.ANEventId.GetValueOrDefault() },
-                            User = User != null ? new UserModel()
-                            {
-                                Id = x.User.Id,
-                                Username = x.User.Username,
-                                Profile = x.User.UserProfiles.FirstOrDefault() != null ?
-                                new UserProfileModel()
-                                {
-                                    Avatar = new ImageModel
-                                    {
-                                        Id = x.User.Id,
-                                        Url = x.User.UserProfiles.FirstOrDefault().Image != null ?
-                                        x.User.UserProfiles.FirstOrDefault().Image.Url : null,
-                                    },
-                                    FirstName = x.User.UserProfiles.FirstOrDefault().FirstName,
-                                    LastName = x.User.UserProfiles.FirstOrDefault().LastName,
-                                    MiddleName = x.User.UserProfiles.FirstOrDefault().MiddleName
-                                } :
-                                new UserProfileModel()
-                                {
-                                    Avatar = new ImageModel
-                                    {
-                                        Id = x.User.Id,
-                                        Url = null,
-                                    },
-                                    FirstName = null,
-                                    LastName = null,
-                                    MiddleName = null
-                                }
-                            } : null
-                        }).ToList();
+                            anEventRTJModel.User.Profile.Avatar = ImageMapper.ToModel(firstUserProfile.Image);
+                        }
+                    }
+                    return anEventRTJModel;
+                }).ToList();
 
             return new ANEventDetailRequestToJoinModel()
             {

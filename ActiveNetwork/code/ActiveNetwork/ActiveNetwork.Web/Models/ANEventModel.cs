@@ -21,4 +21,39 @@ namespace ActiveNetwork.Web.Models
         public List<ANEventRequestToJoinModel> ANEventRequestToJoins { get; set; }
         public List<ANEventImageModel> ANEventImages { get; set; }
     }
+
+    public class ANEventRequirementModel
+    {
+        public int Id { get; set; }
+    }
+
+    public class ANEventCategoryModel
+    {
+        public int Id { get; set; }
+        public ANEventModel ANEvent { get; set; }
+        public CategoryModel Category { get; set; }
+    }
+
+    public class ANEventMemberModel
+    {
+        public int Id { get; set; }
+        public ANEventModel ANEvent { get; set; }
+        public UserModel User { get; set; }
+        public DateTime JoinDate { get; set; }
+    }
+
+    public class ANEventRequestToJoinModel
+    {
+        public int Id { get; set; }
+        public ANEventModel ANEvent { get; set; }
+        public UserModel User { get; set; }
+        public DateTime RequestDate { get; set; }
+    }
+
+    public class ANEventImageModel
+    {
+        public int Id { get; set; }
+        public ANEventModel ANEvent { get; set; }
+        public ImageModel Image { get; set; }
+    }
 }
