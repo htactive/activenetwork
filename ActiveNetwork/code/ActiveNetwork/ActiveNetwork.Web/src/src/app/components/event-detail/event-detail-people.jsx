@@ -7,6 +7,7 @@ export class EventDetailPeopleComponent extends Component {
   componentWillMount() {
     this.setState({
       eventMembers: {},
+      eventRequestToJoins: {},
     });
 
     this.eventId = this.props.params.id;
@@ -14,12 +15,20 @@ export class EventDetailPeopleComponent extends Component {
 
   componentDidMount() {
     this.getMemberData();
+    this.getRequestToJoinData();
   }
 
   async getMemberData() {
     let a = await ANEventDetailServiceInstance.getANEventDetailMember(this.eventId);
     this.setState({
       eventMembers: a,
+    });
+  }
+
+  async getRequestToJoinData() {
+    let a = await ANEventDetailServiceInstance.getANEventDetailRequestToJoin(this.eventId);
+    this.setState({
+      eventRequestToJoins: a,
     });
   }
 
@@ -33,9 +42,9 @@ export class EventDetailPeopleComponent extends Component {
                 <table className="table user-list">
                   <thead>
                   <tr>
-                    <th><span>User</span></th>
-                    <th><span>Created</span></th>
-                    <th className="text-center"><span>Status</span></th>
+                    <th><span>Tên</span></th>
+                    <th><span>Ngày tham gia</span></th>
+                    <th className="text-center"><span>Tình trạng</span></th>
                     <th><span>Email</span></th>
                     <th>&nbsp;</th>
                   </tr>
@@ -54,7 +63,48 @@ export class EventDetailPeopleComponent extends Component {
                           2013/08/08
                         </td>
                         <td className="text-center">
-                          <span className="label label-default">Inactive</span>
+                          <span className="label label-default">Thành viên</span>
+                        </td>
+                        <td>
+                          <a href="#">{x.User.Username}</a>
+                        </td>
+                        <td>
+                          <a href="#" className="table-link success">
+                      <span className="fa-stack">
+                        <i className="fa fa-square fa-stack-2x"></i>
+                        <i className="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                      </span>
+                          </a>
+                          <a href="#" className="table-link">
+                      <span className="fa-stack">
+                        <i className="fa fa-square fa-stack-2x"></i>
+                        <i className="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                      </span>
+                          </a>
+                          <a href="#" className="table-link danger">
+                      <span className="fa-stack">
+                        <i className="fa fa-square fa-stack-2x"></i>
+                        <i className="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                      </span>
+                          </a>
+                        </td>
+                      </tr>
+                    )) : null
+                  }
+
+                  {(this.state.eventRequestToJoins && this.state.eventRequestToJoins.ANEventRequestToJoins) ?
+                    this.state.eventRequestToJoins.ANEventRequestToJoins.map((x) => (
+                      <tr key={x.Id}>
+                        <td>
+                          <img src={x.User.Profile.Avatar.Url} alt=""/>
+                          <a href="#" className="user-link">{x.User.Profile.FirstName}</a>
+                          <span className="user-subhead">{x.User.Profile.LastName}</span>
+                        </td>
+                        <td>
+                          2013/08/08
+                        </td>
+                        <td className="text-center">
+                          <span className="label label-warning">Chờ duyệt</span>
                         </td>
                         <td>
                           <a href="#">{x.User.Username}</a>
