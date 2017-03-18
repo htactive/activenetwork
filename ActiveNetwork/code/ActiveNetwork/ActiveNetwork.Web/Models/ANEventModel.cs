@@ -51,6 +51,7 @@ namespace ActiveNetwork.Web.Models
         public ANEventModel ANEvent { get; set; }
         public UserModel User { get; set; }
         public DateTime RequestDate { get; set; }
+        public int Status { get; set; }
     }
 
     public class ANEventImageModel

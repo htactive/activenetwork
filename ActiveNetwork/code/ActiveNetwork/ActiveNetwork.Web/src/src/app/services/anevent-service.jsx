@@ -67,6 +67,11 @@ class ANEventService extends ServiceBase {
     let url = '/anevent/join-event';
     return await super.executeFetchPost(url, {Id: 0, EventId: eventId, UserId: userId});
   }
+
+  async approveJoinEvent(RTJId) {
+    let url = '/anevent/approve-join-event';
+    return await super.executeFetchPost(url, RTJId);
+  }
 }
 
 let ANEventServiceInstance = new ANEventService();

@@ -9,7 +9,7 @@ namespace ActiveNetwork.Web.Models
     {
         public int Id { get; set; }
         public string EventLocation { get; set; }
-        public ANEventLocationModel EventLocationM { get; set; }
+        public ANEventLocationModel ANEventLocation { get; set; }
         public string Description { get; set; }
         public string Title { get; set; }
         public DateTime? StartDate { get; set; }
