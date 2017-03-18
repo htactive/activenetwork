@@ -1653,3 +1653,18 @@ for block ui
   vertical-align: middle;
   color: white;
 }
+
+.image-item {
+    width: 175px;
+    height: 115px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.image-item > div {
+    padding: 10px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}

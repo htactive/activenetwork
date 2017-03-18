@@ -135,11 +135,103 @@ namespace ActiveNetwork.Web.Controllers
 
         [HttpGet, Route("anevent/get-events-by-host")]
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
-        public List<ANEventModel> GetEventByHost(int? hostId)
+        public List<ANEventGroupModel> GetEventByHost(int? hostId)
         {
-            var events = this.ANDBUnitOfWork.ANEventRepository.GetAll().Where(e => e.UserId == (hostId ?? 0));
+            var events = this.ANDBUnitOfWork.ANEventRepository.GetAll()
+                .Include(x => x.User)
+                .Include(x => x.User.UserProfiles)
+                .Include("User.UserProfiles.Image")
+                .Include(x => x.ANEventImages)
+                .Include("ANEventImages.Image")
+                .Include(x => x.ANEventInformations)
+                .Include(x => x.ANEventMembers)
+                .Where(e => e.UserId == (hostId ?? 0)).OrderByDescending(t => t.CreatedDate).ToList();
 
-            return null;
+            var anEventModels = new List<ANEventModel>();
+
+            foreach (var ev in events)
+            {
+                var model = new ANEventModel();
+                model.Id = ev.Id;
+                model.Host = UserMapper.ToModel(ev.User);
+                // get cover image
+                var coverImageEntity = ev.ANEventImages.Where(x => x.ANEventImageType == (int)Common.ANEventImageType.ANEventCoverImage).OrderBy(x => x.SortPriority).FirstOrDefault();
+                if (coverImageEntity != null)
+                {
+                    model.CoverPhoto = ImageMapper.ToModel(coverImageEntity.Image);
+                }
+                var information = ev.ANEventInformations.FirstOrDefault();
+                model.Information = ANEventInformationMapper.ToModel(information);
+
+                model.CreatedDate = ev.CreatedDate;
+                model.Day = ev.CreatedDate.Day;
+                model.NumberOfMember = ev.ANEventMembers.Count;
+                anEventModels.Add(model);
+            }
+
+            var groupEvents = anEventModels.GroupBy(t => t.CreatedDate.Year)
+                .Select(gr => new ANEventGroupModel
+                {
+                    Year = gr.Key,
+                    EventMonth = gr.GroupBy(m => new { m.CreatedDate.Year, m.CreatedDate.Month })
+                    .Select(grm => new ANEventMonthGroup {
+                        Month = grm.Key.Month,
+                        Events = grm.ToList()
+                    }).ToList()
+                }).ToList();
+
+            return groupEvents;
+        }
+
+        [HttpGet, Route("anevent/get-joined-events")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public List<ANEventGroupModel> GetJoinedEvent(int? hostId)
+        {
+            var events = this.ANDBUnitOfWork.ANEventRepository.GetAll()
+                .Include(x => x.User)
+                .Include(x => x.User.UserProfiles)
+                .Include("User.UserProfiles.Image")
+                .Include(x => x.ANEventImages)
+                .Include("ANEventImages.Image")
+                .Include(x => x.ANEventInformations)
+                .Include(x => x.ANEventMembers)
+                .Where(e => e.ANEventMembers.Select(f => f.UserId).Contains(hostId)).OrderByDescending(t => t.CreatedDate).ToList();
+
+            var anEventModels = new List<ANEventModel>();
+
+            foreach (var ev in events)
+            {
+                var model = new ANEventModel();
+                model.Id = ev.Id;
+                model.Host = UserMapper.ToModel(ev.User);
+                // get cover image
+                var coverImageEntity = ev.ANEventImages.Where(x => x.ANEventImageType == (int)Common.ANEventImageType.ANEventCoverImage).OrderBy(x => x.SortPriority).FirstOrDefault();
+                if (coverImageEntity != null)
+                {
+                    model.CoverPhoto = ImageMapper.ToModel(coverImageEntity.Image);
+                }
+                var information = ev.ANEventInformations.FirstOrDefault();
+                model.Information = ANEventInformationMapper.ToModel(information);
+
+                model.CreatedDate = ev.CreatedDate;
+                model.Day = ev.CreatedDate.Day;
+                model.NumberOfMember = ev.ANEventMembers.Count;
+                anEventModels.Add(model);
+            }
+
+            var groupEvents = anEventModels.GroupBy(t => t.CreatedDate.Year)
+                .Select(gr => new ANEventGroupModel
+                {
+                    Year = gr.Key,
+                    EventMonth = gr.GroupBy(m => new { m.CreatedDate.Year, m.CreatedDate.Month })
+                    .Select(grm => new ANEventMonthGroup
+                    {
+                        Month = grm.Key.Month,
+                        Events = grm.ToList()
+                    }).ToList()
+                }).ToList();
+
+            return groupEvents;
         }
     }
 }

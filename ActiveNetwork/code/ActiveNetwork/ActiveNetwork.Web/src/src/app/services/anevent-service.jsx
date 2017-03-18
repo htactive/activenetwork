@@ -11,6 +11,16 @@ class ANEventService extends ServiceBase {
     return await super.executeFetch(url);
   }
 
+  async getANEventsByHost(hostid) {
+    let url = '/anevent/get-events-by-host?hostid=' + hostid;
+    return await super.executeFetch(url);
+  }
+
+  async getJoinedANEvents(hostid) {
+    let url = '/anevent/get-joined-events?hostid=' + hostid;
+    return await super.executeFetch(url);
+  }
+
   async getANEventsForNewFeed() {
     let entities = await this.getANEvents();
     return entities.map(x => {
