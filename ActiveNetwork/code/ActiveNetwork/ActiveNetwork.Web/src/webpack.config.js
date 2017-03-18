@@ -47,6 +47,6 @@ module.exports = {
     "redux": "Redux",
     "moment": "moment",
     "react-datepicker": "DatePicker",
-    "react-onclickoutside": "ReactOnClickOutSide"
+    "react-onclickoutside": "onClickOutside"
   }
 };
