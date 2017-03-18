@@ -41,10 +41,12 @@ module.exports = {
     "react": "React",
     "react-dom": "ReactDOM",
     "medium-draft": "MediumDraft",
-    "draft-convert":"draft",
-    "draft-js":"Draft",
+    "draft-convert": "draft",
+    "draft-js": "Draft",
     "react-bootstrap": "ReactBootstrap",
     "redux": "Redux",
-    "moment": "moment"
+    "moment": "moment",
+    "react-datepicker": "DatePicker",
+    "react-onclickoutside": "ReactOnClickOutSide"
   }
 };
