@@ -14,6 +14,7 @@ using System.Web.Http;
 using System.Data.Entity;
 using HTActive.Authorize.Core;
 using ActiveNetwork.Common;
+using System.Net;
 
 namespace ActiveNetwork.Web.Controllers
 {
@@ -107,34 +108,24 @@ namespace ActiveNetwork.Web.Controllers
 
         [HttpPost, Route("anevent/join-event")]
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
-        public ANEventRequestToJoinModel JoinEvent([FromBody]RequestToJoinModel model)
+        public ANEventRequestToJoinModel JoinEvent([FromBody]int eventId)
         {
-            if (model == null || model.EventId == 0 || model.UserId == 0)
-            {
-                return null;
-            }
-            var RTJentity = this.ANDBUnitOfWork.RequestToJoinRepository.GetAll();
-
-            //check if already joined
-            if (RTJentity != null)
-            {
-                foreach (var tmp in RTJentity)
-                {
-                    if (tmp.ANEventId == model.EventId && tmp.UserId == model.UserId)
-                    {
-                        return null;
-                    }
-                }
-            }
+            var isExistInRTJ = this.ANDBUnitOfWork.ANEventRequestToJoinRepository.GetAll().Any(x => x.ANEventId.HasValue && x.ANEventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
+            if (isExistInRTJ) return null;
+            var isExistInEventMember = this.ANDBUnitOfWork.ANEventMemberRepository.GetAll().Any(x => x.ANEventId.HasValue && x.ANEventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
+            if (isExistInEventMember) return null;
+            var isEventHost = this.ANDBUnitOfWork.ANEventRepository.GetAll().Any(x => x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
+            if (isEventHost) return null;
 
             var entity = new ANEventRequestToJoin()
             {
-                UserId = model.UserId,
-                ANEventId = model.EventId,
+                UserId = this.CurrentUser.Id,
+                ANEventId = eventId,
                 RequestDate = DateTimeHelper.DateTimeNow,
+                Status = (int)Common.ANRequestToJoinStatus.Waiting,
             };
 
-            this.ANDBUnitOfWork.RequestToJoinRepository.Save(entity);
+            this.ANDBUnitOfWork.ANEventRequestToJoinRepository.Save(entity);
             this.ANDBUnitOfWork.Commit();
 
             return ANEventRequestToJoinMapper.ToModel(entity);
@@ -256,19 +247,20 @@ namespace ActiveNetwork.Web.Controllers
             eInfo.EndDate = model.Information.EndDate;
             eInfo.Description = model.Information.Description;
             var eLocation = new ANEventLocation();
-            eLocation.GGId = model.Information.EventLocationM.GGId;
-            eLocation.Address = model.Information.EventLocationM.Address;
-            eLocation.Name = model.Information.EventLocationM.Name;
-            eLocation.Lat = model.Information.EventLocationM.Lat;
-            eLocation.Lng = model.Information.EventLocationM.Lng;
-            var eCategories = model.Categories.Select(x => new Category() {
+            eLocation.GGId = model.Information.ANEventLocation.GGId;
+            eLocation.Address = model.Information.ANEventLocation.Address;
+            eLocation.Name = model.Information.ANEventLocation.Name;
+            eLocation.Lat = model.Information.ANEventLocation.Lat;
+            eLocation.Lng = model.Information.ANEventLocation.Lng;
+            var eCategories = model.Categories.Select(x => new Category()
+            {
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description
             }).ToList();
             eInfo.ANEventLocation = eLocation;
             eInfo.ANEvent = eEvent;
-            eEvent.ANEventCategories = model.Categories.Select(x=> new ANEventCategory()
+            eEvent.ANEventCategories = model.Categories.Select(x => new ANEventCategory()
             {
                 CategoryId = x.Id
             }).ToList();
@@ -277,6 +269,38 @@ namespace ActiveNetwork.Web.Controllers
             eEvent.ANEventInformations = elstInfo;
             this.ANDBUnitOfWork.ANEventRepository.Save(eEvent);
             this.ANDBUnitOfWork.Commit();
+            return true;
+        }
+
+        [HttpPost, Route("anevent/approve-join-event")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public bool ApproveJoinEvent(int RTJId)
+        {
+            var firstRTJ = this.ANDBUnitOfWork.ANEventRequestToJoinRepository.GetAll().FirstOrDefault(x => x.Id == RTJId);
+
+            if (firstRTJ == null || firstRTJ.ANEvent == null) return false;
+            if (firstRTJ.Status != (int)ANRequestToJoinStatus.Waiting) return false;
+            if (!firstRTJ.ANEvent.UserId.HasValue || firstRTJ.ANEvent.UserId.Value != this.CurrentUser.Id)
+            {
+                throw new HttpResponseException(HttpStatusCode.Forbidden);
+            }
+
+            if (!this.ANDBUnitOfWork.ANEventMemberRepository.GetAll().Any(x => x.UserId == firstRTJ.UserId && x.ANEventId == firstRTJ.ANEventId)) 
+            {
+                var entity = new ANEventMember()
+                {
+                    ANEventId = firstRTJ.ANEventId,
+                    UserId = firstRTJ.UserId,
+                    JoinDate = DateTimeHelper.DateTimeNow,
+                };
+
+                this.ANDBUnitOfWork.ANEventMemberRepository.Save(entity);
+            }
+            firstRTJ.Status = (int)ANRequestToJoinStatus.Approved;
+            this.ANDBUnitOfWork.ANEventRequestToJoinRepository.Save(firstRTJ);
+            this.ANDBUnitOfWork.Commit();
+
+
             return true;
         }
     }

@@ -73,6 +73,7 @@
           <Property Name="ANEventId" Type="int" />
           <Property Name="UserId" Type="int" />
           <Property Name="RequestDate" Type="date" />
+          <Property Name="Status" Type="int" />
         </EntityType>
         <EntityType Name="ANEventRequirement">
           <Key>
@@ -747,6 +748,7 @@
           <NavigationProperty Name="ANEvent" Relationship="ANDBModel.FK_RequestToJoin_ANEvent" FromRole="ANEventRequestToJoin" ToRole="ANEvent" />
           <NavigationProperty Name="User" Relationship="ANDBModel.FK_RequestToJoin_User" FromRole="ANEventRequestToJoin" ToRole="User" />
           <Property Name="RequestDate" Type="DateTime" Precision="0" />
+          <Property Name="Status" Type="Int32" />
         </EntityType>
         <EntityType Name="ANEventRequirement">
           <Key>
@@ -1194,6 +1196,7 @@
           <EntitySetMapping Name="ANEventRequestToJoins">
             <EntityTypeMapping TypeName="ANDBModel.ANEventRequestToJoin">
               <MappingFragment StoreEntitySet="ANEventRequestToJoin">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="RequestDate" ColumnName="RequestDate" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />

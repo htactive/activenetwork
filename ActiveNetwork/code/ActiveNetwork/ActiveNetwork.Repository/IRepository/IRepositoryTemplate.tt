@@ -10,6 +10,7 @@ new EntityMetadataRender(){Name = "Role"},
 new EntityMetadataRender(){Name = "Gender"},
 new EntityMetadataRender(){Name = "ANEventRequestToJoin"},
 new EntityMetadataRender(){Name = "Image"},
+new EntityMetadataRender(){Name = "ANEventMember"},
 };
   var fileManager = EntityFrameworkTemplateFileManager.Create(this); 
   fileManager.StartHeader(); 
