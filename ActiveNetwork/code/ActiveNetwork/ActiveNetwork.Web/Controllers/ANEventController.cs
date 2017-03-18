@@ -183,9 +183,37 @@ namespace ActiveNetwork.Web.Controllers
             var elstInfo = new List<ANEventInformation>();
             elstInfo.Add(eInfo);
             eEvent.ANEventInformations = elstInfo;
+            //ANImage
+            var eANEventImage = new ANEventImage()
+            {
+                ImageId = model.CoverPhoto.Id,
+                ANEventImageType = (int)Common.ANEventImageType.ANEventCoverImage
+            };
+            var lstANEventImage = new List<ANEventImage>();
+            lstANEventImage.Add(eANEventImage);
+            eEvent.ANEventImages = lstANEventImage;
             this.ANDBUnitOfWork.ANEventRepository.Save(eEvent);
             this.ANDBUnitOfWork.Commit();
             return true;
+        }
+        [HttpPost, Route("anevent/upload-cover-photo")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public async Task<ImageModel> UploadCoverPhoto()
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                return null;
+            }
+            var currentProfile = this.ANDBUnitOfWork.UserProfileRepository.GetAll().FirstOrDefault(x => x.UserId.HasValue && x.UserId.Value == CurrentUser.Id);
+            if (currentProfile == null) return null;
+            var filesReadToProvider = await Request.Content.ReadAsMultipartAsync();
+
+            if (filesReadToProvider.Contents.Count == 0) return null;
+            var stream = await filesReadToProvider.Contents[0].ReadAsStreamAsync();
+            var fileKey = string.Format("event/cover/cv{0}.png", Guid.NewGuid().ToString());
+
+            var image = await this.CreateNewImage(stream, fileKey);
+            return ImageMapper.ToModel(image);
         }
     }
 }

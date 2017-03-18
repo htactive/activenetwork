@@ -294,26 +294,32 @@ export class CreateEventDialog extends React.Component {
     this.setState({endDate: v.toObject()});
   }
  async createEvent(){
-     let model = {
-      Information: {
-        EventLocationM:{
-          GGId: this.state.event_location.Id,
-          Name: this.state.event_location.Name,
-          Address: this.state.event_location.Address,
-          Lat: this.state.event_location.location != null ? this.state.event_location.location.lat : '',
-          Lng: this.state.event_location.location != null ? this.state.event_location.location.lng : ''
-        },
-        Description: "",
-        Title: this.state.title,
-        StartDate: this.state.startDate,
-        EndDate: this.state.EndDate
-      },
-      Categories: this.state.event_topics
-     };
-     console.log(model); 
-      let result = await ANEventServiceInstance.createANEvent(model);
-       if (result) {
-         this.close();
-       }
+     
+      let uploadResult = await ANEventServiceInstance.uploadCoverPhoto({cover: this.state.file});
+      if (uploadResult) {
+        let model = {
+          Information: {
+            EventLocationM: {
+              GGId: this.state.event_location.Id,
+              Name: this.state.event_location.Name,
+              Address: this.state.event_location.Address,
+              Lat: this.state.event_location.location != null ? this.state.event_location.location.lat : '',
+              Lng: this.state.event_location.location != null ? this.state.event_location.location.lng : ''
+            },
+            Description: "",
+            Title: this.state.title,
+            StartDate: this.state.startDate,
+            EndDate: this.state.EndDate
+          },
+          Categories: this.state.event_topics,
+          CoverPhoto: {Id: uploadResult.Id}
+        };
+        console.log(model);
+        let result = await ANEventServiceInstance.createANEvent(model);
+        if (result) {
+          this.close();
+        }
+      }
+     
   }
 }

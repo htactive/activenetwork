@@ -1,6 +1,11 @@
 import {ServiceBase} from './ServiceBase';
 
 class ANEventService extends ServiceBase {
+  async uploadCoverPhoto(model){
+    let url = '/anevent/upload-cover-photo';
+    let image = model.cover;
+    return await super.executeFetchPostImage(url,image);
+  }
   async createANEvent(model) {
     let url = '/anevent/create-event';
     let result = await super.executeFetchPost(url, model);
