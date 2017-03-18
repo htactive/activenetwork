@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveNetwork.Web", "ActiveNetwork.Web\ActiveNetwork.Web.csproj", "{073A131E-506D-4A92-93AA-FC0F20CEF634}"
+	ProjectSection(ProjectDependencies) = postProject
+		{41016922-A9D9-483F-90D0-B87EFAFD80F5} = {41016922-A9D9-483F-90D0-B87EFAFD80F5}
+		{393814C2-C21E-4F53-B91C-2B750349F415} = {393814C2-C21E-4F53-B91C-2B750349F415}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveNetwork.Entities", "ActiveNetwork.Entities\ActiveNetwork.Entities.csproj", "{2452A885-1F81-480A-8950-7BE495CEA83E}"
 EndProject

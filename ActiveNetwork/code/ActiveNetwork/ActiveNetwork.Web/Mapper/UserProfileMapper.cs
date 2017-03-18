@@ -23,7 +23,8 @@ namespace ActiveNetwork.Web.Mapper
                 Phone = entity.Phone,
                 Address = entity.Address,
                 User = new UserModel() { Id = entity.UserId.GetValueOrDefault() },
-                Avatar = new ImageModel() { Id = entity.Avatar.GetValueOrDefault() }
+                Avatar = new ImageModel() { Id = entity.Avatar.GetValueOrDefault() },
+                Introduction = entity.Introduction
             };
         }
 

@@ -2,10 +2,18 @@ import React, {Component} from 'react';
 import {UserProfileServiceInstance} from '../services/user-profile-service'
 import {FullNameEditor} from '../components/edit-profile-control/full-name-editor';
 import {BirthdayEditor} from '../components/edit-profile-control/birth-date-editor';
+import {UsernameEditor} from '../components/edit-profile-control/username-editor';
+import {EmailAdressEditor} from '../components/edit-profile-control/email-address-editor';
+import {PhoneNumberEditor} from '../components/edit-profile-control/phone-number-editor';
+import {AddressEditor} from '../components/edit-profile-control/address-editor';
+import {GenderEditor} from '../components/edit-profile-control/gender-editor';
+import {SelfIntroductionEditor} from '../components/edit-profile-control/self-introduction-editor';
+import {ChangePassword} from '../components/edit-profile-control/change-password';
+import {userStore} from '../store/user-store';
 
 export class EditProfilePage extends Component {
   componentWillMount() {
-    this.setState({userProfile: {}});
+    this.setState({userProfile: {Gender: {}}});
   }
 
   async componentDidMount() {
@@ -15,7 +23,12 @@ export class EditProfilePage extends Component {
       birthDate = null;
     }
 
-    this.setState({userProfile: profile, user_birthDate: birthDate});
+    let currentUser = userStore.getState().currentUser || {};
+    this.setState({
+      userProfile: profile,
+      user_birthDate: birthDate,
+      user_username: currentUser.Username,
+    });
   }
 
   async getData() {
@@ -29,29 +42,24 @@ export class EditProfilePage extends Component {
           <div className="col-md-10 col-md-offset-1">
             <ul className="nav nav-tabs nav-tabs-custom-colored tabs-iconized">
               <li className="active"><a href="#profile-tab" data-toggle="tab" aria-expanded="true"><i
-                className="fa fa-user"/> Profile</a></li>
-              <li className=""><a href="#activity-tab" data-toggle="tab" aria-expanded="false"><i
-                className="fa fa-rss"/> Recent Activity</a></li>
+                className="fa fa-user"/> Hồ sơ cá nhân</a></li>
               <li className=""><a href="#settings-tab" data-toggle="tab" aria-expanded="false"><i
-                className="fa fa-gear"/> Settings</a></li>
+                className="fa fa-gear"/> Thiết đặt</a></li>
+              <li className=""><a href="#activity-tab" data-toggle="tab" aria-expanded="false"><i
+                className="fa fa-rss"/> Thông báo</a></li>
             </ul>
             <div className="tab-content profile-page">
               <div className="tab-pane profile active" id="profile-tab">
                 <div className="row">
                   <div className="col-md-3">
                     <div className="user-info-left">
-                      <img src="/img/Friends/guy-3.jpg" alt="Profile Picture"/>
-                      <h2>{this.state.userProfile.FirstName}</h2>
+                      <img src={(this.state.userProfile.Avatar || {Url: ''}).Url} alt="Profile Picture"/>
                       <div className="contact">
                         <p>
-                        <span className="file-input btn btn-azure btn-file">
-                          Change Avatar <input type="file" multiple=""/>
-                        </span>
-                        </p>
-                        <p>
-                        <span className="file-input btn btn-azure btn-file">
-                          Change Cover <input type="file" multiple=""/>
-                        </span>
+                          <a className="file-input btn btn-link btn-file">
+                            Đổi hình đại diện <input type="file" multiple="" accept="image/*"
+                                                     onChange={v => this.startUploadMyAvatar(v)}/>
+                          </a>
                         </p>
                         <ul className="list-inline social">
                           <li><a href="#" title="Facebook"><i className="fa fa-facebook-square"/></a></li>
@@ -65,10 +73,7 @@ export class EditProfilePage extends Component {
                     <div className="user-info-right">
                       <div className="basic-info">
                         <p className="header-row"><i className="fa fa-square"/> THÔNG TIN CƠ BẢN</p>
-                        <p className="data-row">
-                          <span className="data-name">Định danh</span>
-                          <span className="data-value">{this.state.userProfile.FirstName}</span>
-                        </p>
+                        <UsernameEditor username={this.state.user_username}/>
                         <FullNameEditor
                           firstName={this.state.userProfile.FirstName}
                           middleName={this.state.userProfile.MiddleName}
@@ -83,49 +88,57 @@ export class EditProfilePage extends Component {
                         <BirthdayEditor
                           birthDate={this.state.user_birthDate}
                           afterSaveChanged={(model) => {
-                            this.setState({user_birthDate:model.birthDate});
+                            this.setState({user_birthDate: model.birthDate});
                           }}
                         />
-                        <p className="data-row">
-                          <span className="data-name">Website</span>
-                          <span className="data-value"><a href="#">www.jonasmith.com1</a></span>
-                        </p>
-                        <p className="data-row">
-                          <span className="data-name">Last Login</span>
-                          <span className="data-value">2 hours ago</span>
-                        </p>
-                        <p className="data-row">
-                          <span className="data-name">Date Joined</span>
-                          <span className="data-value">Feb 22, 2012</span>
-                        </p>
+                        <GenderEditor
+                          genderId={this.state.userProfile.Gender.Id}
+                          afterSaveChanged={(model) => {
+                            this.state.userProfile.Gender.Id = model.genderId;
+
+                            this.forceUpdate();
+                          }}
+                        />
                       </div>
                       <div className="contact_info">
                         <p className="header-row"><i className="fa fa-square"/> THÔNG TIN LIÊN LẠC</p>
-                        <p className="data-row">
-                          <span className="data-name">Email</span>
-                          <span className="data-value">{this.state.userProfile.Email}</span>
-                        </p>
-                        <p className="data-row">
-                          <span className="data-name">Phone</span>
-                          <span className="data-value">{this.state.userProfile.Phone}</span>
-                        </p>
-                        <p className="data-row">
-                          <span className="data-name">Address</span>
-                          <span className="data-value">{this.state.userProfile.Address}</span>
-                        </p>
+                        <EmailAdressEditor
+                          email={this.state.userProfile.Email}
+                          afterSaveChanged={(model) => {
+                            this.state.userProfile.Email = model.email;
+                            this.forceUpdate();
+                          }}
+                        />
+                        <PhoneNumberEditor
+                          phone={this.state.userProfile.Phone}
+                          afterSaveChanged={(model) => {
+                            this.state.userProfile.Phone = model.phone;
+                            this.forceUpdate();
+                          }}
+                        />
+                        <AddressEditor
+
+                          address={this.state.userProfile.Address}
+                          afterSaveChanged={(model) => {
+                            this.state.userProfile.Address = model.address;
+                            this.forceUpdate();
+                          }}
+                        />
                       </div>
-                      <div className="about">
-                        <p className="header-row"><i className="fa fa-square"/> VỀ BẢN THÂN</p>
-                        <p>Dramatically facilitate proactive solutions whereas professional intellectual capital.
-                          Holisticly utilize competitive e-markets through intermandated meta-services. Objectively.</p>
-                        <p>Monotonectally foster future-proof infomediaries before principle-centered interfaces.
-                          Assertively recaptiualize cutting-edge web services rather than emerging "outside the box"
-                          thinking. Phosfluorescently cultivate resource maximizing technologies and user-centric
-                          convergence. Completely underwhelm cross functional innovation vis-a-vis.</p>
-                      </div>
+                      <SelfIntroductionEditor
+                        text={this.state.userProfile.Introduction}
+                        afterSaveChanged={(model) => {
+                          this.state.userProfile.Introduction = model.introduction;
+                          this.forceUpdate();
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div className="tab-pane settings" id="settings-tab">
+                <ChangePassword/>
               </div>
 
               <div className="tab-pane activity" id="activity-tab">
@@ -186,96 +199,21 @@ export class EditProfilePage extends Component {
                 <p className="text-center more"><a href="#" className="btn btn-custom-primary">View more <i
                   className="fa fa-long-arrow-right"/></a></p>
               </div>
-
-              <div className="tab-pane settings" id="settings-tab">
-                <form className="form-horizontal" role="form">
-                  <fieldset>
-                    <h3><i className="fa fa-square"/> Change Password</h3>
-                    <div className="form-group">
-                      <label htmlFor="old-password" className="col-sm-3 control-label">Old Password</label>
-                      <div className="col-sm-4">
-                        <input type="password" id="old-password" name="old-password" className="form-control"/>
-                      </div>
-                    </div>
-                    <hr/>
-                    <div className="form-group">
-                      <label htmlFor="password" className="col-sm-3 control-label">New Password</label>
-                      <div className="col-sm-4">
-                        <input type="password" id="password" name="password" className="form-control"/>
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="password2" className="col-sm-3 control-label">Repeat Password</label>
-                      <div className="col-sm-4">
-                        <input type="password" id="password2" name="password2" className="form-control"/>
-                      </div>
-                    </div>
-                  </fieldset>
-                  <fieldset>
-                    <h3><i className="fa fa-square"/> Privacy</h3>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Show my display name</span>
-                      </label>
-                    </div>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Show my birth date</span>
-                      </label>
-                    </div>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Show my email</span>
-                      </label>
-                    </div>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Show my online status on chat</span>
-                      </label>
-                    </div>
-                  </fieldset>
-                  <h3><i className="fa fa-square"> </i>Notifications</h3>
-                  <fieldset>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Receive message from administrator</span>
-                      </label>
-                    </div>
-
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">New product has been added</span>
-                      </label>
-                    </div>
-
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Product review has been approved</span>
-                      </label>
-                    </div>
-
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" className="colored-blue" defaultChecked="checked"/>
-                        <span className="text">Others liked your post</span>
-                      </label>
-                    </div>
-                  </fieldset>
-                </form>
-                <p className="text-center"><a href="#" className="btn btn-custom-primary"><i
-                  className="fa fa-floppy-o"/> Save Changes</a></p>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>;
+  }
+
+  async startUploadMyAvatar(v) {
+    if (v.target.files && v.target.files[0]) {
+      let image = v.target.files[0];
+      let uploadResult = await UserProfileServiceInstance.uploadUserAvatar({avatar: image});
+      if(uploadResult){
+        this.state.userProfile.Avatar = uploadResult;
+        this.forceUpdate();
+      }
+    }
   }
 }

@@ -55,10 +55,10 @@ img {
 }
 
 .box-body > a.event-name {
-  color: #505458;
+  color: #a05458;
   line-height: 30px;
-  font-weight: normal;
-  font-size: 15px;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .box-body > p > a {

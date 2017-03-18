@@ -3,10 +3,11 @@ import {virtualPath} from '../../commons/constant'
 import {browserHistory} from 'react-router';
 import {ANEventServiceInstance} from '../services/anevent-service';
 import {JoinEventDialog} from '../components/join-event-dialog';
+import {userStore} from '../store/user-store';
 
 export class PostGrid extends Component {
   joinEventDialog;
-
+  
   componentWillMount() {
     this.setState({
       posts: []
@@ -32,13 +33,13 @@ export class PostGrid extends Component {
     this.setState({posts: posts}, this.relayout);
   }
 
-  goToEventDetail(e) {
+  goToEventDetail(e, eventId) {
     e.preventDefault();
-    browserHistory.push(`${virtualPath}/event`)
+    browserHistory.push(`${virtualPath}/event/${eventId}`)
   }
 
-  clickJoinEventDialog(){
-    this.joinEventDialog && this.joinEventDialog.show();
+  clickJoinEventDialog(eventId){
+    this.joinEventDialog && this.joinEventDialog.show(eventId);
   }
 
   render() {
@@ -61,19 +62,18 @@ export class PostGrid extends Component {
                             <a href="#">{post.host_name}</a>
                           </span>
                           <span className="sub-username"><span> đã tạo một </span><a
-                            href="" onClick={(e) => this.goToEventDetail(e)}>sự kiện</a></span>
+                            href="" onClick={(e) => this.goToEventDetail(e, post.anevent_id)}>sự kiện</a></span>
                         </span>
                         <span className="description"><abbr title="3 tháng 2 2017 lúc 19:58">1 giờ trước</abbr></span>
                       </div>
                     </div>
                     <div className="box-body">
-                      <a className="event-name" href="" onClick={(e) => this.goToEventDetail(e)}>Sự kiện nhậu mừng sinh
-                        nhật Bill Gate</a>
+                      <a className="event-name" href="" onClick={(e) => this.goToEventDetail(e, post.anevent_id)}>{post.title}</a>
                       <p dangerouslySetInnerHTML={{__html: post.description}}/>
                     </div>
                     <img className="img-responsive show-in-modal" src={post.cover_image} alt="Photo"/>
                     <div className="box-footer">
-                      <a type="button" onClick={this.clickJoinEventDialog.bind(this)}><i className="fa fa-plus"/> Tham gia
+                      <a type="button" onClick={() => this.clickJoinEventDialog(post.anevent_id)}><i className="fa fa-plus"/> Tham gia
                       </a>
                       <a type="button"><i className="fa fa-heart"/>
                         Yêu thích
@@ -89,7 +89,7 @@ export class PostGrid extends Component {
           </div>
         </div>
       </div>
-      <JoinEventDialog ref={(e) => this.joinEventDialog = e}/>
+      <JoinEventDialog ref={(e) => this.joinEventDialog = e} currentUser={userStore.getState().currentUser.Id}/>
     </div>);
   }
 }

@@ -28,7 +28,12 @@ namespace ActiveNetwork.Web.Controllers
             {
                 Address = x.formatted_address,
                 Id = x.id,
-                Name = x.name
+                Name = x.name,
+                location =  new GoogleLocationModel()
+                {
+                    lat = x.geometry.location.lat,
+                    lng = x.geometry.location.lng
+                }
             }).ToList();
         }
     }

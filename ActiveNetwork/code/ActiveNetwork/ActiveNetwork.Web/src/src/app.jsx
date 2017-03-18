@@ -6,10 +6,10 @@ import {EditProfilePage} from './app/modules/edit-profile'
 import {Router, browserHistory, Route, IndexRoute} from 'react-router';
 import {virtualPath} from './commons/constant'
 import {EventDetailPage} from './app/modules/event-detail';
-import {EventDetailWallComponent} from './app/components/event-detail-wall';
-import {EventDetailDescriptionComponent} from './app/components/event-detail-description';
-import {EventDetailPeopleComponent} from './app/components/event-detail-people';
-import {EventDetailPhotosComponent} from './app/components/event-detail-photos';
+import {EventDetailWallComponent} from './app/components/event-detail/event-detail-wall';
+import {EventDetailDescriptionComponent} from './app/components/event-detail/event-detail-description';
+import {EventDetailPeopleComponent} from './app/components/event-detail/event-detail-people';
+import {EventDetailPhotosComponent} from './app/components/event-detail/event-detail-photos';
 import {EventManager} from './app/modules/event-manager';
 import {Error404Page} from './app/modules/404-page';
 import {Error500Page} from './app/modules/500-page';
@@ -25,11 +25,11 @@ ReactDOM.render(
       <Route path={`${virtualPath}/post-grid`} component={PostGrid}/>
       <Route path={`${virtualPath}/my-profile`} component={EditProfilePage}/>
       <Route path={`${virtualPath}/manage-event`} component={EventManager}/>
-      <Route path={`${virtualPath}/event`} component={EventDetailPage}>
-        <Route path={`${virtualPath}/event/wall`} component={EventDetailWallComponent}/>
-        <Route path={`${virtualPath}/event/description`} component={EventDetailDescriptionComponent}/>
-        <Route path={`${virtualPath}/event/people`} component={EventDetailPeopleComponent}/>
-        <Route path={`${virtualPath}/event/photos`} component={EventDetailPhotosComponent}/>
+      <Route path={`${virtualPath}/event/:id`} component={EventDetailPage}>
+        <Route path={`${virtualPath}/event/:id/wall`} component={EventDetailWallComponent}/>
+        <Route path={`${virtualPath}/event/:id/description`} component={EventDetailDescriptionComponent}/>
+        <Route path={`${virtualPath}/event/:id/people`} component={EventDetailPeopleComponent}/>
+        <Route path={`${virtualPath}/event/:id/photos`} component={EventDetailPhotosComponent}/>
         <IndexRoute component={EventDetailWallComponent}/>
       </Route>
       <IndexRoute component={PostGrid}/>

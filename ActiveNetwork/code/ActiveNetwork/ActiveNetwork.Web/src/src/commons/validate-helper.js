@@ -7,13 +7,18 @@ export class Validation {
   }
 
   static validateNull(data) {
-    return this.validateLength(data,1);
+    return this.validateLength(data, 1);
+  }
+
+  static validatePhoneNumber(data) {
+    return libphonenumber.isValidNumber(data, 'VN');
   }
 
   static validateEmail(data) {
     return data == "" || this.emailValidator(data);
   }
-  static validateLength(data,length){
+
+  static validateLength(data, length) {
 
     return (data + "").length >= length;
   }

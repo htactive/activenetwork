@@ -22,8 +22,8 @@ export class BirthdayEditor extends Component {
     if (this.state.isEditing) {
       return (
         <div className="row data-row">
-          <span className="data-name col-lg-3 col-md-3">Ngày sinh</span>
-          <div className="form-horizontal col-lg-9 col-md-9">
+          <span className="data-name col-lg-3 col-md-3 col-sm-12 col-xs-12">Ngày sinh</span>
+          <div className="form-horizontal col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <DatePicker
               selected={this.state.edit_birthDate}
               className="form-control"
@@ -44,8 +44,8 @@ export class BirthdayEditor extends Component {
     if (this.state.birthDate == null) {
       return (
         <div className="row data-row">
-          <span className="data-name col-lg-3 col-md-3">Ngày sinh</span>
-          <div className="col-lg-9 col-md-9">
+          <span className="data-name col-lg-3 col-md-3 col-sm-12 col-xs-12">Ngày sinh</span>
+          <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <a
               className="btn btn-link" onClick={() => this.editClick()}><i className="fa fa-plus"/> Cung cấp ngày
               sinh</a>
@@ -55,8 +55,8 @@ export class BirthdayEditor extends Component {
     }
     return (
       <div className="row data-row">
-        <span className="data-name col-lg-3 col-md-3">Ngày sinh</span>
-        <div className="col-lg-9 col-md-9">
+        <span className="data-name col-lg-3 col-md-3 col-sm-12 col-xs-12">Ngày sinh</span>
+        <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12">
           <span
             className="data-value">{`Ngày ${this.state.birthDate.getDate()} tháng ${this.state.birthDate.getMonth() + 1} năm ${this.state.birthDate.getFullYear()}`}</span>
           <span className="data-action">

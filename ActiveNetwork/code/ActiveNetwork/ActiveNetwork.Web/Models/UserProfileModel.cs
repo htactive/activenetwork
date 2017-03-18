@@ -18,5 +18,12 @@ namespace ActiveNetwork.Web.Models
         public string Address { get; set; }
         public UserModel User { get; set; }
         public ImageModel Avatar { get; set; }
+        public string Introduction { get; set; }
+    }
+
+    public class GenderModel
+    {
+        public int Id { get; set; }
+        public string GenderName { get; set; }
     }
 }

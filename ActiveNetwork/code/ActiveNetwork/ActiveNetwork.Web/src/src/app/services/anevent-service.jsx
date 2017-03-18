@@ -1,6 +1,11 @@
 import {ServiceBase} from './ServiceBase';
 
 class ANEventService extends ServiceBase {
+  async createANEvent(model) {
+    let url = '/anevent/create-event';
+    let result = await super.executeFetchPost(url, model);
+    return result;
+  }
   async getAllCategories() {
     let url = '/anevent/get-all-categories';
     return await super.executeFetch(url);
@@ -45,6 +50,11 @@ class ANEventService extends ServiceBase {
         description: x.Information.Description,
       };
     });
+  }
+
+  async joinANEvents(eventId, userId) {
+    let url = '/anevent/join-event';
+    return await super.executeFetchPost(url, {Id: 0, EventId: eventId, UserId: userId});
   }
 }
 

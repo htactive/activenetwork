@@ -60,6 +60,14 @@ namespace ActiveNetwork.Repository
                 return roleRepository ?? (roleRepository = new RoleRepository(this));
             }
         }
+        private IGenderRepository genderRepository;
+        public IGenderRepository GenderRepository
+        {
+            get
+            {
+                return genderRepository ?? (genderRepository = new GenderRepository(this));
+            }
+        }
 
         private IANEventRequestToJoinRepository requestToJoinRepository;
         public IANEventRequestToJoinRepository RequestToJoinRepository
@@ -69,6 +77,15 @@ namespace ActiveNetwork.Repository
                 return requestToJoinRepository ?? (requestToJoinRepository = new ANEventRequestToJoinRepository(this));
             }
         }
+        private IImageRepository imageRepository;
+        public IImageRepository ImageRepository
+        {
+            get
+            {
+                return imageRepository ?? (imageRepository = new ImageRepository(this));
+            }
+        }
+
         #endregion
     }
 }

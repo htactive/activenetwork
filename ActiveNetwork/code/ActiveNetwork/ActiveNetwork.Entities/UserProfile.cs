@@ -25,9 +25,10 @@ namespace ActiveNetwork.Entities
         public string MiddleName { get; set; }
         public Nullable<int> Avatar { get; set; }
         public Nullable<int> GenderId { get; set; }
+        public string Introduction { get; set; }
     
         public virtual Gender Gender { get; set; }
-        public virtual Image Image { get; set; }
         public virtual User User { get; set; }
+        public virtual Image Image { get; set; }
     }
 }

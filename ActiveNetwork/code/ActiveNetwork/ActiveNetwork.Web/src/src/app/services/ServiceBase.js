@@ -2,9 +2,9 @@ import {userStore} from '../store/user-store';
 import {UIBlocker} from '../components/ui-blocker';
 import cookie from 'react-cookie';
 export class ServiceBase {
-  async executeFetch(url, ignoreBlockUI) {
+  async executeFetch(url, shouldBlockUI) {
     try {
-      if (!ignoreBlockUI) {
+      if (shouldBlockUI) {
         UIBlocker.instance.block();
       }
       let result = await fetch(url, {
@@ -14,7 +14,7 @@ export class ServiceBase {
          */
         credentials: 'include'
       });
-      if (!ignoreBlockUI) {
+      if (shouldBlockUI) {
         UIBlocker.instance.unblock();
       }
       if (result.ok) {
@@ -39,13 +39,12 @@ export class ServiceBase {
     }
   }
 
-  async executeFetchPost(url, data, ignoreBlockUI) {
+  async executeFetchPost(url, data, shouldBlockUI = true) {
     try {
-
-      if (!ignoreBlockUI) {
+      if (shouldBlockUI) {
         UIBlocker.instance.block();
       }
-      let result = await await fetch(url,
+      let result = await fetch(url,
         {
           headers: {
             'Accept': 'application/json',
@@ -56,7 +55,47 @@ export class ServiceBase {
           body: JSON.stringify(data)
         });
 
-      if (!ignoreBlockUI) {
+      if (shouldBlockUI) {
+        UIBlocker.instance.unblock();
+      }
+      if (result.ok) {
+        return await result.json();
+      }
+      if (result.status == 403) {
+        let currentUser = userStore.getState().currentUser;
+        if (currentUser == undefined || currentUser == null) {
+          window.location.href = '/login';
+          return null;
+        }
+        let cookieValue = cookie.load('ANLOGINCOOKIE');
+        if (cookieValue == undefined || cookieValue == null) {
+          window.location.href = '/login';
+          return null;
+        }
+      }
+      return null;
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  async executeFetchPostImage(url, image, shouldBlockUI = true) {
+    try {
+
+      if (shouldBlockUI) {
+        UIBlocker.instance.block();
+      }
+      const formData = new FormData();
+      formData.append('file', image);
+      let result = await fetch(url,
+        {
+          method: 'POST',
+          credentials: 'include',
+          body: formData
+        });
+
+      if (shouldBlockUI) {
         UIBlocker.instance.unblock();
       }
       if (result.ok) {

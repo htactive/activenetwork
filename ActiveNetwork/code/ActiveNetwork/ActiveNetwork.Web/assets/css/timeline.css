@@ -63,6 +63,11 @@ footer .container .text-muted {
   margin-bottom: 70px;
 }
 
+.page-content .people {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  width: 100%;
+}
 /*============= top navbar =================*/
 /*.navbar {
     padding-top: 15px;

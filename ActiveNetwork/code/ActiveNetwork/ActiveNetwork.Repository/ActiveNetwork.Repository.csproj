@@ -63,6 +63,12 @@
     <Compile Include="IRepository\ICategoryRepository.cs">
       <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Include="IRepository\IGenderRepository.cs">
+      <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IRepository\IImageRepository.cs">
+      <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="IRepository\IRepositoryTemplate1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -85,6 +91,12 @@
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\CategoryRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\GenderRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\ImageRepository.cs">
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\RepositoryTemplate1.cs">
