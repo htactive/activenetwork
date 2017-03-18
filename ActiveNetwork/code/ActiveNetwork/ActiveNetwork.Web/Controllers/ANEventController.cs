@@ -105,6 +105,17 @@ namespace ActiveNetwork.Web.Controllers
             return anEventModels;
         }
 
+        [HttpGet, Route("anevent/get-new-feeds")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public NewFeedsModel GetNewFeeds()
+        {
+            return new NewFeedsModel()
+            {
+                ANEvents = GetEvents(),
+                ServerDateTimeNow = DateTimeHelper.DateTimeNow
+            };
+        }
+
         [HttpPost, Route("anevent/join-event")]
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventRequestToJoinModel JoinEvent([FromBody]RequestToJoinModel model)
@@ -182,7 +193,8 @@ namespace ActiveNetwork.Web.Controllers
                 {
                     Year = gr.Key,
                     EventMonth = gr.GroupBy(m => new { m.CreatedDate.Year, m.CreatedDate.Month })
-                    .Select(grm => new ANEventMonthGroup {
+                    .Select(grm => new ANEventMonthGroup
+                    {
                         Month = grm.Key.Month,
                         Events = grm.ToList()
                     }).ToList()
@@ -261,14 +273,15 @@ namespace ActiveNetwork.Web.Controllers
             eLocation.Name = model.Information.EventLocationM.Name;
             eLocation.Lat = model.Information.EventLocationM.Lat;
             eLocation.Lng = model.Information.EventLocationM.Lng;
-            var eCategories = model.Categories.Select(x => new Category() {
+            var eCategories = model.Categories.Select(x => new Category()
+            {
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description
             }).ToList();
             eInfo.ANEventLocation = eLocation;
             eInfo.ANEvent = eEvent;
-            eEvent.ANEventCategories = model.Categories.Select(x=> new ANEventCategory()
+            eEvent.ANEventCategories = model.Categories.Select(x => new ANEventCategory()
             {
                 CategoryId = x.Id
             }).ToList();
