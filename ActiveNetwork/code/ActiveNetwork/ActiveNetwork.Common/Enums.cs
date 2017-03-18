@@ -11,4 +11,10 @@ namespace ActiveNetwork.Common
         None = 0,
         ANEventCoverImage = 1,
     }
+
+    public enum ANRequestToJoinStatus
+    {
+        Waiting = 0,
+        Approved = 1,
+    }
 }

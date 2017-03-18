@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {ANEventDetailServiceInstance} from '../../services/anevent-detail-service';
+import {userStore} from '../../store/user-store';
 
 export class EventDetailPeopleComponent extends Component {
   eventId;
@@ -8,6 +9,7 @@ export class EventDetailPeopleComponent extends Component {
     this.setState({
       eventMembers: {},
       eventRequestToJoins: {},
+      isHost: false,
     });
 
     this.eventId = this.props.params.id;
@@ -16,6 +18,7 @@ export class EventDetailPeopleComponent extends Component {
   componentDidMount() {
     this.getMemberData();
     this.getRequestToJoinData();
+    this.checkHost();
   }
 
   async getMemberData() {
@@ -30,6 +33,19 @@ export class EventDetailPeopleComponent extends Component {
     this.setState({
       eventRequestToJoins: a,
     });
+  }
+
+  async checkHost() {
+    let a = await ANEventDetailServiceInstance.getANEventDetailInformation(this.eventId);
+    if (a != null) {
+      if (a.Host.Id == userStore.getState().currentUser.Id)
+        this.setState({isHost: true});
+    }
+  }
+
+  clickApprove(userId){
+    console.log(userId);
+    debugger;
   }
 
   render() {
@@ -110,24 +126,27 @@ export class EventDetailPeopleComponent extends Component {
                           <a href="#">{x.User.Username}</a>
                         </td>
                         <td>
-                          <a href="#" className="table-link success">
+                          {this.state.isHost ? <div>
+                            <a href="" className="table-link success" onClick={() => this.clickApprove(x.User.Id)}>
                       <span className="fa-stack">
                         <i className="fa fa-square fa-stack-2x"></i>
-                        <i className="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                        <i className="fa fa-check-circle fa-stack-1x fa-inverse"></i>
                       </span>
-                          </a>
-                          <a href="#" className="table-link">
-                      <span className="fa-stack">
-                        <i className="fa fa-square fa-stack-2x"></i>
-                        <i className="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                      </span>
+                            </a>
+                            < a href = "#" className="table-link">
+                          <span className="fa-stack">
+                          <i className="fa fa-square fa-stack-2x"></i>
+                          <i className="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                          </span>
                           </a>
                           <a href="#" className="table-link danger">
-                      <span className="fa-stack">
-                        <i className="fa fa-square fa-stack-2x"></i>
-                        <i className="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                      </span>
+                          <span className="fa-stack">
+                          <i className="fa fa-square fa-stack-2x"></i>
+                          <i className="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                          </span>
                           </a>
+                            </div>
+                          : null}
                         </td>
                       </tr>
                     )) : null
