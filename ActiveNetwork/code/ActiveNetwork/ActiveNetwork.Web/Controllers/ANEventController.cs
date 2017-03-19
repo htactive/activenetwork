@@ -259,6 +259,7 @@ namespace ActiveNetwork.Web.Controllers
             eInfo.StartDate = model.Information.StartDate;
             eInfo.EndDate = model.Information.EndDate;
             eInfo.Description = model.Information.Description;
+            eInfo.ShortDescription = model.Information.ShortDescription;
             var eLocation = new ANEventLocation();
             eLocation.GGId = model.Information.ANEventLocation.GGId;
             eLocation.Address = model.Information.ANEventLocation.Address;

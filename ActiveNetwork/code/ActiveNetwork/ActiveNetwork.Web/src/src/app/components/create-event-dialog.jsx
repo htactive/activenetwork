@@ -27,8 +27,8 @@ export class CreateEventDialog extends React.Component {
       event_locationDisplay: '',
       event_location: {},
       event_topics: [],
-      event_description_sort: "",
-      event_description_sort_placeholder: "Viết mô tả ngắn gọn về sự kiện"
+      event_description_short: "",
+      event_description_short_placeholder: "Viết mô tả ngắn gọn về sự kiện"
     });
   }
 
@@ -242,11 +242,11 @@ export class CreateEventDialog extends React.Component {
                 <textarea
                   style={{width: '100%', resize:'none'}}
                   rows="5"
-                  value={this.state.event_description_sort}
-                  placeholder={this.state.event_description_sort_placeholder}
+                  value={this.state.event_description_short}
+                  placeholder={this.state.event_description_short_placeholder}
                    onChange={v => {
                         let val = v.target.value;
-                        this.setState({event_description_sort: val});
+                        this.setState({event_description_short: val});
                       }}/>
               </div>
             </div>
@@ -309,7 +309,7 @@ export class CreateEventDialog extends React.Component {
           Title: this.state.title,
           StartDate: this.state.startDate,
           EndDate: this.state.EndDate,
-          SortDescription: this.state.event_description_sort
+          ShortDescription: this.state.event_description_short
         },
         Categories: this.state.event_topics,
         CoverPhoto: { Id: uploadResult.Id }
