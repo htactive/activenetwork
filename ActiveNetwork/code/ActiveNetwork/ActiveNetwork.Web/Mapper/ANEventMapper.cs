@@ -14,6 +14,7 @@ namespace ActiveNetwork.Web.Mapper
             return entity == null ? null : new ANEventModel()
             {
                 Id = entity.Id,                
+                CreatedDate = entity.CreatedDate,
                 Host = new UserModel() { Id = entity.UserId.GetValueOrDefault() },
             };
         }

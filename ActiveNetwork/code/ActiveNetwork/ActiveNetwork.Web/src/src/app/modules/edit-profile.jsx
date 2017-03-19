@@ -208,7 +208,10 @@ export class EditProfilePage extends Component {
 
   async startUploadMyAvatar(v) {
     if (v.target.files && v.target.files[0]) {
+
       let image = v.target.files[0];
+      console.log(image);
+      debugger;
       let uploadResult = await UserProfileServiceInstance.uploadUserAvatar({avatar: image});
       if(uploadResult){
         this.state.userProfile.Avatar = uploadResult;

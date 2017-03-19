@@ -120,12 +120,11 @@ namespace ActiveNetwork.Web.Controllers
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventDetailRequestToJoinModel GetEventDetailRequestToJoin(int Id)
         {
-            var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
-                .Include("ANEventRequestToJoins.User.UserProfiles.Image")
-                .FirstOrDefault(x => x.Id == Id);
+            var requestEntity = this.ANDBUnitOfWork.ANEventRequestToJoinRepository.GetAll()
+                .Include("User.UserProfiles.Image")
+                .Where(x => x.ANEventId.HasValue && x.ANEventId.Value == Id && x.Status.HasValue && x.Status.Value == (int)Common.ANRequestToJoinStatus.Waiting).ToList();
 
-            if (entity == null) return null;
-            var listRTJ = entity.ANEventRequestToJoins.Select(x =>
+            var RTJmodels = requestEntity.Select(x =>
                 {
                     var firstUserProfile = x.User.UserProfiles.FirstOrDefault();
                     var anEventRTJModel = ANEventRequestToJoinMapper.ToModel(x);
@@ -144,8 +143,8 @@ namespace ActiveNetwork.Web.Controllers
 
             return new ANEventDetailRequestToJoinModel()
             {
-                EventId = entity.Id,
-                ANEventRequestToJoins = listRTJ
+                EventId = Id,
+                ANEventRequestToJoins = RTJmodels
             };
         }
     }

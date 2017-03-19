@@ -17,6 +17,7 @@ namespace ActiveNetwork.Web.Mapper
                 ANEvent = new ANEventModel() { Id = entity.ANEventId.GetValueOrDefault() },
                 Title = entity.Title,
                 Description = entity.Description,
+                ShortDescription = entity.ShortDescription,
                 EventLocation = entity.EventLocation,
                 StartDate = entity.StartDate,
                 EndDate = entity.EndDate

@@ -8,10 +8,11 @@ import {getStates, matchStateToTerm, sortStates, styles, fakeRequest} from 'reac
 import {GoogleAPIServiceInstance} from '../services/location-service'
 import {ANEventServiceInstance} from '../services/anevent-service';
 
-import {
-  createEditorState,
-} from 'medium-draft';
-import {HTMLEditorByMD} from '../components/html-editor-md';
+// import {
+//   createEditorState,
+//   convertToRaw
+// } from 'medium-draft';
+// import {HTMLEditorByMD} from '../components/html-editor-md';
 
 export class CreateEventDialog extends React.Component {
   componentWillMount() {
@@ -26,8 +27,8 @@ export class CreateEventDialog extends React.Component {
       event_locationDisplay: '',
       event_location: {},
       event_topics: [],
-      event_description: createEditorState(),
-      event_description_placeholder: "Viết mô tả ngắn gọn về sự kiện"
+      event_description_short: "",
+      event_description_short_placeholder: "Viết mô tả ngắn gọn về sự kiện"
     });
   }
 
@@ -51,9 +52,9 @@ export class CreateEventDialog extends React.Component {
     this.setState({topicList: topics});
   }
 
-  onEventDescriptionChanged(editorState) {
-    this.setState({event_description: editorState});
-  }
+  // onEventDescriptionChanged(editorState) {
+  //   this.setState({event_description: editorState});
+  // }
 
   show() {
     this.setState({
@@ -234,20 +235,19 @@ export class CreateEventDialog extends React.Component {
             </div>
             <hr/>
             <div className="form-group">
-              <div className="col-sm-12 text-center"><h3>Mô tả về sự kiện</h3></div>
+              <div className="col-sm-12 text-center"><h3>Mô tả ngắn gọn về sự kiện</h3></div>
             </div>
             <div className="form-group">
               <div className="col-sm-12">
-                <HTMLEditorByMD
-                  editorState={this.state.event_description}
-                  placeholder={this.state.event_description_placeholder}
-                  onChange={(editorState, callback = null) => {
-                    this.setState({event_description: editorState}, () => {
-                      if (callback) {
-                        callback();
-                      }
-                    });
-                  }}/>
+                <textarea
+                  style={{width: '100%', resize:'none'}}
+                  rows="5"
+                  value={this.state.event_description_short}
+                  placeholder={this.state.event_description_short_placeholder}
+                   onChange={v => {
+                        let val = v.target.value;
+                        this.setState({event_description_short: val});
+                      }}/>
               </div>
             </div>
           </form>
@@ -293,27 +293,31 @@ export class CreateEventDialog extends React.Component {
   endDateOnSelect(v){
     this.setState({endDate: v.toObject()});
   }
- async createEvent(){
-     let model = {
-      Information: {
-        EventLocationM:{
-          GGId: this.state.event_location.Id,
-          Name: this.state.event_location.Name,
-          Address: this.state.event_location.Address,
-          Lat: this.state.event_location.location != null ? this.state.event_location.location.lat : '',
-          Lng: this.state.event_location.location != null ? this.state.event_location.location.lng : ''
+  async createEvent() {
+    let uploadResult = await ANEventServiceInstance.uploadCoverPhoto({ cover: this.state.file });
+    if (uploadResult) {
+      let model = {
+        Information: {
+          ANEventLocation: {
+            GGId: this.state.event_location.Id,
+            Name: this.state.event_location.Name,
+            Address: this.state.event_location.Address,
+            Lat: this.state.event_location.location != null ? this.state.event_location.location.lat : '',
+            Lng: this.state.event_location.location != null ? this.state.event_location.location.lng : ''
+          },
+          Description: "",
+          Title: this.state.title,
+          StartDate: this.state.startDate,
+          EndDate: this.state.EndDate,
+          ShortDescription: this.state.event_description_short
         },
-        Description: "",
-        Title: this.state.title,
-        StartDate: this.state.startDate,
-        EndDate: this.state.EndDate
-      },
-      Categories: this.state.event_topics
-     };
-     console.log(model); 
+        Categories: this.state.event_topics,
+        CoverPhoto: { Id: uploadResult.Id }
+      };
       let result = await ANEventServiceInstance.createANEvent(model);
-       if (result) {
-         this.close();
-       }
-  }
+      if (result) {
+        this.close();
+      }
+    }
+   }
 }

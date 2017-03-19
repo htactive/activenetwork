@@ -69,12 +69,12 @@ namespace ActiveNetwork.Repository
             }
         }
 
-        private IANEventRequestToJoinRepository requestToJoinRepository;
-        public IANEventRequestToJoinRepository RequestToJoinRepository
+        private IANEventRequestToJoinRepository anEventRequestToJoinRepository;
+        public IANEventRequestToJoinRepository ANEventRequestToJoinRepository
         {
             get
             {
-                return requestToJoinRepository ?? (requestToJoinRepository = new ANEventRequestToJoinRepository(this));
+                return anEventRequestToJoinRepository ?? (anEventRequestToJoinRepository = new ANEventRequestToJoinRepository(this));
             }
         }
         private IImageRepository imageRepository;
@@ -86,6 +86,22 @@ namespace ActiveNetwork.Repository
             }
         }
 
+        private IANEventMemberRepository anEventMemberRepository;
+        public IANEventMemberRepository ANEventMemberRepository
+        {
+            get
+            {
+                return anEventMemberRepository ?? (anEventMemberRepository = new ANEventMemberRepository(this));
+            }
+        }
+        private IANEventUserFavouriteRepository anEventUserFavouriteRepository;
+        public IANEventUserFavouriteRepository ANEventUserFavouriteRepository
+        {
+            get
+            {
+                return anEventUserFavouriteRepository ?? (anEventUserFavouriteRepository = new ANEventUserFavouriteRepository(this));
+            }
+        }
         #endregion
     }
 }

@@ -91,6 +91,9 @@
     <Compile Include="ANEventRequirement.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="ANEventUserFavourite.cs">
+      <DependentUpon>ANDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Category.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>

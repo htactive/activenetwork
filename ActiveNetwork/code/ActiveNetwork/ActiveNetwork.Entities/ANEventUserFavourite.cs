@@ -12,15 +12,11 @@ namespace ActiveNetwork.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class ANEventRequestToJoin
+    public partial class ANEventUserFavourite
     {
         public int Id { get; set; }
-        public Nullable<int> ANEventId { get; set; }
         public Nullable<int> UserId { get; set; }
-        public Nullable<System.DateTime> RequestDate { get; set; }
-        public Nullable<int> Status { get; set; }
-    
-        public virtual ANEvent ANEvent { get; set; }
-        public virtual User User { get; set; }
+        public Nullable<int> EventId { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
     }
 }

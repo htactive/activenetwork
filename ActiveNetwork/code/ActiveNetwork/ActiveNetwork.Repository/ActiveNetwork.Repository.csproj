@@ -54,10 +54,16 @@
     <Compile Include="Core\BaseRepository.cs" />
     <Compile Include="Core\BaseUnitOfWork.cs" />
     <Compile Include="ANDBUnitOfWork.cs" />
+    <Compile Include="IRepository\IANEventMemberRepository.cs">
+      <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="IRepository\IANEventRepository.cs">
       <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="IRepository\IANEventRequestToJoinRepository.cs">
+      <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IRepository\IANEventUserFavouriteRepository.cs">
       <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="IRepository\ICategoryRepository.cs">
@@ -84,10 +90,16 @@
       <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\ANEventMemberRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="Repository\ANEventRepository.cs">
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\ANEventRequestToJoinRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\ANEventUserFavouriteRepository.cs">
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\CategoryRepository.cs">
