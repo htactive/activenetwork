@@ -1,100 +1,9 @@
 import React, {Component} from 'react';
 import {userStore} from '../store/user-store';
 import {ANEventServiceInstance} from '../services/anevent-service';
-
+import {virtualPath} from '../../commons/constant'
+import {browserHistory} from 'react-router';
 var eventGroups = [];
-var eventGroups1 = [
-  {
-    year: '2015',
-    eventmonth: [
-      {
-        month: '1',
-        events: [
-          {
-            host_name: 'Huân Nguyễn',
-            title: 'Nhậu nhẹt độc thân',
-            cover_image: '/img/Photos/1.jpg',
-            description: 'Nhậu nhẹt độc thân Nhậu nhẹt độc thân Nhậu nhẹt độc thân Nhậu nhẹt độc thân <a href="https://youtu.be/DLS0PA2cgoo">https://youtu.be/DLS0PA2cgoo</a>',
-            startDate: '01/01/2015',
-            day: '1',
-            location: 'Quán nhậu bạn tôi',
-            numberOfMember: 20
-          },
-          {
-            host_name: 'Huân Nguyễn 1',
-            title: 'Nhậu nhẹt độc thân 1',
-            cover_image: '/img/Photos/1.jpg',
-            description: 'Nhậu nhẹt độc thân Nhậu nhẹt độc thân Nhậu nhẹt độc thân Nhậu nhẹt độc thân 111 <a href="https://youtu.be/DLS0PA2cgoo">https://youtu.be/DLS0PA2cgoo</a>',
-            startDate: '03/01/2015',
-            day: '3',
-            location: 'Quán nhậu bạn tôi gần đường nguyễn văn linh',
-            numberOfMember: 25
-          }
-        ]
-      },
-      {
-        month: '3',
-        events: [
-          {
-            host_name: 'Hoang Pham',
-            title: 'Xem phim cuoi tuan',
-            cover_image: '/img/Photos/1.jpg',
-            description: 'Xem phim cuoi tuan Xem phim cuoi tuan Xem phim cuoi tuan <a href="https://youtu.be/DLS0PA2cgoo">https://youtu.be/DLS0PA2cgoo</a>',
-            startDate: '11/03/2015',
-            day: '11',
-            location: 'CGV',
-            numberOfMember: 20
-          },
-          {
-            host_name: 'Hoang Pham 111',
-            title: 'Xem phim cuoi tuan111',
-            cover_image: '/img/Photos/1.jpg',
-            description: 'Xem phim cuoi tuan Xem phim cuoi tuan Xem phim cuoi tuan 111 <a href="https://youtu.be/DLS0PA2cgoo">https://youtu.be/DLS0PA2cgoo</a>',
-            startDate: '15/03/2015',
-            day: '15',
-            location: 'con gà vàng',
-            numberOfMember: 20
-          }
-        ]
-      }
-    ]
-  },
-  {
-    year: '2014',
-    eventmonth: [
-      {
-        month: '3',
-        events: [
-          {
-            host_name: 'Huân Nguyễn',
-            title: 'Go kill yourself',
-            cover_image: '/img/Photos/1.jpg',
-            description: 'Last summer, Last summer, Last summer, Last summer, Last summer, Last summer, Last summer, Last summer, Last summer, Last summer, Last summer, Last summer',
-            startDate: '01/03/2014',
-            day: '1',
-            location: 'Cầu Thuận Phước',
-            numberOfMember: 20
-          }
-        ]
-      },
-      {
-        month: '5',
-        events: [
-          {
-            host_name: 'Hoang Pham',
-            title: 'Travelling',
-            cover_image: '/img/Photos/1.jpg',
-            description: 'Thailand welcome, Thailand welcome,Thailand welcome,Thailand welcome,Thailand welcome,Thailand welcome, Thailand welcome, Thailand welcome',
-            startDate: '13/05/2014',
-            day: '13',
-            location: 'Sài gòn',
-            numberOfMember: 20
-          }
-        ]
-      }
-    ]
-  }
-];
 export class EventManager extends Component {
 
   componentWillMount() {
@@ -120,7 +29,6 @@ export class EventManager extends Component {
     let posts = await ANEventServiceInstance.getANEventsByHost(currentUser.Id);
     eventGroups = posts;
     this.setState({
-      collapseType: 'in',
       eventGroups: eventGroups,
       evListType: 'Sự kiện đã tạo'
     });
@@ -136,7 +44,6 @@ export class EventManager extends Component {
     let posts = await ANEventServiceInstance.getJoinedANEvents(currentUser.Id);
     eventGroups = posts;
     this.setState({
-      collapseType: 'in',
       eventGroups: eventGroups,
       evListType: 'Sự kiện đã tham gia'
     });
@@ -194,14 +101,22 @@ export class EventManager extends Component {
 
 export class EventManagerList extends Component {
 
-  componentWillReceiveProps(newProps) {
-
+  componentWillMount() {
+    this.setState({
+      isShowDelete: false,
+      hoveredId: 0
+    });
   }
 
   getBgrImageStyle(url) {
     return {
       backgroundImage: 'url(' + url + ')'
     }
+  }
+
+  goToEventDetail(e, eventId) {
+    e.preventDefault();
+    browserHistory.push(`${virtualPath}/event/${eventId}`)
   }
 
   render() {
@@ -217,7 +132,7 @@ export class EventManagerList extends Component {
                   <a style={{cursor: 'pointer', color: '#000'}} data-toggle="collapse"
                      data-target={`#${evGroup.Year}`}>Sự kiện từ {evGroup.Year}</a>
                 </div>
-                <div id={evGroup.Year} className={`collapse ${this.props.evListType}`}>
+                <div id={evGroup.Year} className={`collapse ${this.props.collapseType}`}>
                   {evGroup.EventMonth != null ? evGroup.EventMonth.map((evMonth, y) =>
                       (
                         <div key={y}>
@@ -239,21 +154,27 @@ export class EventManagerList extends Component {
                                   <div key={z} className="row" style={{padding: 15}}>
                                     <div className="col-md-4 no-padding">
                                       <div className="image-item"
-                                           style={this.getBgrImageStyle(ev.CoverPhoto != null ? ev.CoverPhoto.Url : '')}>
+                                           style={this.getBgrImageStyle(ev.CoverPhoto != null ? ev.CoverPhoto.Url : '')}
+                                           onClick={(e) => this.goToEventDetail(e, ev.Id)}>
                                         <div>
                                           <span className="fa fa-calendar-check-o"/>
                                           <span>&nbsp;{ev.Day}</span>
                                         </div>
                                       </div>
                                     </div>
-                                    <div className="col-md-8" style={{paddingRight: 5}}>
+                                    <div className="col-md-8 event-info-section" style={{paddingRight: 5}} >
+                                      <a href="#" className="delete-event-ico"><i
+                                        className="fa fa-times "/></a>
+
                                       <div
                                         style={{
                                           overflow: 'hidden',
                                           textOverflow: 'ellipsis',
                                           whiteSpace: 'nowrap'
                                         }}>
-                                        <a href="#">{ev.Information.Title} &nbsp;</a></div>
+                                        <a href="#"
+                                           onClick={(e) => this.goToEventDetail(e, ev.Id)}>{ev.Information.Title} &nbsp;</a>
+                                      </div>
                                       <div style={{
                                         overflow: 'hidden',
                                         textOverflow: 'ellipsis',

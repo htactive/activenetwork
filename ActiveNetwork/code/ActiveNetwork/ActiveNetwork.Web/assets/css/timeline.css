@@ -1665,6 +1665,7 @@ for block ui
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50% 50%;
+    cursor: pointer;
 }
 
 .image-item > div {
@@ -1672,4 +1673,33 @@ for block ui
     color: #fff;
     font-size: 16px;
     font-weight: bold;
+}
+
+.event-info-section:hover .delete-event-ico {
+    display:block;
+}
+
+.delete-event-ico {
+    display:none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 99;
+    color: #e0e0e0;
+}
+
+.delete-event-ico > i {
+    padding: 2px;
+}
+
+.delete-event-ico:hover, 
+.delete-event-ico:focus {
+    text-decoration:none;
+    color: #ffffff;
+}
+
+.delete-event-ico:hover > i, 
+.delete-event-ico:focus > i {
+    background-color: #28aa8e;
+    padding: 2px;
 }
