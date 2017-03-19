@@ -246,6 +246,51 @@ namespace ActiveNetwork.Web.Controllers
 
             return groupEvents;
         }
+        
+        [HttpGet,Route("anevent/get-my-event-favourites")]
+        [HTActiveAuthorize(Roles=ANRoleConstant.USER)]
+        public List<ANEventModel> GetMyEventFavourites()
+        {
+            var currentUserId = this.CurrentUser.Id;
+            var anEventEntities = this.ANDBUnitOfWork.ANEventUserFavouriteRepository.GetAll()
+                .Include("User.UserProfiles.Image")
+                .Include("ANEventImages.Image")
+                .Include("ANEventInformations")
+                .Where(x => x.UserId.HasValue && x.UserId.Value == currentUserId)
+                .Select(x=>x.ANEvent)
+                .ToList()
+                .OrderByDescending(x => x.CreatedDate).ToList() ;
+
+            var anEventModels = new List<ANEventModel>();
+
+            foreach (var entity in anEventEntities)
+            {
+                var anEventModel = ANEventMapper.ToModel(entity);
+
+                // get host information
+                if (entity.User != null)
+                {
+                    anEventModel.Host = UserMapper.ToModel(entity.User);
+                    var firstProfile = entity.User.UserProfiles.FirstOrDefault();
+                    anEventModel.Host.Profile = UserProfileMapper.ToModel(firstProfile);
+                    if (anEventModel.Host.Profile != null)
+                    {
+                        anEventModel.Host.Profile.Avatar = ImageMapper.ToModel(firstProfile.Image);
+                    }
+                }
+                // get cover image
+                var coverImageEntity = entity.ANEventImages.Where(x => x.ANEventImageType == (int)Common.ANEventImageType.ANEventCoverImage).OrderBy(x => x.SortPriority).FirstOrDefault();
+                if (coverImageEntity != null)
+                {
+                    anEventModel.CoverPhoto = ImageMapper.ToModel(coverImageEntity.Image);
+                }
+                // get information
+                var information = entity.ANEventInformations.FirstOrDefault();
+                anEventModel.Information = ANEventInformationMapper.ToModel(information);
+                anEventModels.Add(anEventModel);
+            }
+            return anEventModels;
+        }
 
         [HttpPost, Route("anevent/create-event")]
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
