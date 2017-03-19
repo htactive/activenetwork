@@ -23,6 +23,7 @@ namespace ActiveNetwork.Web.Models
         public List<ANEventMemberModel> ANEventMembers { get; set; }
         public List<ANEventRequestToJoinModel> ANEventRequestToJoins { get; set; }
         public List<ANEventImageModel> ANEventImages { get; set; }
+        public List<ANEventUserFavouriteModel> ANEventUserFavourites { get; set; }
     }
 
     public class ANEventRequirementModel

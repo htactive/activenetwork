@@ -16,4 +16,5 @@ namespace ActiveNetwork.Web.Models
         public int Month { get; set; }
         public List<ANEventModel> Events { get; set; }
     }
+    
 }

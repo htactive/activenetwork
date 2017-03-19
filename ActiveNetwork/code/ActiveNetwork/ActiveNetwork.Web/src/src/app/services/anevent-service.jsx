@@ -43,9 +43,8 @@ class ANEventService extends ServiceBase {
     let entities = newFeeds.ANEvents;
     let serverDateTimeNow = newFeeds.ServerDateTimeNow;
     return {
-      posts: entities.map(x => {
-        x = x || {ANEvent: {}, IsFavorited: false};
-        let anEvent = x.ANEvent;
+      posts: entities.map(anEvent => {
+        anEvent.IsFavorited = anEvent.ANEventUserFavourites.length > 0;
         anEvent.Host = anEvent.Host || {Id: 0, CreatedDate: new Date()};
         anEvent.Host.Profile = anEvent.Host.Profile || {FirstName: '', LastName: '', MiddleName: ''};
         anEvent.Host.Profile.Avatar = anEvent.Host.Profile.Avatar || {Id: 0, Url: ''};
@@ -67,7 +66,7 @@ class ANEventService extends ServiceBase {
           title: anEvent.Information.Title,
           description: anEvent.Information.Description,
           shortDescription: anEvent.Information.ShortDescription,
-          isFavorited: x.IsFavorited
+          isFavorited: anEvent.IsFavorited
         };
       }),
       serverDateTimeNow: serverDateTimeNow

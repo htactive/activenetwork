@@ -20,9 +20,10 @@ namespace ActiveNetwork.Entities
             this.ANEventRequirements = new HashSet<ANEventRequirement>();
             this.ANEventCategories = new HashSet<ANEventCategory>();
             this.ANEventImages = new HashSet<ANEventImage>();
-            this.ANEventMembers = new HashSet<ANEventMember>();
-            this.ANEventRequestToJoins = new HashSet<ANEventRequestToJoin>();
             this.ANEventInformations = new HashSet<ANEventInformation>();
+            this.ANEventMembers = new HashSet<ANEventMember>();
+            this.ANEventUserFavourites = new HashSet<ANEventUserFavourite>();
+            this.ANEventRequestToJoins = new HashSet<ANEventRequestToJoin>();
         }
     
         public int Id { get; set; }
@@ -38,10 +39,12 @@ namespace ActiveNetwork.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ANEventImage> ANEventImages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ANEventInformation> ANEventInformations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ANEventMember> ANEventMembers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ANEventRequestToJoin> ANEventRequestToJoins { get; set; }
+        public virtual ICollection<ANEventUserFavourite> ANEventUserFavourites { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ANEventInformation> ANEventInformations { get; set; }
+        public virtual ICollection<ANEventRequestToJoin> ANEventRequestToJoins { get; set; }
     }
 }

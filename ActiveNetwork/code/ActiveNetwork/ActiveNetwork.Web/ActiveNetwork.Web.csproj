@@ -202,7 +202,7 @@
     <Compile Include="Mapper\ANEventMemberMapper.cs" />
     <Compile Include="Mapper\ANEventRequestToJoinMapper.cs" />
     <Compile Include="Mapper\ANEventRequirementMapper.cs" />
-    <Compile Include="Mapper\ANEventUserFavouriteModel.cs" />
+    <Compile Include="Models\ANEventUserFavouriteModel.cs" />
     <Compile Include="Mapper\ImageMapper.cs" />
     <Compile Include="Mapper\GenderMapper.cs" />
     <Compile Include="Mapper\ANEventUserFavouriteMapper.cs" />
@@ -213,7 +213,6 @@
     <Compile Include="Models\ANEventDetailInformationModel.cs" />
     <Compile Include="Models\ANEventGroupModel.cs" />
     <Compile Include="Models\ANEventInformationModel.cs" />
-    <Compile Include="Models\ANEventInNewFeedsModel.cs" />
     <Compile Include="Models\ANEventModel.cs" />
     <Compile Include="Models\GoogleServiceModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />

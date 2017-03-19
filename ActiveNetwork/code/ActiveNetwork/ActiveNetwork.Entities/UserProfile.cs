@@ -28,7 +28,7 @@ namespace ActiveNetwork.Entities
         public string Introduction { get; set; }
     
         public virtual Gender Gender { get; set; }
-        public virtual User User { get; set; }
         public virtual Image Image { get; set; }
+        public virtual User User { get; set; }
     }
 }

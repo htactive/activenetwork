@@ -61,7 +61,7 @@ namespace ActiveNetwork.Web.Controllers
 
         [HttpGet, Route("anevent/get-events-in-new-feeds")]
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
-        public List<ANEventInNewFeedsModel> GetEventsInNewFeeds()
+        public List<ANEventModel> GetEventsInNewFeeds()
         {
             var currentUserId = this.CurrentUser.Id;
             var sandbox = new ANEventSearchingSandbox(this.ANDBUnitOfWork);
@@ -74,9 +74,9 @@ namespace ActiveNetwork.Web.Controllers
                 .Where(x => results.Contains(x.Id)).ToList()
                 .OrderBy(x => results.IndexOf(x.Id)).ToList();
 
-            var favoritedIds = this.ANDBUnitOfWork.ANEventUserFavouriteRepository.GetAll().Where(x => x.EventId.HasValue && results.Contains(x.EventId.Value) && x.UserId.HasValue && x.UserId.Value == currentUserId).Select(x => x.EventId.Value).ToList();
+            var favoritedEntities = this.ANDBUnitOfWork.ANEventUserFavouriteRepository.GetAll().Where(x => x.ANEventId.HasValue && results.Contains(x.ANEventId.Value) && x.UserId.HasValue && x.UserId.Value == currentUserId).ToList();
 
-            var anEventInNewFeedModels = new List<ANEventInNewFeedsModel>();
+            var anEventModels = new List<ANEventModel>();
 
             foreach (var entity in anEventEntities)
             {
@@ -102,14 +102,10 @@ namespace ActiveNetwork.Web.Controllers
                 // get information
                 var information = entity.ANEventInformations.FirstOrDefault();
                 anEventModel.Information = ANEventInformationMapper.ToModel(information);
-                var anEventInNewFeedModel = new ANEventInNewFeedsModel()
-                {
-                    ANEvent = anEventModel,
-                    IsFavorited = favoritedIds.Contains(anEventModel.Id)
-                };
-                anEventInNewFeedModels.Add(anEventInNewFeedModel);
+                anEventModel.ANEventUserFavourites = ANEventUserFavouriteMapper.ToModel(favoritedEntities.Where(x => x.ANEventId.HasValue && x.ANEventId.Value == anEventModel.Id));
+                anEventModels.Add(anEventModel);
             }
-            return anEventInNewFeedModels;
+            return anEventModels;
         }
 
         [HttpGet, Route("anevent/get-new-feeds")]
@@ -358,8 +354,8 @@ namespace ActiveNetwork.Web.Controllers
         {
             var userId = this.CurrentUser.Id;
             var eventId = request.ANEventId;
-            if (this.ANDBUnitOfWork.ANEventUserFavouriteRepository.GetAll().Any(x => x.EventId.HasValue && x.EventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == userId)) return null;
-            var entity = new ANEventUserFavourite() { UserId = userId, EventId = eventId, CreatedDate = DateTimeHelper.DateTimeNow };
+            if (this.ANDBUnitOfWork.ANEventUserFavouriteRepository.GetAll().Any(x => x.ANEventId.HasValue && x.ANEventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == userId)) return null;
+            var entity = new ANEventUserFavourite() { UserId = userId, ANEventId = eventId, CreatedDate = DateTimeHelper.DateTimeNow };
             this.ANDBUnitOfWork.ANEventUserFavouriteRepository.Save(entity);
             this.ANDBUnitOfWork.Commit();
             return ANEventUserFavouriteMapper.ToModel(entity);
@@ -370,7 +366,7 @@ namespace ActiveNetwork.Web.Controllers
         {
             var userId = this.CurrentUser.Id;
             var eventId = request.ANEventId;
-            var entity = this.ANDBUnitOfWork.ANEventUserFavouriteRepository.GetAll().Where(x => x.EventId.HasValue && x.EventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == userId).FirstOrDefault();
+            var entity = this.ANDBUnitOfWork.ANEventUserFavouriteRepository.GetAll().Where(x => x.ANEventId.HasValue && x.ANEventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == userId).FirstOrDefault();
             if (entity == null) return false;
             this.ANDBUnitOfWork.ANEventUserFavouriteRepository.Delete(entity);
             this.ANDBUnitOfWork.Commit();

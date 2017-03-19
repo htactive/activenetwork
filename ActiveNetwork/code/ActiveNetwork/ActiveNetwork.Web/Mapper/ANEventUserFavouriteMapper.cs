@@ -15,8 +15,10 @@ namespace ActiveNetwork.Web.Mapper
             {
                 Id = entity.Id,
                 UserId = entity.UserId,
-                EventId = entity.EventId,
-                CreatedDate =entity.CreatedDate
+                ANEventId = entity.ANEventId,
+                CreatedDate = entity.CreatedDate,
+                ANEvent = new ANEventModel() { Id = entity.ANEventId.GetValueOrDefault() },
+                User = new UserModel() { Id = entity.UserId.GetValueOrDefault() }
             };
         }
 

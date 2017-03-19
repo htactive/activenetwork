@@ -7,7 +7,7 @@ namespace ActiveNetwork.Web.Models
 {
     public class NewFeedsModel
     {
-        public List<ANEventInNewFeedsModel> ANEvents { get; set; }
+        public List<ANEventModel> ANEvents { get; set; }
         public DateTime ServerDateTimeNow { get; set; }
     }
 }
