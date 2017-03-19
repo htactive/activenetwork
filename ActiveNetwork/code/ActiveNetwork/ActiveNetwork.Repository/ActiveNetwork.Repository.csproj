@@ -63,6 +63,9 @@
     <Compile Include="IRepository\IANEventRequestToJoinRepository.cs">
       <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Include="IRepository\IANEventUserFavouriteRepository.cs">
+      <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="IRepository\ICategoryRepository.cs">
       <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
     </Compile>
@@ -94,6 +97,9 @@
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\ANEventRequestToJoinRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\ANEventUserFavouriteRepository.cs">
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\CategoryRepository.cs">

@@ -94,6 +94,14 @@ namespace ActiveNetwork.Repository
                 return anEventMemberRepository ?? (anEventMemberRepository = new ANEventMemberRepository(this));
             }
         }
+        private IANEventUserFavouriteRepository anEventUserFavouriteRepository;
+        public IANEventUserFavouriteRepository ANEventUserFavouriteRepository
+        {
+            get
+            {
+                return anEventUserFavouriteRepository ?? (anEventUserFavouriteRepository = new ANEventUserFavouriteRepository(this));
+            }
+        }
         #endregion
     }
 }

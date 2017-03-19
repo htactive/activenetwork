@@ -44,6 +44,7 @@ namespace ActiveNetwork.Entities
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<ANEventInformation> ANEventInformations { get; set; }
+        public virtual DbSet<ANEventUserFavourite> ANEventUserFavourites { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
