@@ -40,6 +40,7 @@
         <EntityTypeShape EntityType="ANDBModel.ANEventInformation" Width="1.5" PointX="8.25" PointY="20.25" />
         <AssociationConnector Association="ANDBModel.FK_ANEventInformation_ANEvent" />
         <AssociationConnector Association="ANDBModel.FK_ANEventInformation_ANEventLocation" />
+        <EntityTypeShape EntityType="ANDBModel.ANEventUserFavourite" Width="1.5" PointX="0.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

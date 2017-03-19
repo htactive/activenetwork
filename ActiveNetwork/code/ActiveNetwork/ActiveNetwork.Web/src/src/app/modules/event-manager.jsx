@@ -141,6 +141,16 @@ export class EventManager extends Component {
       evListType: 'Sự kiện đã tham gia'
     });
   }
+  async loadFavouriteEvents() {
+
+    let posts = await ANEventServiceInstance.getMyFavouriteEvents();
+
+    this.setState({
+      collapseType: 'in',
+      eventGroups: posts,
+      evListType: 'Sự kiện đã tham gia'
+    });
+  }
 
   render() {
     return (<div>
@@ -158,6 +168,9 @@ export class EventManager extends Component {
                       tạo</a></li>
                     <li><a href="#" onClick={() => this.showJoinedEvents()}><i className="fa fa-align-right"/> Sự kiện
                       đã tham gia</a></li>
+                    <li><a href="#" onClick={() => this.showFavouriteEvents()}><i className="fa fa-align-right"/> Sự
+                      kiện
+                      được yêu thích</a></li>
                   </ul>
                   <div className="clearfix"></div>
                 </div>
@@ -183,12 +196,16 @@ export class EventManager extends Component {
     </div>);
   }
 
-  showMyEvents() {
-    this.loadCreatedEvents();
+  async showMyEvents() {
+    await this.loadCreatedEvents();
   }
 
-  showJoinedEvents() {
-    this.loadJoinedEvents();
+  async showJoinedEvents() {
+    await this.loadJoinedEvents();
+  }
+
+  async showFavouriteEvents() {
+    await this.loadFavouriteEvents();
   }
 }
 
@@ -211,76 +228,76 @@ export class EventManagerList extends Component {
           <h3>{this.props.evListType}</h3>
         </div>
         {this.props.eventGroups != null ? this.props.eventGroups.map((evGroup, x) =>
-            (
-              <div key={x} className="col-md-12" style={{backgroundColor: '#fff', marginBottom: 20}}>
-                <div className="row" style={{padding: 15}}>
-                  <a style={{cursor: 'pointer', color: '#000'}} data-toggle="collapse"
-                     data-target={`#${evGroup.Year}`}>Sự kiện từ {evGroup.Year}</a>
-                </div>
-                <div id={evGroup.Year} className={`collapse ${this.props.evListType}`}>
-                  {evGroup.EventMonth != null ? evGroup.EventMonth.map((evMonth, y) =>
-                      (
-                        <div key={y}>
-                          <div className="row"
-                               style={{
-                                 padding: '3px 15px',
-                                 backgroundColor: '#f6f7f9',
-                                 borderBottom: '1px solid #E9EAED',
-                                 borderTop: '1px solid #E9EAED'
-                               }}>
-                            <a style={{cursor: 'pointer', color: '#000', color: '#969696'}}
-                               data-toggle="collapse"
-                               data-target={`#${evGroup.Year}_${evMonth.Month}`}>THÁNG {evMonth.Month}</a>
-                          </div>
-                          <div id={`${evGroup.Year}_${evMonth.Month}`}
-                               className={`collapse ${this.props.collapseType}`}>
-                            {evMonth.Events != null ? evMonth.Events.map((ev, z) =>
-                                (
-                                  <div key={z} className="row" style={{padding: 15}}>
-                                    <div className="col-md-4 no-padding">
-                                      <div className="image-item"
-                                           style={this.getBgrImageStyle(ev.CoverPhoto != null ? ev.CoverPhoto.Url : '')}>
-                                        <div>
-                                          <span className="fa fa-calendar-check-o"/>
-                                          <span>&nbsp;{ev.Day}</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div className="col-md-8" style={{paddingRight: 5}}>
-                                      <div
-                                        style={{
-                                          overflow: 'hidden',
-                                          textOverflow: 'ellipsis',
-                                          whiteSpace: 'nowrap'
-                                        }}>
-                                        <a href="#">{ev.Information.Title} &nbsp;</a></div>
-                                      <div style={{
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        whiteSpace: 'nowrap',
-                                        color: '#969696'
-                                      }}>
-                                        <span>{ev.startDate}</span> <span>Tại {ev.Information.Location || ''}</span>
-                                      </div>
-                                      <div style={{paddingTop: 5}} className="cutline">
-                                        {ev.Information.Description } &nbsp;
-                                      </div>
-                                      <div style={{paddingTop: 10, color: '#969696'}}>
-                                        <span>Số người tham dự: </span>
-                                        <span>{ev.NumberOfMember}</span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                )) : null
-                            }
-                          </div>
-                        </div>
-                      )
-                    ) : null}
-                </div>
+          (
+            <div key={x} className="col-md-12" style={{backgroundColor: '#fff', marginBottom: 20}}>
+              <div className="row" style={{padding: 15}}>
+                <a style={{cursor: 'pointer', color: '#000'}} data-toggle="collapse"
+                   data-target={`#${evGroup.Year}`}>Sự kiện từ {evGroup.Year}</a>
               </div>
-            )
-          ) : null
+              <div id={evGroup.Year} className={`collapse ${this.props.evListType}`}>
+                {evGroup.EventMonth != null ? evGroup.EventMonth.map((evMonth, y) =>
+                  (
+                    <div key={y}>
+                      <div className="row"
+                           style={{
+                             padding: '3px 15px',
+                             backgroundColor: '#f6f7f9',
+                             borderBottom: '1px solid #E9EAED',
+                             borderTop: '1px solid #E9EAED'
+                           }}>
+                        <a style={{cursor: 'pointer', color: '#000', color: '#969696'}}
+                           data-toggle="collapse"
+                           data-target={`#${evGroup.Year}_${evMonth.Month}`}>THÁNG {evMonth.Month}</a>
+                      </div>
+                      <div id={`${evGroup.Year}_${evMonth.Month}`}
+                           className={`collapse ${this.props.collapseType}`}>
+                        {evMonth.Events != null ? evMonth.Events.map((ev, z) =>
+                          (
+                            <div key={z} className="row" style={{padding: 15}}>
+                              <div className="col-md-4 no-padding">
+                                <div className="image-item"
+                                     style={this.getBgrImageStyle(ev.CoverPhoto != null ? ev.CoverPhoto.Url : '')}>
+                                  <div>
+                                    <span className="fa fa-calendar-check-o"/>
+                                    <span>&nbsp;{ev.Day}</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="col-md-8" style={{paddingRight: 5}}>
+                                <div
+                                  style={{
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                  }}>
+                                  <a href="#">{ev.Information.Title} &nbsp;</a></div>
+                                <div style={{
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  whiteSpace: 'nowrap',
+                                  color: '#969696'
+                                }}>
+                                  <span>{ev.startDate}</span> <span>Tại {ev.Information.Location || ''}</span>
+                                </div>
+                                <div style={{paddingTop: 5}} className="cutline">
+                                  {ev.Information.Description } &nbsp;
+                                </div>
+                                <div style={{paddingTop: 10, color: '#969696'}}>
+                                  <span>Số người tham dự: </span>
+                                  <span>{ev.NumberOfMember}</span>
+                                </div>
+                              </div>
+                            </div>
+                          )) : null
+                        }
+                      </div>
+                    </div>
+                  )
+                ) : null}
+              </div>
+            </div>
+          )
+        ) : null
         }
       </div>
     );

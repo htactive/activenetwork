@@ -59,52 +59,57 @@ namespace ActiveNetwork.Web.Controllers
             return true;
         }
 
-        [HttpGet, Route("anevent/get-events")]
+        [HttpGet, Route("anevent/get-events-in-new-feeds")]
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
-        public List<ANEventModel> GetEvents()
+        public List<ANEventInNewFeedsModel> GetEventsInNewFeeds()
         {
+            var currentUserId = this.CurrentUser.Id;
             var sandbox = new ANEventSearchingSandbox(this.ANDBUnitOfWork);
-            var results = sandbox.Search(new SearchingSandbox.Model.SearchCriteria() { UserId = 1 });
+            var results = sandbox.Search(new SearchingSandbox.Model.SearchCriteria() { UserId = currentUserId });
 
             var anEventEntities = this.ANDBUnitOfWork.ANEventRepository.GetAll()
-                .Include(x => x.User)
-                .Include(x => x.User.UserProfiles)
                 .Include("User.UserProfiles.Image")
-                .Include(x => x.ANEventImages)
                 .Include("ANEventImages.Image")
-                .Include(x => x.ANEventInformations)
+                .Include("ANEventInformations")
                 .Where(x => results.Contains(x.Id)).ToList()
                 .OrderBy(x => results.IndexOf(x.Id)).ToList();
 
-            var anEventModels = new List<ANEventModel>();
+            var favoritedIds = this.ANDBUnitOfWork.ANEventUserFavouriteRepository.GetAll().Where(x => x.EventId.HasValue && results.Contains(x.EventId.Value) && x.UserId.HasValue && x.UserId.Value == currentUserId).Select(x => x.EventId.Value).ToList();
+
+            var anEventInNewFeedModels = new List<ANEventInNewFeedsModel>();
 
             foreach (var entity in anEventEntities)
             {
-                var model = ANEventMapper.ToModel(entity);
+                var anEventModel = ANEventMapper.ToModel(entity);
 
                 // get host information
                 if (entity.User != null)
                 {
-                    model.Host = UserMapper.ToModel(entity.User);
+                    anEventModel.Host = UserMapper.ToModel(entity.User);
                     var firstProfile = entity.User.UserProfiles.FirstOrDefault();
-                    model.Host.Profile = UserProfileMapper.ToModel(firstProfile);
-                    if (model.Host.Profile != null)
+                    anEventModel.Host.Profile = UserProfileMapper.ToModel(firstProfile);
+                    if (anEventModel.Host.Profile != null)
                     {
-                        model.Host.Profile.Avatar = ImageMapper.ToModel(firstProfile.Image);
+                        anEventModel.Host.Profile.Avatar = ImageMapper.ToModel(firstProfile.Image);
                     }
                 }
                 // get cover image
                 var coverImageEntity = entity.ANEventImages.Where(x => x.ANEventImageType == (int)Common.ANEventImageType.ANEventCoverImage).OrderBy(x => x.SortPriority).FirstOrDefault();
                 if (coverImageEntity != null)
                 {
-                    model.CoverPhoto = ImageMapper.ToModel(coverImageEntity.Image);
+                    anEventModel.CoverPhoto = ImageMapper.ToModel(coverImageEntity.Image);
                 }
                 // get information
                 var information = entity.ANEventInformations.FirstOrDefault();
-                model.Information = ANEventInformationMapper.ToModel(information);
-                anEventModels.Add(model);
+                anEventModel.Information = ANEventInformationMapper.ToModel(information);
+                var anEventInNewFeedModel = new ANEventInNewFeedsModel()
+                {
+                    ANEvent = anEventModel,
+                    IsFavorited = favoritedIds.Contains(anEventModel.Id)
+                };
+                anEventInNewFeedModels.Add(anEventInNewFeedModel);
             }
-            return anEventModels;
+            return anEventInNewFeedModels;
         }
 
         [HttpGet, Route("anevent/get-new-feeds")]
@@ -113,7 +118,7 @@ namespace ActiveNetwork.Web.Controllers
         {
             return new NewFeedsModel()
             {
-                ANEvents = GetEvents(),
+                ANEvents = GetEventsInNewFeeds(),
                 ServerDateTimeNow = DateTimeHelper.DateTimeNow
             };
         }
@@ -343,6 +348,30 @@ namespace ActiveNetwork.Web.Controllers
             this.ANDBUnitOfWork.Commit();
 
 
+            return true;
+        }
+        [HttpPost, Route("anevent/add-event-to-favourites")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public ANEventUserFavouriteModel AddEventToFavourites(AddOrRemoveEventToFavouritesRequestModel request)
+        {
+            var userId = this.CurrentUser.Id;
+            var eventId = request.ANEventId;
+            if (this.ANDBUnitOfWork.ANEventUserFavouriteRepository.GetAll().Any(x => x.EventId.HasValue && x.EventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == userId)) return null;
+            var entity = new ANEventUserFavourite() { UserId = userId, EventId = eventId, CreatedDate = DateTimeHelper.DateTimeNow };
+            this.ANDBUnitOfWork.ANEventUserFavouriteRepository.Save(entity);
+            this.ANDBUnitOfWork.Commit();
+            return ANEventUserFavouriteMapper.ToModel(entity);
+        }
+        [HttpPost, Route("anevent/remove-event-from-favourites")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public bool RemoveEventFromFavourites(AddOrRemoveEventToFavouritesRequestModel request)
+        {
+            var userId = this.CurrentUser.Id;
+            var eventId = request.ANEventId;
+            var entity = this.ANDBUnitOfWork.ANEventUserFavouriteRepository.GetAll().Where(x => x.EventId.HasValue && x.EventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == userId).FirstOrDefault();
+            if (entity == null) return false;
+            this.ANDBUnitOfWork.ANEventUserFavouriteRepository.Delete(entity);
+            this.ANDBUnitOfWork.Commit();
             return true;
         }
     }

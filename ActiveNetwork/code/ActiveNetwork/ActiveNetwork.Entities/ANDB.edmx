@@ -84,6 +84,15 @@
           <Property Name="ANEventId" Type="int" Nullable="false" />
           <Property Name="RequiredId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="ANEventUserFavourite">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="EventId" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
@@ -445,6 +454,7 @@
           <EntitySet Name="ANEventMember" EntityType="Self.ANEventMember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ANEventRequestToJoin" EntityType="Self.ANEventRequestToJoin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ANEventRequirement" EntityType="Self.ANEventRequirement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ANEventUserFavourite" EntityType="Self.ANEventUserFavourite" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Gender" EntityType="Self.Gender" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
@@ -651,6 +661,7 @@
             <End Role="ANEventLocation" EntitySet="ANEventLocations" />
             <End Role="ANEventInformation" EntitySet="ANEventInformations" />
           </AssociationSet>
+          <EntitySet Name="ANEventUserFavourites" EntityType="ANDBModel.ANEventUserFavourite" />
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1099,6 +1110,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ANEventUserFavourite">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="EventId" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1300,6 +1320,16 @@
                 <ScalarProperty Name="EventLocationId" ColumnName="EventLocationId" />
                 <ScalarProperty Name="EventLocation" ColumnName="EventLocation" />
                 <ScalarProperty Name="ANEventId" ColumnName="ANEventId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ANEventUserFavourites">
+            <EntityTypeMapping TypeName="ANDBModel.ANEventUserFavourite">
+              <MappingFragment StoreEntitySet="ANEventUserFavourite">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

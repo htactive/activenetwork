@@ -62,22 +62,38 @@ export class PostGrid extends Component {
     if (durationData.hours > 0) {
       return `1 giờ ${durationData.minutes} phút trước`;
     }
-    if(durationData.minutes>30){
+    if (durationData.minutes > 30) {
       return `Hơn nữa giờ trước`;
     }
-    if(durationData.minutes>10){
+    if (durationData.minutes > 10) {
       return `Khoảng nữa tiếng trước`;
     }
-    if(durationData.minutes>5){
+    if (durationData.minutes > 5) {
       return `Khoảng 10 phút trước`;
     }
-    if(durationData.minutes>1){
+    if (durationData.minutes > 1) {
       return `5 phút trước`;
     }
-    if(durationData.seconds>30){
+    if (durationData.seconds > 30) {
       return `Chưa đầy 1 phút trước`;
     }
     return `Vừa mới đây`;
+  }
+
+  async addEventToFavourites(post) {
+    let addResult = await ANEventServiceInstance.addEventToFavourites({anEventId: post.anevent_id});
+    if (addResult) {
+      post.isFavorited = true;
+    }
+    this.forceUpdate();
+  }
+
+  async removeEventFromFavourites(post) {
+    let removeResult = await ANEventServiceInstance.removeEventFromFavourites({anEventId: post.anevent_id});
+    if (removeResult) {
+      post.isFavorited = false;
+    }
+    this.forceUpdate();
   }
 
   render() {
@@ -106,7 +122,8 @@ export class PostGrid extends Component {
                           title={moment(post.event_createdDate).format('DD [tháng] MM YYYY, [lúc] HH:mm')}>{this.getTimeSpan(post.event_createdDate, this.state.serverDateTimeNow)}</abbr></span>
                       </div>
                     </div>
-                    <img className="img-responsive show-in-modal" src={post.cover_image} alt="Photo"/>
+                    {post.cover_image ?
+                      <img className="img-responsive show-in-modal" src={post.cover_image} alt="Photo"/> : null}
                     <div className="box-body">
                       <a className="event-name" href=""
                          onClick={(e) => this.goToEventDetail(e, post.anevent_id)}>{post.title}</a>
@@ -116,9 +133,17 @@ export class PostGrid extends Component {
                       <a type="button" onClick={() => this.clickJoinEventDialog(post.anevent_id)}><i
                         className="fa fa-plus"/> Tham gia
                       </a>
-                      <a type="button"><i className="fa fa-heart"/>
-                        Yêu thích
-                      </a>
+                      {post.isFavorited ?
+                        <a type="button" onClick={() => this.removeEventFromFavourites(post)}><i
+                          className="fa fa-heart active-icon"/>
+                          Yêu thích
+                        </a>
+                        :
+                        <a type="button" onClick={() => this.addEventToFavourites(post)}><i
+                          className="fa fa-heart"/>
+                          Yêu thích
+                        </a>}
+
                       <a type="button"><i className="fa fa-comment"/>
                         Bình luận
                       </a>
