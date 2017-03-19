@@ -299,7 +299,7 @@ export class CreateEventDialog extends React.Component {
       if (uploadResult) {
         let model = {
           Information: {
-            EventLocationM: {
+            ANEventLocation: {
               GGId: this.state.event_location.Id,
               Name: this.state.event_location.Name,
               Address: this.state.event_location.Address,

@@ -48,8 +48,8 @@ namespace ActiveNetwork.Web.Controllers
                     UpdatedDate = DateTime.Now,
                     CreatedDate = DateTime.Now.AddHours((new Random(Guid.NewGuid().GetHashCode())).Next(-20, 20)),
                     ANEventInformations = new List<ANEventInformation>() { new ANEventInformation(){
-                        Id = 0, 
-                        Description = string.Format("{0:00}",i) + " -- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla",  
+                        Id = 0,
+                        Description = string.Format("{0:00}",i) + " -- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla",
                     } }
                 };
                 entities.Add(en);
@@ -259,11 +259,11 @@ namespace ActiveNetwork.Web.Controllers
             eInfo.EndDate = model.Information.EndDate;
             eInfo.Description = model.Information.Description;
             var eLocation = new ANEventLocation();
-            eLocation.GGId = model.Information.EventLocationM.GGId;
-            eLocation.Address = model.Information.EventLocationM.Address;
-            eLocation.Name = model.Information.EventLocationM.Name;
-            eLocation.Lat = model.Information.EventLocationM.Lat;
-            eLocation.Lng = model.Information.EventLocationM.Lng;
+            eLocation.GGId = model.Information.ANEventLocation.GGId;
+            eLocation.Address = model.Information.ANEventLocation.Address;
+            eLocation.Name = model.Information.ANEventLocation.Name;
+            eLocation.Lat = model.Information.ANEventLocation.Lat;
+            eLocation.Lng = model.Information.ANEventLocation.Lng;
             var eCategories = model.Categories.Select(x => new Category()
             {
                 Id = x.Id,
@@ -311,7 +311,6 @@ namespace ActiveNetwork.Web.Controllers
             var image = await this.CreateNewImage(stream, fileKey);
             return ImageMapper.ToModel(image);
         }
-    }
 
         [HttpPost, Route("anevent/approve-join-event")]
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
@@ -324,9 +323,9 @@ namespace ActiveNetwork.Web.Controllers
             if (!firstRTJ.ANEvent.UserId.HasValue || firstRTJ.ANEvent.UserId.Value != this.CurrentUser.Id)
             {
                 throw new HttpResponseException(HttpStatusCode.Forbidden);
-    }
+            }
 
-            if (!this.ANDBUnitOfWork.ANEventMemberRepository.GetAll().Any(x => x.UserId == firstRTJ.UserId && x.ANEventId == firstRTJ.ANEventId)) 
+            if (!this.ANDBUnitOfWork.ANEventMemberRepository.GetAll().Any(x => x.UserId == firstRTJ.UserId && x.ANEventId == firstRTJ.ANEventId))
             {
                 var entity = new ANEventMember()
                 {
