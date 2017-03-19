@@ -106,12 +106,12 @@ export class PostGrid extends Component {
                           title={moment(post.event_createdDate).format('DD [tháng] MM YYYY, [lúc] HH:mm')}>{this.getTimeSpan(post.event_createdDate, this.state.serverDateTimeNow)}</abbr></span>
                       </div>
                     </div>
+                    <img className="img-responsive show-in-modal" src={post.cover_image} alt="Photo"/>
                     <div className="box-body">
                       <a className="event-name" href=""
                          onClick={(e) => this.goToEventDetail(e, post.anevent_id)}>{post.title}</a>
-                      <p dangerouslySetInnerHTML={{__html: post.description}}/>
+                      <p dangerouslySetInnerHTML={{__html: post.shortDescription}}/>
                     </div>
-                    <img className="img-responsive show-in-modal" src={post.cover_image} alt="Photo"/>
                     <div className="box-footer">
                       <a type="button" onClick={() => this.clickJoinEventDialog(post.anevent_id)}><i
                         className="fa fa-plus"/> Tham gia

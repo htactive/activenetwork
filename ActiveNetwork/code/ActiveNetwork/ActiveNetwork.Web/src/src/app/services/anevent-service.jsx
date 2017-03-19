@@ -1,11 +1,12 @@
 import {ServiceBase} from './ServiceBase';
 
 class ANEventService extends ServiceBase {
-  async uploadCoverPhoto(model){
+  async uploadCoverPhoto(model) {
     let url = '/anevent/upload-cover-photo';
     let image = model.cover;
-    return await super.executeFetchPostImage(url,image);
+    return await super.executeFetchPostImage(url, image);
   }
+
   async createANEvent(model) {
     let url = '/anevent/create-event';
     let result = await super.executeFetchPost(url, model);
@@ -51,6 +52,7 @@ class ANEventService extends ServiceBase {
             Id: 0,
             Location: '',
             Description: '',
+            ShortDescription: '',
             Title: '',
             EndDate: new Date()
           };
@@ -62,6 +64,7 @@ class ANEventService extends ServiceBase {
           event_createdDate: x.CreatedDate,
           title: x.Information.Title,
           description: x.Information.Description,
+          shortDescription: x.Information.ShortDescription
         };
       }),
       serverDateTimeNow: serverDateTimeNow

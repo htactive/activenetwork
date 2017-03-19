@@ -73,7 +73,8 @@ namespace ActiveNetwork.Web.Controllers
                 .Include(x => x.ANEventImages)
                 .Include("ANEventImages.Image")
                 .Include(x => x.ANEventInformations)
-                .Where(x => results.Contains(x.Id)).ToList();
+                .Where(x => results.Contains(x.Id)).ToList()
+                .OrderBy(x => results.IndexOf(x.Id)).ToList();
 
             var anEventModels = new List<ANEventModel>();
 

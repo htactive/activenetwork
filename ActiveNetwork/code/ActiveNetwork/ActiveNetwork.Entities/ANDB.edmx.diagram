@@ -8,7 +8,6 @@
         <EntityTypeShape EntityType="ANDBModel.ANEvent" Width="1.5" PointX="3" PointY="20" />
         <EntityTypeShape EntityType="ANDBModel.ANEventCategory" Width="1.5" PointX="8.25" PointY="24.625" />
         <EntityTypeShape EntityType="ANDBModel.ANEventImage" Width="1.5" PointX="5.25" PointY="23.375" />
-        <EntityTypeShape EntityType="ANDBModel.ANEventInformation" Width="1.5" PointX="8.25" PointY="20.125" />
         <EntityTypeShape EntityType="ANDBModel.ANEventLocation" Width="1.5" PointX="6" PointY="27.375" />
         <EntityTypeShape EntityType="ANDBModel.ANEventMember" Width="1.5" PointX="8.25" PointY="17.125" />
         <EntityTypeShape EntityType="ANDBModel.ANEventRequestToJoin" Width="1.5" PointX="5.25" PointY="17.125" />
@@ -25,11 +24,9 @@
         <AssociationConnector Association="ANDBModel.FK_ANEvent_Topic_ANEvent" />
         <AssociationConnector Association="ANDBModel.FK_ANEvent_User" />
         <AssociationConnector Association="ANDBModel.FK_ANEventImage_ANEvent" />
-        <AssociationConnector Association="ANDBModel.FK_ANEventInformation_ANEvent" />
         <AssociationConnector Association="ANDBModel.FK_ANEventMember_ANEvent" />
         <AssociationConnector Association="ANDBModel.FK_RequestToJoin_ANEvent" />
         <AssociationConnector Association="ANDBModel.FK_ANEvent_Topic_Topic" />
-        <AssociationConnector Association="ANDBModel.FK_ANEventInformation_ANEventLocation" />
         <AssociationConnector Association="ANDBModel.FK_ANEventMember_User" />
         <AssociationConnector Association="ANDBModel.FK_RequestToJoin_User" />
         <AssociationConnector Association="ANDBModel.FK_ANEvent_Required_RequiredProfile" />
@@ -40,6 +37,9 @@
         <EntityTypeShape EntityType="ANDBModel.Image" Width="1.5" PointX="3.375" PointY="0.875" />
         <AssociationConnector Association="ANDBModel.FK_ANEventImage_Image" />
         <AssociationConnector Association="ANDBModel.FK_UserProfile_Image" />
+        <EntityTypeShape EntityType="ANDBModel.ANEventInformation" Width="1.5" PointX="8.25" PointY="20.25" />
+        <AssociationConnector Association="ANDBModel.FK_ANEventInformation_ANEvent" />
+        <AssociationConnector Association="ANDBModel.FK_ANEventInformation_ANEventLocation" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

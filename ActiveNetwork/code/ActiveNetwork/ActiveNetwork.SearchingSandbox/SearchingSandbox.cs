@@ -17,6 +17,7 @@ namespace ActiveNetwork.SearchingSandbox
         public ANEventSearchingSandbox(ANDBUnitOfWork andbUnitOfWork)
         {
             rules = new List<ISearchingRule>();
+            rules.Add(new Rules.CreatedDateRule());
             this.andbUnitOfWork = andbUnitOfWork;
         }
 

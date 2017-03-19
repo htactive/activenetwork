@@ -18,6 +18,7 @@ namespace ActiveNetwork.Entities
         public Nullable<int> ANEventId { get; set; }
         public string EventLocation { get; set; }
         public Nullable<int> EventLocationId { get; set; }
+        public string ShortDescription { get; set; }
         public string Description { get; set; }
         public string Title { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
