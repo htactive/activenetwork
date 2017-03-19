@@ -16,5 +16,6 @@ namespace ActiveNetwork.Common
     {
         Waiting = 0,
         Approved = 1,
+        Denied = 2,
     }
 }

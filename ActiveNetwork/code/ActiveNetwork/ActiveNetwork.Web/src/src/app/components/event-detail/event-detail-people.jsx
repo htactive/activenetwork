@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {ANEventDetailServiceInstance} from '../../services/anevent-detail-service';
+import {ANEventServiceInstance} from '../../services/anevent-service';
 import {userStore} from '../../store/user-store';
 
 export class EventDetailPeopleComponent extends Component {
@@ -43,9 +44,12 @@ export class EventDetailPeopleComponent extends Component {
     }
   }
 
-  clickApprove(userId){
-    console.log(userId);
-    debugger;
+  clickApprove(RTJid) {
+    let result = ANEventServiceInstance.approveJoinEvent(RTJid);
+  }
+
+  clickDeny(RTJid) {
+    let result = ANEventServiceInstance.denyJoinEvent(RTJid);
   }
 
   render() {
@@ -85,30 +89,22 @@ export class EventDetailPeopleComponent extends Component {
                           <a href="#">{x.User.Username}</a>
                         </td>
                         <td>
-                          <a href="#" className="table-link success">
-                      <span className="fa-stack">
-                        <i className="fa fa-square fa-stack-2x"></i>
-                        <i className="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-                      </span>
-                          </a>
-                          <a href="#" className="table-link">
-                      <span className="fa-stack">
-                        <i className="fa fa-square fa-stack-2x"></i>
-                        <i className="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                      </span>
-                          </a>
-                          <a href="#" className="table-link danger">
+                          {this.state.isHost ?
+                            <div>
+                              <a href="#" className="table-link danger">
                       <span className="fa-stack">
                         <i className="fa fa-square fa-stack-2x"></i>
                         <i className="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                       </span>
-                          </a>
+                              </a>
+                            </div> : null}
                         </td>
                       </tr>
                     )) : null
                   }
 
-                  {(this.state.eventRequestToJoins && this.state.eventRequestToJoins.ANEventRequestToJoins) ?
+                  {(this.state.eventRequestToJoins &&
+                  this.state.eventRequestToJoins.ANEventRequestToJoins && this.state.isHost) ?
                     this.state.eventRequestToJoins.ANEventRequestToJoins.map((x) => (
                       <tr key={x.Id}>
                         <td>
@@ -127,26 +123,20 @@ export class EventDetailPeopleComponent extends Component {
                         </td>
                         <td>
                           {this.state.isHost ? <div>
-                            <a href="" className="table-link success" onClick={() => this.clickApprove(x.User.Id)}>
+                              <a href="" className="table-link success" onClick={() => this.clickApprove(x.Id)}>
                       <span className="fa-stack">
                         <i className="fa fa-square fa-stack-2x"></i>
                         <i className="fa fa-check-circle fa-stack-1x fa-inverse"></i>
                       </span>
-                            </a>
-                            < a href = "#" className="table-link">
-                          <span className="fa-stack">
-                          <i className="fa fa-square fa-stack-2x"></i>
-                          <i className="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                          </span>
-                          </a>
-                          <a href="#" className="table-link danger">
+                              </a>
+                              <a href="" className="table-link danger" onClick={() => this.clickDeny(x.Id)}>
                           <span className="fa-stack">
                           <i className="fa fa-square fa-stack-2x"></i>
                           <i className="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                           </span>
-                          </a>
+                              </a>
                             </div>
-                          : null}
+                            : null}
                         </td>
                       </tr>
                     )) : null
