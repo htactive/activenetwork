@@ -27,8 +27,7 @@ export class JoinEventDialog extends React.Component {
   }
 
   async join() {
-    let userId = this.props.currentUser;
-    let result = await ANEventServiceInstance.joinANEvents(this.eventId, userId);
+    let result = await ANEventServiceInstance.joinANEvents(this.eventId);
     if (result){
       this.close();
     }
