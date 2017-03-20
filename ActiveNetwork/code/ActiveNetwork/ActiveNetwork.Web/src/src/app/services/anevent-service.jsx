@@ -66,7 +66,8 @@ class ANEventService extends ServiceBase {
           title: anEvent.Information.Title,
           description: anEvent.Information.Description,
           shortDescription: anEvent.Information.ShortDescription,
-          isFavorited: anEvent.IsFavorited
+          isFavorited: anEvent.IsFavorited,
+          host_id: anEvent.Host.Id,
         };
       }),
       serverDateTimeNow: serverDateTimeNow

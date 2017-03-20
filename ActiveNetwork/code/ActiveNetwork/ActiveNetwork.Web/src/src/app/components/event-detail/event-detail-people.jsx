@@ -2,15 +2,19 @@ import React, {Component} from 'react';
 import {ANEventDetailServiceInstance} from '../../services/anevent-detail-service';
 import {ANEventServiceInstance} from '../../services/anevent-service';
 import {userStore} from '../../store/user-store';
+const localStatusEnum = {
+  unknown: 0,
+  member: 1,
+  requestToJoin: 2,
+}
 
 export class EventDetailPeopleComponent extends Component {
   eventId;
 
   componentWillMount() {
     this.setState({
-      eventMembers: {},
-      eventRequestToJoins: {},
       isHost: false,
+      user: [],
     });
 
     this.eventId = this.props.params.id;
@@ -24,16 +28,24 @@ export class EventDetailPeopleComponent extends Component {
 
   async getMemberData() {
     let a = await ANEventDetailServiceInstance.getANEventDetailMember(this.eventId);
-    this.setState({
-      eventMembers: a,
-    });
+    if (a != null) {
+      this.state.user = this.state.user.concat(a.ANEventMembers.map(x => {
+        x.localStatus = localStatusEnum.member;
+        return x;
+      }));
+      this.forceUpdate();
+    }
   }
 
   async getRequestToJoinData() {
     let a = await ANEventDetailServiceInstance.getANEventDetailRequestToJoin(this.eventId);
-    this.setState({
-      eventRequestToJoins: a,
-    });
+    if (a != null) {
+      this.state.user = this.state.user.concat(a.ANEventRequestToJoins.map(x => {
+        x.localStatus = localStatusEnum.requestToJoin;
+        return x;
+      }));
+      this.forceUpdate();
+    }
   }
 
   async checkHost() {
@@ -44,18 +56,24 @@ export class EventDetailPeopleComponent extends Component {
     }
   }
 
-  clickApprove(RTJid) {
+  clickApprove(RTJid, index) {
     let result = ANEventServiceInstance.approveJoinEvent(RTJid);
-    if(result){
-
+    if (result) {
+      this.state.user[index].localStatus = localStatusEnum.member;
+      this.forceUpdate();
     }
   }
 
-  clickDeny(RTJid) {
+  clickDeny(RTJid, index) {
     let result = ANEventServiceInstance.denyJoinEvent(RTJid);
-    if(result){
-
+    if (result) {
+      this.state.user[index].localStatus = localStatusEnum.unknown;
+      this.forceUpdate();
     }
+  }
+
+  clickKick(memberId, index) {
+    debugger;
   }
 
   render() {
@@ -77,78 +95,64 @@ export class EventDetailPeopleComponent extends Component {
                   </thead>
                   <tbody>
 
-                  {(this.state.eventMembers && this.state.eventMembers.ANEventMembers) ?
-                    this.state.eventMembers.ANEventMembers.map((x) => (
-                      <tr key={x.Id}>
-                        <td>
-                          <img src={x.User.Profile.Avatar.Url} alt=""/>
-                          <a href="#" className="user-link">{x.User.Profile.FirstName}</a>
-                          <span className="user-subhead">{x.User.Profile.LastName}</span>
-                        </td>
-                        <td>
-                          2013/08/08
-                        </td>
-                        <td className="text-center">
-                          <span className="label label-default">Thành viên</span>
-                        </td>
-                        <td>
-                          <a href="#">{x.User.Username}</a>
-                        </td>
-                        <td>
-                          {this.state.isHost ?
-                            <div>
-                              <a href="#" className="table-link danger">
-                      <span className="fa-stack">
-                        <i className="fa fa-square fa-stack-2x"></i>
-                        <i className="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                      </span>
-                              </a>
-                            </div> : null}
-                        </td>
-                      </tr>
-                    )) : null
-                  }
-
-                  {(this.state.eventRequestToJoins &&
-                  this.state.eventRequestToJoins.ANEventRequestToJoins && this.state.isHost) ?
-                    this.state.eventRequestToJoins.ANEventRequestToJoins.map((x) => (
-                      <tr key={x.Id}>
-                        <td>
-                          <img src={x.User.Profile.Avatar.Url} alt=""/>
-                          <a href="#" className="user-link">{x.User.Profile.FirstName}</a>
-                          <span className="user-subhead">{x.User.Profile.LastName}</span>
-                        </td>
-                        <td>
-                          2013/08/08
-                        </td>
-                        <td className="text-center">
-                          <span className="label label-warning">Chờ duyệt</span>
-                        </td>
-                        <td>
-                          <a href="#">{x.User.Username}</a>
-                        </td>
-                        <td>
-                          {this.state.isHost ? <div>
-                              <a href="" className="table-link success" onClick={(e) => {
-                                e.preventDefault();
-                                this.clickApprove(x.Id)}}>
+                  {this.state.user != null ? this.state.user.map((x, index) => (
+                      x.localStatus != localStatusEnum.unknown ?
+                        <tr key={x.Id}>
+                          <td>
+                            <img src={x.User.Profile.Avatar.Url} alt=""/>
+                            <a href="#" className="user-link">{x.User.Profile.FirstName}</a>
+                            <span className="user-subhead">{x.User.Profile.LastName}</span>
+                          </td>
+                          <td>
+                            2013/08/08
+                          </td>
+                          <td className="text-center">
+                            {x.localStatus == localStatusEnum.member
+                              ? <span className="label label-primary">Thành viên</span>
+                              : <span className="label label-warning">Chờ duyệt</span>}
+                          </td>
+                          <td>
+                            <a href="#">{x.User.Username}</a>
+                          </td>
+                          <td>
+                            {this.state.isHost ?
+                              x.localStatus == localStatusEnum.requestToJoin ?
+                                <div>
+                                  <a href="" className="table-link success" onClick={(e) => {
+                                    e.preventDefault();
+                                    this.clickApprove(x.Id, index)
+                                  }}>
                       <span className="fa-stack">
                         <i className="fa fa-square fa-stack-2x"></i>
                         <i className="fa fa-check-circle fa-stack-1x fa-inverse"></i>
                       </span>
-                              </a>
-                              <a href="" className="table-link danger" onClick={() => this.clickDeny(x.Id)}>
+                                  </a>
+                                  <a href="" className="table-link danger" onClick={(e) => {
+                                    e.preventDefault();
+                                    this.clickDeny(x.Id, index)}}>
                           <span className="fa-stack">
                           <i className="fa fa-square fa-stack-2x"></i>
                           <i className="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                           </span>
-                              </a>
-                            </div>
-                            : null}
-                        </td>
-                      </tr>
+                                  </a>
+                                </div>
+                                :
+                                <div>
+                                  <a href="" className="table-link danger" onClick={() => {
+                                    e.preventDefault();
+                                    this.clickKick(x.Id, index)}}>
+                          <span className="fa-stack">
+                          <i className="fa fa-square fa-stack-2x"></i>
+                          <i className="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                          </span>
+                                  </a>
+                                </div>
+                              : null}
+                          </td>
+                        </tr> : null
                     )) : null
                   }
+
                   </tbody>
                 </table>
               </div>

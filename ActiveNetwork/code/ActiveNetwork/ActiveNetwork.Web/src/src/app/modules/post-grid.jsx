@@ -95,6 +95,11 @@ export class PostGrid extends Component {
     this.forceUpdate();
   }
 
+  gotoUserPage(e, hostId){
+    e.preventDefault();
+    browserHistory.push(`${virtualPath}/user/${hostId}`)
+  }
+
   render() {
     return (<div>
       <div className="container page-content ">
@@ -112,7 +117,7 @@ export class PostGrid extends Component {
                         <img className="" src={post.host_avatar} alt="User Image"/>
                         <span className="username">
                           <span>
-                            <a href="#">{post.host_name}</a>
+                            <a href="" onClick={(e) => this.gotoUserPage(e, post.host_id)}>{post.host_name}</a>
                           </span>
                           <span className="sub-username"><span> đã tạo một </span><a
                             href="" onClick={(e) => this.goToEventDetail(e, post.anevent_id)}>sự kiện</a></span>

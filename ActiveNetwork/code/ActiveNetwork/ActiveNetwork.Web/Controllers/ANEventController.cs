@@ -421,5 +421,26 @@ namespace ActiveNetwork.Web.Controllers
             this.ANDBUnitOfWork.Commit();
             return true;
         }
+
+        [HttpPost, Route("anevent/deny-join-event")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public bool DenyJoinEvent([FromBody]int RTJId)
+        {
+            var firstRTJ = this.ANDBUnitOfWork.ANEventRequestToJoinRepository.GetAll()
+                .Include("ANEvent")
+                .FirstOrDefault(x => x.Id == RTJId);
+
+            if (firstRTJ == null || firstRTJ.ANEvent == null) return false;
+            if (firstRTJ.Status != (int)ANRequestToJoinStatus.Waiting) return false;
+            if (!firstRTJ.ANEvent.UserId.HasValue || firstRTJ.ANEvent.UserId.Value != this.CurrentUser.Id)
+            {
+                throw new HttpResponseException(HttpStatusCode.Forbidden);
+            }
+
+            firstRTJ.Status = (int)ANRequestToJoinStatus.Denied;
+            this.ANDBUnitOfWork.ANEventRequestToJoinRepository.Save(firstRTJ);
+            this.ANDBUnitOfWork.Commit();
+            return true;
+        }
     }
 }

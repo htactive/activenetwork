@@ -31,7 +31,6 @@ ReactDOM.render(
         <Route path={`${virtualPath}/event/:id/wall`} component={EventDetailWallComponent}/>
         <Route path={`${virtualPath}/event/:id/description`} component={EventDetailDescriptionComponent}/>
         <Route path={`${virtualPath}/event/:id/people`} component={EventDetailPeopleComponent}/>
-        <Route path={`${virtualPath}/event/:id/photos`} component={EventDetailPhotosComponent}/>
         <IndexRoute component={EventDetailWallComponent}/>
       </Route>
       <IndexRoute component={PostGrid}/>
