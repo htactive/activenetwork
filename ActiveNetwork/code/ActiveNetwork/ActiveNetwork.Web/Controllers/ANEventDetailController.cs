@@ -56,7 +56,7 @@ namespace ActiveNetwork.Web.Controllers
         {
             //Thread.Sleep(3000);
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
-                .Include("ANEventInformations")
+                .Include("ANEventInformations.ANEventLocation")
                 .Include("User.UserProfiles.Image")
                 .FirstOrDefault(x => x.Id == Id);
             if (entity == null) return null;
@@ -84,6 +84,10 @@ namespace ActiveNetwork.Web.Controllers
                  ANEventInformationMapper.ToModel(firstInformation) : null,
                 Host = host
             };
+            if (informationModel.EventInformation != null)
+            {
+                informationModel.EventInformation.ANEventLocation = ANEventLocationMapper.ToModel(firstInformation.ANEventLocation);
+            }
             return informationModel;
         }
 

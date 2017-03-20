@@ -14,7 +14,11 @@ namespace ActiveNetwork.Web.Mapper
             return entity == null ? null : new ANEventLocationModel()
             {
                 Id = entity.Id,
-                
+                Address = entity.Address,
+                GGId = entity.GGId,
+                Lat = entity.Lat,
+                Lng = entity.Lng,
+                Name = entity.Name
             };
         }
 
