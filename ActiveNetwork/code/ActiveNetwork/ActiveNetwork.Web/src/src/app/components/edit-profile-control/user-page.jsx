@@ -10,7 +10,7 @@ export class UserPage extends Component {
     return (
     <div>
       <div className="container page-content">
-        <div className="row" id="user-profile">
+        <div className="row" id="user-profile2">
           <div className="col-md-4 col-xs-12">
             <div className="row-xs">
               <div className="main-box clearfix">

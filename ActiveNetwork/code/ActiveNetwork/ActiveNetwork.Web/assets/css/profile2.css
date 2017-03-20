@@ -13,79 +13,79 @@ h3 > span {
 }
 
 /* USER PROFILE */
-#user-profile h2 {
+#user-profile2 h2 {
     padding-right: 15px;
 }
-#user-profile .profile-status {
+#user-profile2 .profile-status {
 	font-size: 0.75em;
 	padding-left: 12px;
 	margin-top: -10px;
 	padding-bottom: 10px;
 	color: #8dc859;
 }
-#user-profile .profile-status.offline {
+#user-profile2 .profile-status.offline {
 	color: #fe635f;
 }
-#user-profile .profile-img {
+#user-profile2 .profile-img {
 	border: 1px solid #e1e1e1;
 	padding: 4px;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
-#user-profile .profile-label {
+#user-profile2 .profile-label {
 	text-align: center;
 	padding: 5px 0;
 }
-#user-profile .profile-label .label {
+#user-profile2 .profile-label .label {
 	padding: 5px 15px;
 	font-size: 1em;
 }
-#user-profile .profile-stars {
+#user-profile2 .profile-stars {
 	color: #FABA03;
 	padding: 7px 0;
 	text-align: center;
 }
-#user-profile .profile-stars > i {
+#user-profile2 .profile-stars > i {
 	margin-left: -2px;
 }
-#user-profile .profile-since {
+#user-profile2 .profile-since {
 	text-align: center;
 	margin-top: -5px;
 }
-#user-profile .profile-details {
+#user-profile2 .profile-details {
 	padding: 15px 0;
 	border-top: 1px solid #e1e1e1;
 	border-bottom: 1px solid #e1e1e1;
 	margin: 15px 0;
 }
-#user-profile .profile-details ul {
+#user-profile2 .profile-details ul {
 	padding: 0;
 	margin-top: 0;
 	margin-bottom: 0;
 	margin-left: 40px;
 }
-#user-profile .profile-details ul > li {
+#user-profile2 .profile-details ul > li {
 	margin: 3px 0;
 	line-height: 1.5;
 }
-#user-profile .profile-details ul > li > i {
+#user-profile2 .profile-details ul > li > i {
 	padding-top: 2px;
 }
-#user-profile .profile-details ul > li > span {
+#user-profile2 .profile-details ul > li > span {
 	color: #337ab7;
 }
 
-#user-profile .profile-tabs {
+#user-profile2 .profile-tabs {
 	margin-top: 30px;
 }
-#user-profile .profile-user-info {
+#user-profile2 .profile-user-info {
 	padding-bottom: 20px;
 }
-#user-profile .profile-user-info .profile-user-details {
+#user-profile2 .profile-user-info .profile-user-details {
 	position: relative;
 	padding: 4px 0;
 }
-#user-profile .profile-user-info .profile-user-details .profile-user-details-label {
+#user-profile2 .profile-user-info .profile-user-details .profile-user-details-label {
 	width: 110px;
 	float: left;
 	bottom: 0;
@@ -97,35 +97,35 @@ h3 > span {
 	width: 110px;
 	padding-top: 4px;
 }
-#user-profile .profile-user-info .profile-user-details .profile-user-details-value {
+#user-profile2 .profile-user-info .profile-user-details .profile-user-details-value {
 	margin-left: 120px;
 }
-#user-profile .profile-social li {
+#user-profile2 .profile-social li {
 	padding: 4px 0;
 }
-#user-profile .profile-social li > i {
+#user-profile2 .profile-social li > i {
 	padding-top: 6px;
 }
 @media only screen and (max-width: 767px) {
-	#user-profile .profile-user-info .profile-user-details .profile-user-details-label {
+	#user-profile2 .profile-user-info .profile-user-details .profile-user-details-label {
 		float: none;
 		position: relative;
 		text-align: left;
 	}
-	#user-profile .profile-user-info .profile-user-details .profile-user-details-value {
+	#user-profile2 .profile-user-info .profile-user-details .profile-user-details-value {
 		margin-left: 0;
 	}
-	#user-profile .profile-social {
+	#user-profile2 .profile-social {
 		margin-top: 20px;
 	}
 }
 @media only screen and (max-width: 420px) {
-	#user-profile .profile-header .edit-profile {
+	#user-profile2 .profile-header .edit-profile {
 		display: block;
 		position: relative;
 		margin-bottom: 15px;
 	}
-	#user-profile .profile-message-btn .btn {
+	#user-profile2 .profile-message-btn .btn {
 		display: block;
 	}
 }

@@ -43,11 +43,11 @@ export class EditProfilePage extends Component {
           <div className="col-md-10 col-md-offset-1">
             <ul className="nav nav-tabs nav-tabs-custom-colored tabs-iconized">
               <li className="active"><a href="#profile-tab" data-toggle="tab" aria-expanded="true"><i
-                className="fa fa-user"/> Hồ sơ cá nhân</a></li>
+                className="fa fa-user"/>Hồ sơ cá nhân</a></li>
               <li className=""><a href="#settings-tab" data-toggle="tab" aria-expanded="false"><i
-                className="fa fa-gear"/> Thiết đặt</a></li>
+                className="fa fa-gear"/>Thiết đặt</a></li>
               <li className=""><a href="#activity-tab" data-toggle="tab" aria-expanded="false"><i
-                className="fa fa-rss"/> Thông báo</a></li>
+                className="fa fa-rss"/>Trang cá nhân</a></li>
             </ul>
             <div className="tab-content profile-page">
               <div className="tab-pane profile active" id="profile-tab">
