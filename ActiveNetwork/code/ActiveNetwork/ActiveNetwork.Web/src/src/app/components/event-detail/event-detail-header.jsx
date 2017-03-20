@@ -161,7 +161,7 @@ export class EventDetailHeaderComponent extends Component {
                   className="fa fa-fw fa-users"/>
                   Người tham gia</a></li>
 
-                <li className={this.state.currentTab == CURRENT_TAB_PHOTOS ? 'active' : ''}><a href=""
+                <li className={`${this.state.currentTab == CURRENT_TAB_PHOTOS ? 'active' : ''} hidden`}><a href=""
                                                                                                onClick={(e) => this.changeTab(e, CURRENT_TAB_PHOTOS)}><i
                   className="fa fa-fw fa-image"/>
                   Hình ảnh</a></li>

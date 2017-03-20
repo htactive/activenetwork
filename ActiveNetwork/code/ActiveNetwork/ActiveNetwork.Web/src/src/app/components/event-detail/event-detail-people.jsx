@@ -20,10 +20,13 @@ export class EventDetailPeopleComponent extends Component {
     this.eventId = this.props.params.id;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    // this.checkHost();
     this.getMemberData();
-    this.getRequestToJoinData();
-    this.checkHost();
+
+    if (await this.checkHost()) {
+      this.getRequestToJoinData();
+    }
   }
 
   async getMemberData() {
@@ -51,9 +54,12 @@ export class EventDetailPeopleComponent extends Component {
   async checkHost() {
     let a = await ANEventDetailServiceInstance.getANEventDetailInformation(this.eventId);
     if (a != null) {
-      if (a.Host.Id == userStore.getState().currentUser.Id)
+      if (a.Host.Id == userStore.getState().currentUser.Id) {
         this.setState({isHost: true});
+        return true;
+      }
     }
+    return false;
   }
 
   clickApprove(RTJid, index) {
@@ -129,7 +135,8 @@ export class EventDetailPeopleComponent extends Component {
                                   </a>
                                   <a href="" className="table-link danger" onClick={(e) => {
                                     e.preventDefault();
-                                    this.clickDeny(x.Id, index)}}>
+                                    this.clickDeny(x.Id, index)
+                                  }}>
                           <span className="fa-stack">
                           <i className="fa fa-square fa-stack-2x"></i>
                           <i className="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -140,7 +147,8 @@ export class EventDetailPeopleComponent extends Component {
                                 <div>
                                   <a href="" className="table-link danger" onClick={() => {
                                     e.preventDefault();
-                                    this.clickKick(x.Id, index)}}>
+                                    this.clickKick(x.Id, index)
+                                  }}>
                           <span className="fa-stack">
                           <i className="fa fa-square fa-stack-2x"></i>
                           <i className="fa fa-trash-o fa-stack-1x fa-inverse"></i>
