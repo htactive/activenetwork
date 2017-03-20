@@ -127,7 +127,7 @@ namespace ActiveNetwork.Web.Controllers
             if (isExistInRTJ) return null;
             var isExistInEventMember = this.ANDBUnitOfWork.ANEventMemberRepository.GetAll().Any(x => x.ANEventId.HasValue && x.ANEventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
             if (isExistInEventMember) return null;
-            var isEventHost = this.ANDBUnitOfWork.ANEventRepository.GetAll().Any(x => x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
+            var isEventHost = this.ANDBUnitOfWork.ANEventRepository.GetAll().Any(x => x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id && x.Id == eventId);
             if (isEventHost) return null;
 
             var entity = new ANEventRequestToJoin()

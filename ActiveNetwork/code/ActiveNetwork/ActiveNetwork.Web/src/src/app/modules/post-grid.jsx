@@ -3,7 +3,6 @@ import {virtualPath} from '../../commons/constant'
 import {browserHistory} from 'react-router';
 import {ANEventServiceInstance} from '../services/anevent-service';
 import {JoinEventDialog} from '../components/join-event-dialog';
-import {userStore} from '../store/user-store';
 
 export class PostGrid extends Component {
   joinEventDialog;
@@ -155,7 +154,7 @@ export class PostGrid extends Component {
           </div>
         </div>
       </div>
-      <JoinEventDialog ref={(e) => this.joinEventDialog = e} currentUser={userStore.getState().currentUser.Id}/>
+      <JoinEventDialog ref={(e) => this.joinEventDialog = e}/>
     </div>);
   }
 }
