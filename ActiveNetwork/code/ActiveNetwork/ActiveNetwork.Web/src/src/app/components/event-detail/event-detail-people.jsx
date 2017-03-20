@@ -46,10 +46,16 @@ export class EventDetailPeopleComponent extends Component {
 
   clickApprove(RTJid) {
     let result = ANEventServiceInstance.approveJoinEvent(RTJid);
+    if(result){
+
+    }
   }
 
   clickDeny(RTJid) {
     let result = ANEventServiceInstance.denyJoinEvent(RTJid);
+    if(result){
+
+    }
   }
 
   render() {
@@ -123,7 +129,9 @@ export class EventDetailPeopleComponent extends Component {
                         </td>
                         <td>
                           {this.state.isHost ? <div>
-                              <a href="" className="table-link success" onClick={() => this.clickApprove(x.Id)}>
+                              <a href="" className="table-link success" onClick={(e) => {
+                                e.preventDefault();
+                                this.clickApprove(x.Id)}}>
                       <span className="fa-stack">
                         <i className="fa fa-square fa-stack-2x"></i>
                         <i className="fa fa-check-circle fa-stack-1x fa-inverse"></i>

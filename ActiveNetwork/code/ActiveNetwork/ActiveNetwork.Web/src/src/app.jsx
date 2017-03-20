@@ -13,6 +13,7 @@ import {EventDetailPhotosComponent} from './app/components/event-detail/event-de
 import {EventManager} from './app/modules/event-manager';
 import {Error404Page} from './app/modules/404-page';
 import {Error500Page} from './app/modules/500-page';
+import {UserPage} from './app/modules/user-page';
 import {TestMediumDraftPage} from './app/modules/TestMediumDraft-page';
 
 ReactDOM.render(
@@ -25,6 +26,7 @@ ReactDOM.render(
       <Route path={`${virtualPath}/post-grid`} component={PostGrid}/>
       <Route path={`${virtualPath}/my-profile`} component={EditProfilePage}/>
       <Route path={`${virtualPath}/manage-event`} component={EventManager}/>
+      <Route path={`${virtualPath}/user/:id`} component={UserPage}/>
       <Route path={`${virtualPath}/event/:id`} component={EventDetailPage}>
         <Route path={`${virtualPath}/event/:id/wall`} component={EventDetailWallComponent}/>
         <Route path={`${virtualPath}/event/:id/description`} component={EventDetailDescriptionComponent}/>

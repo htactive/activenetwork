@@ -18,4 +18,11 @@ namespace ActiveNetwork.Common
         Approved = 1,
         Denied = 2,
     }
+
+    public enum GenderType
+    {
+        Unknown = 0,
+        Male = 1,
+        Female = 2,
+    }
 }

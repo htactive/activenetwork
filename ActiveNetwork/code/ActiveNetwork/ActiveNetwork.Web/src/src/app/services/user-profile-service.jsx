@@ -1,10 +1,24 @@
 import {ServiceBase} from './ServiceBase';
-import {userStore} from '../store/user-store';
 
 class UserProfileService extends ServiceBase {
   async getUserProfile(userId) {
     let url = '/anprofile/get-user-profile?id=' + userId;
-    return await super.executeFetch(url);
+    let result = await super.executeFetch(url);
+    return {
+      Id : result.Id,
+      FirstName : result.FirstName,
+      LastName : result.LastName,
+      MiddleName : result.MiddleName,
+      BirthDate : result.BirthDate,
+      Gender : result.Gender,
+      Email : result.Email,
+      Phone : result.Phone,
+      Address : result.Address,
+      User : result.User,
+      Avatar : result.Avatar,
+      Introduction : result.Introduction,
+      FullName: `${`${result.LastName} ${result.MiddleName}`.trim()} ${result.FirstName}`.trim(),
+    };
   }
 
   async createUserProfile(userProfile) {

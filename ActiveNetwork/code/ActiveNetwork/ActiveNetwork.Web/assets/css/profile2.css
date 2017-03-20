@@ -15,6 +15,7 @@ h3 > span {
 /* USER PROFILE */
 #user-profile2 h2 {
     padding-right: 15px;
+	text-align: center;
 }
 #user-profile2 .profile-status {
 	font-size: 0.75em;

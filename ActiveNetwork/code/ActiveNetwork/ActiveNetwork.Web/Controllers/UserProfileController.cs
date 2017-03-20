@@ -28,6 +28,9 @@ namespace ActiveNetwork.Web.Controllers
             if (model != null)
             {
                 model.Avatar = ImageMapper.ToModel(entity.Image);
+                model.Gender.GenderName = 
+                    entity.GenderId == (int)Common.GenderType.Male ? "Nam" 
+                    : entity.GenderId == (int)Common.GenderType.Female ? "Nữ" : "Chưa xác định";
             }
             return model;
         }
