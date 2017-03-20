@@ -31,3 +31,9 @@ function registerCommon() {
 // $(document)['ready'](function () {
 //   registerCommon();
 // });
+function groupby(xs, func) {
+    return xs.reduce(function (rv, x) {
+        (rv[func(x)] = rv[func(x)] || []).push(x);
+        return rv;
+    }, {});
+};

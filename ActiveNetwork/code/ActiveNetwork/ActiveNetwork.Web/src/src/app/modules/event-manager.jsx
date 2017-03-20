@@ -7,16 +7,17 @@ var eventGroups = [];
 export class EventManager extends Component {
 
   componentWillMount() {
-    this.loadCreatedEvents();
     this.setState({
       collapseType: 'in',
       eventGroups: [],
+      eventsInWeek: [],
       evListType: 'Sự kiện đã tạo'
     });
   }
 
   async componentDidMount() {
     await this.loadCreatedEvents();
+    await this.loadEventsInWeek();
   }
 
   async loadCreatedEvents() {
@@ -26,7 +27,7 @@ export class EventManager extends Component {
       return;
     }
 
-    let posts = await ANEventServiceInstance.getANEventsByHost(currentUser.Id);
+    let posts = await ANEventServiceInstance.getANEventsByHost();
     eventGroups = posts;
     this.setState({
       eventGroups: eventGroups,
@@ -41,7 +42,7 @@ export class EventManager extends Component {
       return;
     }
 
-    let posts = await ANEventServiceInstance.getJoinedANEvents(currentUser.Id);
+    let posts = await ANEventServiceInstance.getJoinedANEvents();
     eventGroups = posts;
     this.setState({
       eventGroups: eventGroups,
@@ -49,6 +50,24 @@ export class EventManager extends Component {
     });
   }
 
+  async loadEventsInWeek() {
+    let currentUser = userStore.getState().currentUser;
+    if (currentUser == undefined || currentUser == null) {
+      window.location.href = '/login';
+      return;
+    }
+
+    let posts = await ANEventServiceInstance.getANEventsInWeek();
+    this.setState({
+      eventsInWeek: posts,
+    });
+  }
+
+  getBgrImageStyle(url) {
+    return {
+      backgroundImage: 'url(' + url + ')'
+    }
+  }
   render() {
     return (<div>
       <div className="container page-content ">
@@ -81,6 +100,50 @@ export class EventManager extends Component {
                   <div className="hr-line-dashed"></div>
                   <h5 style={{color: 'black'}}>Sự kiện trong tuần</h5>
                   <div className="clearfix"></div>
+                  {this.state.eventsInWeek != null ? this.state.eventsInWeek.map((ev, z) =>
+                      (
+                        <div key={z} className="row" style={{padding: 15}}>
+                          <div className="col-md-4 no-padding">
+                            <div className="image-item-md"
+                                 style={this.getBgrImageStyle(ev.cover_image)}
+                                 onClick={(e) => this.goToEventDetail(e, ev.id)}>
+                              <div>
+                                <span className="fa fa-calendar-check-o"/>
+                                <span>&nbsp;{ev.day}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-md-8 event-info-section" style={{paddingRight: 5, fontSize:12}} >
+
+                            <div
+                              style={{
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap'
+                              }}>
+                              <a href="#" title={ev.title}
+                                 onClick={(e) => this.goToEventDetail(e, ev.id)}>{ev.title} &nbsp;</a>
+                            </div>
+                            <div style={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              color: '#969696'
+                            }}>
+                              <span title={ev.start_day}>{ev.start_day}</span>
+                            </div>
+                            <div style={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              color: '#969696'
+                            }}>
+                              <span title={ev.location}>Tại {ev.location}</span>
+                            </div>
+                          </div>
+                        </div>
+                      )) : (<div className="row">Không có sự kiện trong tuần.</div>)
+                  }
                 </div>
               </div>
             </div>
@@ -130,10 +193,10 @@ export class EventManagerList extends Component {
               <div key={x} className="col-md-12" style={{backgroundColor: '#fff', marginBottom: 20}}>
                 <div className="row" style={{padding: 15}}>
                   <a style={{cursor: 'pointer', color: '#000'}} data-toggle="collapse"
-                     data-target={`#${evGroup.Year}`}>Sự kiện từ {evGroup.Year}</a>
+                     data-target={`#${evGroup.year}`}>Sự kiện từ {evGroup.year}</a>
                 </div>
-                <div id={evGroup.Year} className={`collapse ${this.props.collapseType}`}>
-                  {evGroup.EventMonth != null ? evGroup.EventMonth.map((evMonth, y) =>
+                <div id={evGroup.year} className={`collapse ${this.props.collapseType}`}>
+                  {evGroup.year_events != null ? evGroup.year_events.map((evMonth, y) =>
                       (
                         <div key={y}>
                           <div className="row"
@@ -145,20 +208,20 @@ export class EventManagerList extends Component {
                                }}>
                             <a style={{cursor: 'pointer', color: '#000', color: '#969696'}}
                                data-toggle="collapse"
-                               data-target={`#${evGroup.Year}_${evMonth.Month}`}>THÁNG {evMonth.Month}</a>
+                               data-target={`#${evGroup.year}_${evMonth.month}`}>THÁNG {evMonth.month}</a>
                           </div>
-                          <div id={`${evGroup.Year}_${evMonth.Month}`}
+                          <div id={`${evGroup.year}_${evMonth.month}`}
                                className={`collapse ${this.props.collapseType}`}>
-                            {evMonth.Events != null ? evMonth.Events.map((ev, z) =>
+                            {evMonth.events != null ? evMonth.events.map((ev, z) =>
                                 (
                                   <div key={z} className="row" style={{padding: 15}}>
                                     <div className="col-md-4 no-padding">
                                       <div className="image-item"
-                                           style={this.getBgrImageStyle(ev.CoverPhoto != null ? ev.CoverPhoto.Url : '')}
-                                           onClick={(e) => this.goToEventDetail(e, ev.Id)}>
+                                           style={this.getBgrImageStyle(ev.cover_image)}
+                                           onClick={(e) => this.goToEventDetail(e, ev.id)}>
                                         <div>
                                           <span className="fa fa-calendar-check-o"/>
-                                          <span>&nbsp;{ev.Day}</span>
+                                          <span>&nbsp;{ev.day}</span>
                                         </div>
                                       </div>
                                     </div>
@@ -173,7 +236,7 @@ export class EventManagerList extends Component {
                                           whiteSpace: 'nowrap'
                                         }}>
                                         <a href="#"
-                                           onClick={(e) => this.goToEventDetail(e, ev.Id)}>{ev.Information.Title} &nbsp;</a>
+                                           onClick={(e) => this.goToEventDetail(e, ev.id)}>{ev.title} &nbsp;</a>
                                       </div>
                                       <div style={{
                                         overflow: 'hidden',
@@ -181,14 +244,14 @@ export class EventManagerList extends Component {
                                         whiteSpace: 'nowrap',
                                         color: '#969696'
                                       }}>
-                                        <span>{ev.startDate}</span> <span>Tại {ev.Information.Location || ''}</span>
+                                        <span>{ev.start_day}</span> <span>Tại {ev.location}</span>
                                       </div>
                                       <div style={{paddingTop: 5}} className="cutline">
-                                        {ev.Information.Description } &nbsp;
+                                        {ev.description } &nbsp;
                                       </div>
                                       <div style={{paddingTop: 10, color: '#969696'}}>
                                         <span>Số người tham dự: </span>
-                                        <span>{ev.NumberOfMember}</span>
+                                        <span>{ev.number_of_member}</span>
                                       </div>
                                     </div>
                                   </div>

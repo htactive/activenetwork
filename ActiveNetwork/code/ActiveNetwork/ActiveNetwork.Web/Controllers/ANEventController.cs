@@ -151,8 +151,9 @@ namespace ActiveNetwork.Web.Controllers
 
         [HttpGet, Route("anevent/get-events-by-host")]
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
-        public List<ANEventGroupModel> GetEventByHost(int? hostId)
+        public List<ANEventModel> GetEventByHost()
         {
+            var hostId = this.CurrentUser.Id;
             var events = this.ANDBUnitOfWork.ANEventRepository.GetAll()
                 .Include(x => x.User)
                 .Include(x => x.User.UserProfiles)
@@ -161,7 +162,7 @@ namespace ActiveNetwork.Web.Controllers
                 .Include("ANEventImages.Image")
                 .Include(x => x.ANEventInformations)
                 .Include(x => x.ANEventMembers)
-                .Where(e => e.UserId == (hostId ?? 0)).OrderByDescending(t => t.CreatedDate).ToList();
+                .Where(e => e.UserId == (hostId)).OrderByDescending(t => t.CreatedDate).ToList();
 
             var anEventModels = new List<ANEventModel>();
 
@@ -185,25 +186,61 @@ namespace ActiveNetwork.Web.Controllers
                 anEventModels.Add(model);
             }
 
-            var groupEvents = anEventModels.GroupBy(t => t.CreatedDate.Year)
-                .Select(gr => new ANEventGroupModel
-                {
-                    Year = gr.Key,
-                    EventMonth = gr.GroupBy(m => new { m.CreatedDate.Year, m.CreatedDate.Month })
-                    .Select(grm => new ANEventMonthGroup
-                    {
-                        Month = grm.Key.Month,
-                        Events = grm.ToList()
-                    }).ToList()
-                }).ToList();
+            return anEventModels;
+        }
 
-            return groupEvents;
+        [HttpGet, Route("anevent/get-events-in-week")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public List<ANEventModel> GetEventInWeek()
+        {
+            DateTime input = DateTime.Now;
+            int delta = DayOfWeek.Monday - input.DayOfWeek;
+            int first = input.AddDays(delta).Day;
+            int last = first + 7;
+            var hostId = this.CurrentUser.Id;
+            var events = this.ANDBUnitOfWork.ANEventRepository.GetAll()
+                .Include(x => x.User)
+                .Include(x => x.User.UserProfiles)
+                .Include("User.UserProfiles.Image")
+                .Include(x => x.ANEventImages)
+                .Include("ANEventImages.Image")
+                .Include(x => x.ANEventInformations)
+                .Include(x => x.ANEventMembers)
+                .Where(e => (e.UserId == (hostId) || e.ANEventMembers.Select(f => f.UserId).Contains(hostId))
+                        && e.ANEventInformations.FirstOrDefault().StartDate.Value.Day >= first 
+                        && e.ANEventInformations.FirstOrDefault().StartDate.Value.Day < last)
+                .OrderByDescending(t => t.CreatedDate).ToList();
+
+            var anEventModels = new List<ANEventModel>();
+
+            foreach (var ev in events)
+            {
+                var model = new ANEventModel();
+                model.Id = ev.Id;
+                model.Host = UserMapper.ToModel(ev.User);
+                // get cover image
+                var coverImageEntity = ev.ANEventImages.Where(x => x.ANEventImageType == (int)Common.ANEventImageType.ANEventCoverImage).OrderBy(x => x.SortPriority).FirstOrDefault();
+                if (coverImageEntity != null)
+                {
+                    model.CoverPhoto = ImageMapper.ToModel(coverImageEntity.Image);
+                }
+                var information = ev.ANEventInformations.FirstOrDefault();
+                model.Information = ANEventInformationMapper.ToModel(information);
+
+                model.CreatedDate = ev.CreatedDate;
+                model.Day = ev.CreatedDate.Day;
+                model.NumberOfMember = ev.ANEventMembers.Count;
+                anEventModels.Add(model);
+            }
+
+            return anEventModels;
         }
 
         [HttpGet, Route("anevent/get-joined-events")]
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
-        public List<ANEventGroupModel> GetJoinedEvent(int? hostId)
+        public List<ANEventModel> GetJoinedEvent()
         {
+            var hostId = this.CurrentUser.Id;
             var events = this.ANDBUnitOfWork.ANEventRepository.GetAll()
                 .Include(x => x.User)
                 .Include(x => x.User.UserProfiles)
@@ -248,7 +285,7 @@ namespace ActiveNetwork.Web.Controllers
                     }).ToList()
                 }).ToList();
 
-            return groupEvents;
+            return anEventModels;
         }
 
         [HttpGet, Route("anevent/get-my-event-favourites")]

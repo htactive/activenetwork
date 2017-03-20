@@ -28,14 +28,33 @@ class ANEventService extends ServiceBase {
     return await super.executeFetch(url);
   }
 
-  async getANEventsByHost(hostid) {
-    let url = '/anevent/get-events-by-host?hostid=' + hostid;
-    return await super.executeFetch(url);
+  async getANEventsByHost() {
+    let url = '/anevent/get-events-by-host';
+    let events = await super.executeFetch(url);
+    return this.groupEvents(events);
   }
 
-  async getJoinedANEvents(hostid) {
-    let url = '/anevent/get-joined-events?hostid=' + hostid;
-    return await super.executeFetch(url);
+  async getJoinedANEvents() {
+    let url = '/anevent/get-joined-events';
+    let events = await super.executeFetch(url);
+    return this.groupEvents(events);
+  }
+
+  async getANEventsInWeek() {
+    let url = '/anevent/get-events-in-week';
+    let events = await super.executeFetch(url);
+    return events.map(ev => {
+      return {
+        id: ev.Id,
+        cover_image: ev.CoverPhoto != null ? ev.CoverPhoto.Url : '',
+        day: ev.Day,
+        start_day: ev.Information.StartDate ? moment(ev.Information.StartDate).format('DD [tháng] MM YYYY, [lúc] HH:mm') : '',
+        title: ev.Information.Title,
+        location: ev.Information.Location || '',
+        description: ev.Information.Description,
+        number_of_member: ev.NumberOfMember,
+      }
+    });
   }
 
   async getANEventsForNewFeed() {
@@ -106,6 +125,47 @@ class ANEventService extends ServiceBase {
   async getMyFavouriteEvents() {
     let url = '/anevent/get-my-favourite-events';
     return await super.executeFetch(url);
+  }
+
+  groupEvents(events) {
+    let g_years = groupby(events, function (a) {
+      return moment(a.CreatedDate).year();
+    });
+    let results = [];
+    for (let y_key in g_years) {
+      let g_year = {};
+      g_year.year = y_key;
+      g_year.year_events = [];
+      let g_months = groupby(g_years[y_key], function (b) {
+        return (moment(b.CreatedDate).month() + 1);
+      })
+      for (let m_key in g_months) {
+        let m_month = {};
+        m_month.month = m_key;
+        m_month.events = g_months[m_key].map(ev => {
+          return {
+            id: ev.Id,
+            cover_image: ev.CoverPhoto != null ? ev.CoverPhoto.Url : '',
+            day: ev.Day,
+            start_day: ev.Information.StartDate ? moment(ev.Information.StartDate).format('DD [tháng] MM YYYY, [lúc] HH:mm') : '',
+            title: ev.Information.Title,
+            location: ev.Information.Location || '',
+            description: ev.Information.Description,
+            number_of_member: ev.NumberOfMember,
+          }
+        });
+        g_year.year_events.push(m_month);
+      }
+      g_year.year_events.sort(function (a, b) {
+        return a.month - b.month > 0 ? -1 : (a.month == b.month ? 0 : 1);
+      });
+      results.push(g_year);
+
+    }
+    results.sort(function (a, b) {
+      return a.year - b.year > 0 ? -1 : (a.year == b.year ? 0 : 1);
+    })
+    return results;
   }
 }
 

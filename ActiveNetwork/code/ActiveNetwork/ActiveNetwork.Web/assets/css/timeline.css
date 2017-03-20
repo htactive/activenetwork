@@ -1669,11 +1669,25 @@ for block ui
   cursor: pointer;
 }
 
+.image-item-md {
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+    cursor: pointer;
+}
+
 .image-item > div {
   padding: 10px;
   color: #fff;
   font-size: 16px;
   font-weight: bold;
+}
+
+.image-item-md > div {
+  padding: 15px 10px;
+  color: #fff;
+  font-size: 14px;
 }
 
 .active-icon {
