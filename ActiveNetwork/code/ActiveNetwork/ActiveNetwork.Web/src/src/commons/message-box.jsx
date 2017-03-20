@@ -1,22 +1,53 @@
-import * as React from 'react';
-import {Modal, Button} from 'react-bootstrap';
-import {MessageBoxButton, MessageBoxResult, MessageBoxType, MessageBoxButtons} from '../../commons/constant'
+import * as React from 'react'
+import {Modal, Button, Form, FormGroup, Col, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
 
-export class MessageBox extends React.Component{
+const MessageBoxButton = {
+  Yes: 1,
+  No: 2,
+  Cancel: 4,
+  OK: 8,
+};
 
-  state = {type: MessageBoxType.Confirmation, buttons: MessageBoxButtons.OKCancel};
-  doAction;
+export const MessageBoxResult =
+  {
+    Yes: 1,
+    No: 2,
+    Cancel: 4,
+    OK: 8,
+    None: 0
+  };
+
+export const MessageBoxType =
+  {
+    Information: 1,
+    Confirmation: 2,
+    Warning: 3,
+    Error: 4
+  };
+
+export const MessageBoxButtons =
+  {
+    YesNo: 3,
+    YesNoCancel: 7,
+    OK: 8,
+    OKCancel: 10
+  };
+
+
+export class MessageBox extends React.Component {
+
   static instance;
 
   componentWillMount() {
     MessageBox.instance = this;
+    this.setState({type: MessageBoxType.Confirmation, buttons: MessageBoxButtons.OKCancel});
   }
 
   show(st) {
-    return new Promise (function(res, rej) {
+    return new Promise((da) => {
         st.isShow = true;
         this.setState(st);
-        this.doAction = res;
+        this.doAction = da;
       });
   }
 
@@ -48,7 +79,7 @@ export class MessageBox extends React.Component{
     )
   }
 
-  private close() {
+  close() {
     this.setState({isShow: false});
   }
 }

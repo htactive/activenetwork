@@ -4,6 +4,7 @@ import {browserHistory} from 'react-router';
 import {ANEventDetailServiceInstance} from '../../services/anevent-detail-service'
 import {JoinEventDialog} from '../join-event-dialog';
 import {userStore} from '../../store/user-store';
+import {MessageBox, MessageBoxType, MessageBoxButtons, MessageBoxResult} from '../../../commons/message-box';
 
 const CURRENT_TAB_WALL = 'wall',
   CURRENT_TAB_DESCRIPTION = 'description',
@@ -12,21 +13,22 @@ const CURRENT_TAB_WALL = 'wall',
 
 export class EventDetailHeaderComponent extends Component {
   joinEventDialog;
+
   componentWillMount() {
 
     this.setState({
       currentTab: CURRENT_TAB_WALL,
       eventHeader: {EventCoverPhoto: {Url: "/img/cover/loading.jpg"}},
+      hasData: false
     });
   }
 
   async componentDidMount() {
-    this.setState({eventHeader: await this.getData()});
+    this.setState({eventHeader: await this.getData(), hasData: true});
   }
 
   async getData() {
-    let a = await ANEventDetailServiceInstance.getANEventDetailHeader(this.props.eventId);
-    return a;
+    return await ANEventDetailServiceInstance.getANEventDetailHeader(this.props.eventId);
   }
 
   changeTab(e, tab) {
@@ -39,6 +41,70 @@ export class EventDetailHeaderComponent extends Component {
 
   clickJoinEventDialog(eventId) {
     this.joinEventDialog && this.joinEventDialog.show(eventId);
+  }
+
+  async  clickCancelRequestToJoin(eventId) {
+    let result = await
+      MessageBox.instance.show({
+        title: "Xác nhận",
+        content: "Bạn có chắn muốn hủy yêu cầu tham gia vào sự kiện này",
+        type: MessageBoxType.Confirmation,
+        buttons: MessageBoxButtons.YesNo
+      });
+
+    if (result == MessageBoxResult.Yes) {
+      let cancelResult = await ANEventDetailServiceInstance.cancelMyRequestToJoin(eventId);
+      if (cancelResult) {
+        this.state.eventHeader.IsPendingMember = false;
+        this.forceUpdate();
+      }
+      else {
+        await
+          MessageBox.instance.show({
+            title: "Lỗi",
+            content: "Hủy yêu cầu thất bại",
+            type: MessageBoxType.Error,
+            buttons: MessageBoxButtons.OK
+          });
+      }
+    }
+  }
+
+  clickLeaveEvent(eventId) {
+
+  }
+
+  renderRightMenu() {
+    return (
+
+      <ul className="right-meu">
+        {
+          !this.state.hasData ?
+            <li><i className="fa fa-spinner fa-spin"/></li>
+            :
+            this.state.eventHeader.IsHost ?
+              null :
+              this.state.eventHeader.IsPendingMember ?
+                <li>
+                  <button type="button" onClick={() => this.clickCancelRequestToJoin(this.props.eventId)}
+                          className="btn btn-lg btn-primary pull-right">Hủy yêu cầu tham gia
+                  </button>
+                </li>
+                :
+                this.state.eventHeader.IsMember ?
+                  <li>
+                    <button type="button" onClick={() => this.clickLeaveEvent(this.props.eventId)}
+                            className="btn btn-lg btn-primary pull-right">Rời khỏi sự kiện
+                    </button>
+                  </li> :
+                  <li>
+                    <button type="button" onClick={() => this.clickJoinEventDialog(this.props.eventId)}
+                            className="btn btn-lg btn-primary pull-right">Tham gia
+                    </button>
+                  </li>
+        }
+      </ul>
+    );
   }
 
   render() {
@@ -72,11 +138,7 @@ export class EventDetailHeaderComponent extends Component {
                   className="fa fa-fw fa-image"/>
                   Hình ảnh</a></li>
               </ul>
-              <ul className="thamgia">
-                <li>
-                  <button type="button" onClick={() => this.clickJoinEventDialog(this.props.eventId)} className="btn btn-lg btn-primary pull-right">Tham gia</button>
-                </li>
-              </ul>
+              {this.renderRightMenu()}
             </div>
           </div>
         </div>
@@ -84,4 +146,5 @@ export class EventDetailHeaderComponent extends Component {
       </div>
     );
   }
+
 }

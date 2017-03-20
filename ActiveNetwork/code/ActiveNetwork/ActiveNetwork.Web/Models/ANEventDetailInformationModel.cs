@@ -29,5 +29,8 @@ namespace ActiveNetwork.Web.Models
         public int EventID { get; set; }
         public string EventTitle { get; set; }
         public ImageModel EventCoverPhoto { get; set; }
+        public bool IsHost { get; set; }
+        public bool IsPendingMember { get; set; }
+        public bool IsMember { get; set; }
     }
 }

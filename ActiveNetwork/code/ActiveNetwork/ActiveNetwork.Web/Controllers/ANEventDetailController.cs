@@ -28,7 +28,6 @@ namespace ActiveNetwork.Web.Controllers
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventDetailHeaderModel GetEventDetailHeader(int Id)
         {
-            //Thread.Sleep(2000);
             var entity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
                 .Include("ANEventInformations")
                 .Include("ANEventImages.Image")
@@ -37,11 +36,16 @@ namespace ActiveNetwork.Web.Controllers
             if (entity == null) return null;
             var firstInformation = entity.ANEventInformations.FirstOrDefault();
             var coverPhoto = entity.ANEventImages.FirstOrDefault(x => x.ANEventImageType == (int)Common.ANEventImageType.ANEventCoverImage);
+            var isPendingMember = this.ANDBUnitOfWork.ANEventRequestToJoinRepository.GetAll().Any(x=>x.ANEventId.HasValue && x.ANEventId.Value == Id && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id && x.Status == (int)Common.ANRequestToJoinStatus.Waiting);
+            var isMember = this.ANDBUnitOfWork.ANEventMemberRepository.GetAll().Any(x => x.ANEventId.HasValue && x.ANEventId.Value == Id && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
             return new ANEventDetailHeaderModel()
             {
                 EventID = entity.Id,
                 EventTitle = firstInformation.Title,
-                EventCoverPhoto = ImageMapper.ToModel(coverPhoto != null ? coverPhoto.Image : null)
+                EventCoverPhoto = ImageMapper.ToModel(coverPhoto != null ? coverPhoto.Image : null),
+                IsHost = entity.UserId.HasValue && this.CurrentUser.Id == entity.UserId.Value,
+                IsPendingMember = isPendingMember,
+                IsMember = isMember
             };
         }
 
@@ -146,6 +150,17 @@ namespace ActiveNetwork.Web.Controllers
                 EventId = Id,
                 ANEventRequestToJoins = RTJmodels
             };
+        }
+
+        [Route("anevent-detail/cancel-my-rtj"),HttpPost]
+        [HTActiveAuthorize(Roles=ANRoleConstant.USER)]
+        public bool CancelMyRequestToJoin([FromBody]int eventId)
+        {
+            var rtjEntity = this.ANDBUnitOfWork.ANEventRequestToJoinRepository.GetAll().FirstOrDefault(x => x.ANEventId.HasValue && x.ANEventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
+            if (rtjEntity == null) return false;
+            this.ANDBUnitOfWork.ANEventRequestToJoinRepository.Delete(rtjEntity);
+            this.ANDBUnitOfWork.Commit();
+            return true;
         }
     }
 }
