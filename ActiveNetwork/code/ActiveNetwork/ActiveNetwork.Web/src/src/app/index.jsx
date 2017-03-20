@@ -16,11 +16,11 @@ export class Index extends Component {
   render() {
     return <div>
       <Header />
+      <MessageBox/>
       <UIBlocker />
       <div id="page-wrapper">
         {this.props.children}
       </div>
-      <MessageBox/>
     </div>;
   }
 }

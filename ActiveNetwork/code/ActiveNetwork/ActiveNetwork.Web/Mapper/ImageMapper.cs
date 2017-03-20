@@ -11,6 +11,7 @@ namespace ActiveNetwork.Web.Mapper
     {
         public static ImageModel ToModel(Image entity)
         {
+            if (entity == null) return null;
             var imageUrl = entity.Url;
             if (!string.IsNullOrEmpty(entity.S3FileKey))
             {

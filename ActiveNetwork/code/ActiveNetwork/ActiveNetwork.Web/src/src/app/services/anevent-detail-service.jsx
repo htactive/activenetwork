@@ -46,6 +46,11 @@ class ANEventDetailService extends ServiceBase {
     let url = '/anevent-detail/cancel-my-rtj';
     return await super.executeFetchPost(url, eventId);
   }
+
+  async leaveEvent(eventId) {
+    let url = '/anevent-detail/leave-event';
+    return await super.executeFetchPost(url, eventId);
+  }
 }
 
 let ANEventDetailServiceInstance = new ANEventDetailService();
