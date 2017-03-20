@@ -123,25 +123,29 @@ namespace ActiveNetwork.Web.Controllers
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventRequestToJoinModel JoinEvent([FromBody]int eventId)
         {
-            var isExistInRTJ = this.ANDBUnitOfWork.ANEventRequestToJoinRepository.GetAll().Any(x => x.ANEventId.HasValue && x.ANEventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
-            if (isExistInRTJ) return null;
             var isExistInEventMember = this.ANDBUnitOfWork.ANEventMemberRepository.GetAll().Any(x => x.ANEventId.HasValue && x.ANEventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
             if (isExistInEventMember) return null;
+
             var isEventHost = this.ANDBUnitOfWork.ANEventRepository.GetAll().Any(x => x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id && x.Id == eventId);
             if (isEventHost) return null;
 
-            var entity = new ANEventRequestToJoin()
+            var entityInRTJ = this.ANDBUnitOfWork.ANEventRequestToJoinRepository.GetAll().FirstOrDefault(x => x.ANEventId.HasValue && x.ANEventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
+            if (entityInRTJ != null && entityInRTJ.Status == (int)Common.ANRequestToJoinStatus.Waiting) return null;
+            if (entityInRTJ == null)
             {
-                UserId = this.CurrentUser.Id,
-                ANEventId = eventId,
-                RequestDate = DateTimeHelper.DateTimeNow,
-                Status = (int)Common.ANRequestToJoinStatus.Waiting,
-            };
+                entityInRTJ = new ANEventRequestToJoin()
+                {
+                    UserId = this.CurrentUser.Id,
+                    ANEventId = eventId,
+                    RequestDate = DateTimeHelper.DateTimeNow,
+                };
+            }
+            entityInRTJ.Status = (int)Common.ANRequestToJoinStatus.Waiting;
 
-            this.ANDBUnitOfWork.ANEventRequestToJoinRepository.Save(entity);
+            this.ANDBUnitOfWork.ANEventRequestToJoinRepository.Save(entityInRTJ);
             this.ANDBUnitOfWork.Commit();
 
-            return ANEventRequestToJoinMapper.ToModel(entity);
+            return ANEventRequestToJoinMapper.ToModel(entityInRTJ);
 
         }
 
@@ -246,9 +250,9 @@ namespace ActiveNetwork.Web.Controllers
 
             return groupEvents;
         }
-        
-        [HttpGet,Route("anevent/get-my-event-favourites")]
-        [HTActiveAuthorize(Roles=ANRoleConstant.USER)]
+
+        [HttpGet, Route("anevent/get-my-event-favourites")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public List<ANEventModel> GetMyEventFavourites()
         {
             var currentUserId = this.CurrentUser.Id;
@@ -257,9 +261,9 @@ namespace ActiveNetwork.Web.Controllers
                 .Include("ANEventImages.Image")
                 .Include("ANEventInformations")
                 .Where(x => x.UserId.HasValue && x.UserId.Value == currentUserId)
-                .Select(x=>x.ANEvent)
+                .Select(x => x.ANEvent)
                 .ToList()
-                .OrderByDescending(x => x.CreatedDate).ToList() ;
+                .OrderByDescending(x => x.CreatedDate).ToList();
 
             var anEventModels = new List<ANEventModel>();
 

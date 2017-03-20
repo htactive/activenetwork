@@ -38,8 +38,14 @@ export class EventDetailHeaderComponent extends Component {
     browserHistory.push(`${virtualPath}/event/${this.props.eventId}/${tab}`)
   }
 
-  clickJoinEventDialog(eventId) {
-    this.joinEventDialog && this.joinEventDialog.show(eventId);
+  async clickJoinEventDialog(eventId) {
+    if (this.joinEventDialog) {
+      let sendRequestResult = await this.joinEventDialog.show(eventId);
+      if (sendRequestResult) {
+        this.state.eventHeader.IsPendingMember = true;
+        this.forceUpdate();
+      }
+    }
   }
 
   async  clickCancelRequestToJoin(eventId) {
@@ -69,8 +75,31 @@ export class EventDetailHeaderComponent extends Component {
     }
   }
 
-  clickLeaveEvent(eventId) {
+  async clickLeaveEvent(eventId) {
+    let result = await
+    MessageBox.instance.show({
+      title: "Xác nhận",
+      content: "Bạn có chắn muốn rời khỏi sự kiện này",
+      type: MessageBoxType.Confirmation,
+      buttons: MessageBoxButtons.YesNo
+    });
 
+    if (result == MessageBoxResult.Yes) {
+      let cancelResult = await ANEventDetailServiceInstance.leaveEvent(eventId);
+      if (cancelResult) {
+        this.state.eventHeader.IsMember = false;
+        this.forceUpdate();
+      }
+      else {
+        await
+        MessageBox.instance.show({
+          title: "Lỗi",
+          content: "Rời khỏi sự kiện thất bại",
+          type: MessageBoxType.Error,
+          buttons: MessageBoxButtons.OK
+        });
+      }
+    }
   }
 
   renderRightMenu() {

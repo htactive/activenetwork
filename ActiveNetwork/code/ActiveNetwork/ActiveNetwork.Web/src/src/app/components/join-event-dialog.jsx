@@ -10,11 +10,14 @@ export class JoinEventDialog extends React.Component {
   }
   eventId;
   show(eventId) {
-    this.eventId = eventId;
-    this.setState({
-      showModal: true,
+    return new Promise((da) => {
+      this.eventId = eventId;
+      this.setState({
+        showModal: true,
+      });
+      this.doAction = da;
     });
-  }
+  };
 
   close() {
     this.setState({
@@ -30,6 +33,7 @@ export class JoinEventDialog extends React.Component {
     let result = await ANEventServiceInstance.joinANEvents(this.eventId);
     if (result){
       this.close();
+      this.doAction && this.doAction(result);
     }
   }
 
@@ -46,13 +50,13 @@ export class JoinEventDialog extends React.Component {
               Ghi chú
             </div>
             <div className="col-sm-9">
-              <textarea className="form-control" rows="5"></textarea>
+              <textarea className="form-control" rows="5"/>
             </div>
           </div>
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button bsStyle="primary" onClick={()=>this.join()}>Tham gia sự kiện</Button>
+          <Button bsStyle="primary" onClick={()=>this.join()}>Gởi yêu cầu tham gia sự kiện</Button>
           <Button onClick={() => this.close()}>Hủy</Button>
         </Modal.Footer>
       </Modal>

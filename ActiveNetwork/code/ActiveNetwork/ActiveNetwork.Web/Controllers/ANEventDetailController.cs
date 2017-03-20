@@ -9,6 +9,7 @@ using System.Data.Entity;
 using System.Threading;
 using HTActive.Authorize.Core;
 using ActiveNetwork.Common;
+using System.Net;
 
 
 namespace ActiveNetwork.Web.Controllers
@@ -124,6 +125,10 @@ namespace ActiveNetwork.Web.Controllers
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public ANEventDetailRequestToJoinModel GetEventDetailRequestToJoin(int Id)
         {
+            if (!this.ANDBUnitOfWork.ANEventRepository.GetAll().Any(x => x.Id == Id && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id))
+            {
+                throw new HttpResponseException(HttpStatusCode.Forbidden);
+            }
             var requestEntity = this.ANDBUnitOfWork.ANEventRequestToJoinRepository.GetAll()
                 .Include("User.UserProfiles.Image")
                 .Where(x => x.ANEventId.HasValue && x.ANEventId.Value == Id && x.Status.HasValue && x.Status.Value == (int)Common.ANRequestToJoinStatus.Waiting).ToList();
@@ -159,6 +164,16 @@ namespace ActiveNetwork.Web.Controllers
             var rtjEntity = this.ANDBUnitOfWork.ANEventRequestToJoinRepository.GetAll().FirstOrDefault(x => x.ANEventId.HasValue && x.ANEventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
             if (rtjEntity == null) return false;
             this.ANDBUnitOfWork.ANEventRequestToJoinRepository.Delete(rtjEntity);
+            this.ANDBUnitOfWork.Commit();
+            return true;
+        }
+        [Route("anevent-detail/leave-event"), HttpPost]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public bool LeaveEvent([FromBody]int eventId)
+        {
+            var anEventMemberEntity = this.ANDBUnitOfWork.ANEventMemberRepository.GetAll().FirstOrDefault(x => x.ANEventId.HasValue && x.ANEventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
+            if (anEventMemberEntity == null) return false;
+            this.ANDBUnitOfWork.ANEventMemberRepository.Delete(anEventMemberEntity);
             this.ANDBUnitOfWork.Commit();
             return true;
         }
