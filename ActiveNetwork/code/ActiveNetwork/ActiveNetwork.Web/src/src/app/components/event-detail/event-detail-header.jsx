@@ -3,7 +3,6 @@ import {virtualPath} from '../../../commons/constant'
 import {browserHistory} from 'react-router';
 import {ANEventDetailServiceInstance} from '../../services/anevent-detail-service'
 import {JoinEventDialog} from '../join-event-dialog';
-import {userStore} from '../../store/user-store';
 
 const CURRENT_TAB_WALL = 'wall',
   CURRENT_TAB_DESCRIPTION = 'description',
@@ -80,7 +79,7 @@ export class EventDetailHeaderComponent extends Component {
             </div>
           </div>
         </div>
-        <JoinEventDialog ref={(e) => this.joinEventDialog = e} currentUser={userStore.getState().currentUser.Id}/>
+        <JoinEventDialog ref={(e) => this.joinEventDialog = e}/>
       </div>
     );
   }

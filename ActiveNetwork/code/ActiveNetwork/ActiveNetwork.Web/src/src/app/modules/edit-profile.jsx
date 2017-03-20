@@ -9,6 +9,7 @@ import {AddressEditor} from '../components/edit-profile-control/address-editor';
 import {GenderEditor} from '../components/edit-profile-control/gender-editor';
 import {SelfIntroductionEditor} from '../components/edit-profile-control/self-introduction-editor';
 import {ChangePassword} from '../components/edit-profile-control/change-password';
+import {UserPage} from '../components/edit-profile-control/user-page';
 import {userStore} from '../store/user-store';
 
 export class EditProfilePage extends Component {
@@ -142,62 +143,7 @@ export class EditProfilePage extends Component {
               </div>
 
               <div className="tab-pane activity" id="activity-tab">
-                <ul className="list-unstyled activity-list">
-                  <li>
-                    <i className="fa fa-times activity-icon pull-left"/>
-                    <p>
-                      <a href="#">Jonathan</a> commented on <a href="#">Special Deal 2013</a> <span
-                      className="timestamp">12 minutes ago</span>
-                    </p>
-                  </li>
-                  <li>
-                    <i className="fa fa-times activity-icon pull-left"/>
-                    <p>
-                      <a href="#">Jonathan</a> posted <a href="#">a new blog post</a> <span className="timestamp">4 hours ago</span>
-                    </p>
-                  </li>
-                  <li>
-                    <i className="fa fa-times activity-icon pull-left"/>
-                    <p>
-                      <a href="#">Jonathan</a> edited his profile <span className="timestamp">11 hours ago</span>
-                    </p>
-                  </li>
-                  <li>
-                    <i className="fa fa-times activity-icon pull-left"/>
-                    <p>
-                      <a href="#">Jonathan</a> has added review on <a href="#">jQuery Complete Guide</a> book <span
-                      className="timestamp">Yesterday</span>
-                    </p>
-                  </li>
-                  <li>
-                    <i className="fa fa-times activity-icon pull-left"/>
-                    <p>
-                      <a href="#">Jonathan</a> liked <a href="#">a post</a> <span
-                      className="timestamp">December 12</span>
-                    </p>
-                  </li>
-                  <li>
-                    <i className="fa fa-times activity-icon pull-left"/>
-                    <p>
-                      <a href="#">Jonathan</a> has completed one task <span className="timestamp">December 11</span>
-                    </p>
-                  </li>
-                  <li>
-                    <i className="fa fa-times activity-icon pull-left"/>
-                    <p>
-                      <a href="#">Jonathan</a> uploaded <a href="#">new photos</a> <span className="timestamp">December 5</span>
-                    </p>
-                  </li>
-                  <li>
-                    <i className="fa fa-times activity-icon pull-left"/>
-                    <p>
-                      <a href="#">Jonathan</a> has updated his credit card info <span
-                      className="timestamp">September 28</span>
-                    </p>
-                  </li>
-                </ul>
-                <p className="text-center more"><a href="#" className="btn btn-custom-primary">View more <i
-                  className="fa fa-long-arrow-right"/></a></p>
+                <UserPage/>
               </div>
             </div>
           </div>
