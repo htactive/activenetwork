@@ -10,8 +10,6 @@ export class EventDetailWallDescriptionComponent extends Component {
     let isHost = (userStore.getState().currentUser || {Id: 0}).Id === props.eventDecription.Host.Id;
     let host = props.eventDecription.Host || {};
     host.Profile = host.Profile || {};
-
-    console.log(props);
     let hostFullName = `${`${host.Profile.LastName} ${host.Profile.MiddleName}`.trim()} ${host.Profile.FirstName}`.trim();
     let eventLocationName = (props.eventDecription.EventInformation.ANEventLocation || {Address: ''}).Address;
     let eventStartDate = props.eventDecription.EventInformation.StartDate;
