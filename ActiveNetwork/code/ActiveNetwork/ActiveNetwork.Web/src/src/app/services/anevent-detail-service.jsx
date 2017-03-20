@@ -14,8 +14,8 @@ class ANEventDetailService extends ServiceBase {
       EventID: result.EventID,
       EventTitle: result.EventTitle,
       EventCoverPhoto: {
-        Id: result.EventCoverPhoto.Id,
-        Url: result.EventCoverPhoto.Url
+        Id: (result.EventCoverPhoto || {Id: 0}).Id,
+        Url: (result.EventCoverPhoto || {Url: "/img/cover/loading.jpg"}).Url
       },
       IsHost: result.IsHost,
       IsPendingMember: result.IsPendingMember,
