@@ -243,16 +243,42 @@ export class CreateEventDialog extends React.Component {
             {this.state.isShowAdvance ?
               <div>
                 <hr/>
-                <div className="form-group">
-                  <label className="col-sm-3 control-label">Yêu cầu</label>
-                  <div className="col-sm-9">
-                    <input type="text" className="form-control"
 
-                           defaultValue={this.state.title}
-                           onChange={(v) => this.titleOnChange(v)}
-                           placeholder="Yêu cầu bắt buộc dành cho người tham gia"/>
+                <div className="form-group">
+                  <label className="col-sm-3 control-label">Yêu cầu cho người tham gia</label>
+
+                  <div className="col-sm-5" style={{marginLeft: '30px'}}>
+                    <div className="checkbox">
+                      <label> <input type="checkbox" value="emailRequired"
+                                     onChange={(e)=> this.setState({requirement: {email : e.target["checked"]}})}/>
+                        Đã xác nhận email
+                      </label>
+                    </div>
+
+                    <div className="checkbox">
+                      <label> <input type="checkbox" value="phoneRequired"
+                                     onChange={(e)=> this.setState({requirement: {phone : e.target["checked"]}})}/>
+                        Đã xác nhận số điện thoại
+                      </label>
+                    </div>
+
+                    <div className="checkbox">
+                      <label> <input type="checkbox" value="ageRequired"
+                                     onChange={(e)=> this.setState({requirement: {age : e.target["checked"]}})}/>
+                        Đã xác nhận tuổi
+                      </label>
+                    </div>
+
+                    <div className="checkbox">
+                      <label> <input type="checkbox" value="addressRequired"
+                                     onChange={(e)=> this.setState({requirement: {address : e.target["checked"]}})}/>
+                        Đã xác nhận địa chỉ
+                      </label>
+                    </div>
                   </div>
                 </div>
+
+                <hr/>
 
                 <div className="form-group">
                   <div className="col-sm-12 text-center"><h3>Mô tả chi tiết về sự kiện</h3></div>
