@@ -28,7 +28,8 @@ export class CreateEventDialog extends React.Component {
       event_location: {},
       event_topics: [],
       event_description_short: "",
-      event_description_short_placeholder: "Viết mô tả ngắn gọn về sự kiện"
+      event_description_short_placeholder: "Viết mô tả ngắn gọn về sự kiện",
+      isShowAdvance: false,
     });
   }
 
@@ -121,22 +122,18 @@ export class CreateEventDialog extends React.Component {
               </div>
             </div>
             <div className="form-group">
-              <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
-                Tên sự kiện
-              </div>
+              <label className="col-sm-3 control-label">Tên sự kiện</label>
               <div className="col-sm-9">
-                <input type="text" className="form-control" 
+                <input type="text" className="form-control"
 
-                      defaultValue={this.state.title}
-                                   onChange={(v) => this.titleOnChange(v)}
-                      placeholder="Nhập vào tên của sự kiện"/>
+                       defaultValue={this.state.title}
+                       onChange={(v) => this.titleOnChange(v)}
+                       placeholder="Nhập vào tên của sự kiện"/>
               </div>
             </div>
 
             <div className="form-group">
-              <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
-                Địa điểm
-              </div>
+              <label className="col-sm-3 control-label">Địa điểm</label>
               <div className="col-sm-9">
                 <Autocomplete
                   wrapperProps={{className: "event-location"}}
@@ -150,7 +147,7 @@ export class CreateEventDialog extends React.Component {
                   }}
                   items={this.state.locationList}
                   getItemValue={(item) => item.Id}
-                  onSelect={(value, state) => this.eventLocationOnSelect(value,state) }
+                  onSelect={(value, state) => this.eventLocationOnSelect(value, state) }
                   onChange={(event, value) => this.eventLocationOnChange(event, value)}
                   renderItem={(item, isHighlighted) => (
                     <div
@@ -162,10 +159,10 @@ export class CreateEventDialog extends React.Component {
                   renderMenu={(items, value, style) => (
                     <div className="menu" style={[styles.menu, style]}>
                       {value === '' ? (
-                        <div style={{padding: 6}}>Gõ tên một địa điểm bất kì</div>
-                      ) : this.state.isLocationLoading ? (
-                        <div style={{padding: 6}}>Loading...</div>
-                      ) : this.renderItems(items)}
+                          <div style={{padding: 6}}>Gõ tên một địa điểm bất kì</div>
+                        ) : this.state.isLocationLoading ? (
+                            <div style={{padding: 6}}>Loading...</div>
+                          ) : this.renderItems(items)}
                     </div>
                   )}
                 />
@@ -173,13 +170,11 @@ export class CreateEventDialog extends React.Component {
             </div>
 
             <div className="form-group">
-              <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
-                Thời gian bắt đầu
-              </div>
+              <label className="col-sm-3 control-label">Thời gian</label>
               <div className="col-sm-4">
                 <Datetime
                   defaultValue={new Date()}
-                  onChange={(value)=>this.startDateOnSelect(value)}
+                  onChange={(value) => this.startDateOnSelect(value)}
                   dateFormat="DD/MM/YYYY"
                   id="StartDate"
                 />
@@ -191,25 +186,21 @@ export class CreateEventDialog extends React.Component {
             </div>
 
             {this.state.showEndDate ? <div className="form-group">
-              <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
-                Thời gian kết thúc
-              </div>
-              <div className="col-sm-4">
-                <Datetime
-                  defaultValue={new Date()}
-                  onSelect={(value)=>this.endDateOnSelect(value)}
-                   dateFormat="DD/MM/YYYY"
-                />
-              </div>
-              <div className="col-sm-3">
-                <Button onClick={() => this.toggleEndDate()}>- Hủy bỏ</Button>
-              </div>
-            </div> : null}
+                <label className="col-sm-3 control-label">Kết thúc</label>
+                <div className="col-sm-4">
+                  <Datetime
+                    defaultValue={new Date()}
+                    onSelect={(value) => this.endDateOnSelect(value)}
+                    dateFormat="DD/MM/YYYY"
+                  />
+                </div>
+                <div className="col-sm-3">
+                  <Button onClick={() => this.toggleEndDate()}>- Hủy bỏ</Button>
+                </div>
+              </div> : null}
 
             <div className="form-group" style={{marginTop: 20}}>
-              <div className="col-sm-3" style={{textAlign: 'right', paddingTop: 10}}>
-                Chủ đề
-              </div>
+              <label className="col-sm-3 control-label">Chủ đề</label>
               <div className="col-sm-9">
                 <Select multi value={this.state.event_topics} placeholder="Gõ để chọn chủ đề"
                         options={this.state.topicList}
@@ -233,28 +224,61 @@ export class CreateEventDialog extends React.Component {
 
               </div>
             </div>
-            <hr/>
+
             <div className="form-group">
-              <div className="col-sm-12 text-center"><h3>Mô tả ngắn gọn về sự kiện</h3></div>
-            </div>
-            <div className="form-group">
-              <div className="col-sm-12">
+              <label className="col-sm-3 control-label">Mô tả ngắn gọn</label>
+              <div className="col-sm-9">
                 <textarea
-                  style={{width: '100%', resize:'none'}}
-                  rows="5"
+                  style={{width: '100%', resize: 'none'}}
+                  rows="2"
                   value={this.state.event_description_short}
                   placeholder={this.state.event_description_short_placeholder}
-                   onChange={v => {
-                        let val = v.target.value;
-                        this.setState({event_description_short: val});
-                      }}/>
+                  onChange={v => {
+                    let val = v.target.value;
+                    this.setState({event_description_short: val});
+                  }}/>
               </div>
             </div>
+
+            {this.state.isShowAdvance ?
+              <div>
+                <hr/>
+                <div className="form-group">
+                  <label className="col-sm-3 control-label">Yêu cầu</label>
+                  <div className="col-sm-9">
+                    <input type="text" className="form-control"
+
+                           defaultValue={this.state.title}
+                           onChange={(v) => this.titleOnChange(v)}
+                           placeholder="Yêu cầu bắt buộc dành cho người tham gia"/>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <div className="col-sm-12 text-center"><h3>Mô tả chi tiết về sự kiện</h3></div>
+                </div>
+                <div className="form-group">
+                  <div className="col-sm-12">
+                <textarea
+                  style={{width: '100%', resize: 'none'}}
+                  rows="5"
+                />
+                  </div>
+                </div>
+              </div>
+              : null}
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button bsStyle="primary" onClick={() => this.createEvent()}>Tạo sự kiện</Button>
-          <Button onClick={() => this.close()}>Hủy</Button>
+          <div className="col-md-6 text-left">
+            <Button bsStyle="success" onClick={() => {
+              this.setState({isShowAdvance: !this.state.isShowAdvance})
+            }}>Tùy chọn</Button>
+          </div>
+          <div className="col-md-6">
+            <Button bsStyle="primary" onClick={() => this.createEvent()}>Tạo sự kiện</Button>
+            <Button onClick={() => this.close()}>Hủy</Button>
+          </div>
         </Modal.Footer>
       </Modal>);
   }
@@ -270,31 +294,38 @@ export class CreateEventDialog extends React.Component {
     items.push({Id: '__ju__', Name: 'Chỉ dùng "' + value + '"', Address: value})
     this.setState({locationList: items, isLocationLoading: false});
   }
-  eventLocationOnSelect(value, state)
-  {
-    this.setState({event_location: state,
+
+  eventLocationOnSelect(value, state) {
+    this.setState({
+      event_location: state,
       event_locationDisplay: state.Name,
-       locationList: [state]});
+      locationList: [state]
+    });
 
   }
+
   topicsOnChanged(v) {
     this.setState({event_topics: v});
     console.log(v);
   }
-  titleOnChange(v){
+
+  titleOnChange(v) {
     this.setState({title: v.target.value});
     console.log(v.target.value);
   }
-  startDateOnSelect(v){
-    
+
+  startDateOnSelect(v) {
+
     this.setState({startDate: v._d});
     console.log(v._d);
   }
-  endDateOnSelect(v){
+
+  endDateOnSelect(v) {
     this.setState({endDate: v.toObject()});
   }
+
   async createEvent() {
-    let uploadResult = await ANEventServiceInstance.uploadCoverPhoto({ cover: this.state.file });
+    let uploadResult = await ANEventServiceInstance.uploadCoverPhoto({cover: this.state.file});
     if (uploadResult) {
       let model = {
         Information: {
@@ -312,12 +343,12 @@ export class CreateEventDialog extends React.Component {
           ShortDescription: this.state.event_description_short
         },
         Categories: this.state.event_topics,
-        CoverPhoto: { Id: uploadResult.Id }
+        CoverPhoto: {Id: uploadResult.Id}
       };
       let result = await ANEventServiceInstance.createANEvent(model);
       if (result) {
         this.close();
       }
     }
-   }
+  }
 }

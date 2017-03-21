@@ -98,7 +98,7 @@ hr {
 }
 
 .form-horizontal .control-label {
-  text-align: left;
+  //text-align: left;
 }
 
 .form-control, .input-group .form-control {
