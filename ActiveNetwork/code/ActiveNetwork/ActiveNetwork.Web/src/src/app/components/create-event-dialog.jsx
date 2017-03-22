@@ -1,6 +1,6 @@
 import * as React from 'react';
 var Datetime = require('react-datetime');
-import {Modal, Button} from 'react-bootstrap';
+import {Modal, Button, Radio} from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
 import Autocomplete from 'react-autocomplete';
 import Select from 'react-select';
@@ -98,7 +98,7 @@ export class CreateEventDialog extends React.Component {
         <Modal.Body>
           <form className="form-horizontal" style={{paddingTop: 10}}>
             <div className="form-group">
-              <label className="col-sm-3 control-label">Ảnh sự kiện</label>
+              <label className="col-sm-3 control-label">HÌnh nền</label>
               <div className="col-sm-9">
                 <Dropzone
                   className="cover-image-upload-zone"
@@ -122,7 +122,7 @@ export class CreateEventDialog extends React.Component {
               </div>
             </div>
             <div className="form-group">
-              <label className="col-sm-3 control-label">Tên sự kiện</label>
+              <label className="col-sm-3 control-label">Tên</label>
               <div className="col-sm-9">
                 <input type="text" className="form-control"
 
@@ -245,9 +245,23 @@ export class CreateEventDialog extends React.Component {
                 <hr/>
 
                 <div className="form-group">
-                  <label className="col-sm-3 control-label">Yêu cầu cho người tham gia</label>
+                  <div className="col-sm-12 text-center"><h3>Mô tả chi tiết về sự kiện</h3></div>
+                </div>
+                <div className="form-group">
+                  <div className="col-sm-12">
+                <textarea
+                  style={{width: '100%', resize: 'none'}}
+                  rows="5"
+                />
+                  </div>
+                </div>
 
-                  <div className="col-sm-5" style={{marginLeft: '30px'}}>
+                <hr/>
+
+                <div className="form-group">
+                  <label className="col-sm-3 control-label">Yêu cầu đối với người tham gia</label>
+
+                  <div className="col-sm-8" style={{marginLeft: '30px'}}>
                     <div className="checkbox">
                       <label> <input type="checkbox" value="emailRequired"
                                      onChange={(e)=> this.setState({requirement: {email : e.target["checked"]}})}/>
@@ -281,14 +295,28 @@ export class CreateEventDialog extends React.Component {
                 <hr/>
 
                 <div className="form-group">
-                  <div className="col-sm-12 text-center"><h3>Mô tả chi tiết về sự kiện</h3></div>
+                  <label className="col-sm-3 control-label">Đăng bài viết</label>
+
+                  <div className="col-sm-8" style={{marginLeft: '30px'}}>
+                    <Radio name="postPermission" checked>
+                      Chỉ chủ sở hữu có quyền đăng
+                    </Radio>
+                    <Radio name="postPermission">
+                      Chủ sở hữu và thành viên có quyền đăng
+                    </Radio>
+                  </div>
                 </div>
+
                 <div className="form-group">
-                  <div className="col-sm-12">
-                <textarea
-                  style={{width: '100%', resize: 'none'}}
-                  rows="5"
-                />
+                  <label className="col-sm-3 control-label">Duyệt yêu cầu</label>
+
+                  <div className="col-sm-8" style={{marginLeft: '30px'}}>
+                    <Radio name="approvePermission" checked>
+                      Chỉ chủ sở hữu có quyền duyệt yêu cầu tham gia sự kiện
+                    </Radio>
+                    <Radio name="approvePermission">
+                      Thành viên cũng có quyền duyệt yêu cầu tham gia sự kiện
+                    </Radio>
                   </div>
                 </div>
               </div>
