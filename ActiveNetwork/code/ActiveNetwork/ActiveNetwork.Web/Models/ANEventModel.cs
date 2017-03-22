@@ -13,7 +13,6 @@ namespace ActiveNetwork.Web.Models
         public ImageModel CoverPhoto { get; set; }
         public DateTime CreatedDate { get; set; }
         public ANEventInformationModel Information { get; set; }
-        public int Day { get; set; }
         public int NumberOfMember { get; set; }
         public List<CategoryModel> Categories { get; set; }
 

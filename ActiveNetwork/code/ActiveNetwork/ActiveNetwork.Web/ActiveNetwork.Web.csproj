@@ -188,6 +188,7 @@
     <Compile Include="Controllers\GenderController.cs" />
     <Compile Include="Controllers\GoogleServiceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
@@ -221,6 +222,7 @@
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\NewFeedsModel.cs" />
     <Compile Include="Models\RequestToJoinModel.cs" />
+    <Compile Include="Models\UpdateEventDescriptionRequestModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -275,6 +277,7 @@
     <Folder Include="Views\BaseApi\" />
     <Folder Include="Views\Gender\" />
     <Folder Include="Views\GoogleService\" />
+    <Folder Include="Views\Image\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>

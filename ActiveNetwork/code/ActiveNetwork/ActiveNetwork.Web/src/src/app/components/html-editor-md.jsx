@@ -1,4 +1,5 @@
 import React from 'react';
+import {CommonServiceInstance} from '../services/common-service';
 import {
   EditorState,
   convertToRaw,
@@ -16,6 +17,7 @@ import {
   keyBindingFn,
   createEditorState,
   addNewBlockAt,
+  addNewBlock,
   beforeInput,
   getCurrentBlock,
   ImageSideButton,
@@ -244,7 +246,7 @@ const AtomicSeparatorComponent = (props) => (
 const AtomicBlock = (props) => {
   const {blockProps, block} = props;
   const entity = Entity.get(block.getEntityAt(0));
-  const data = entity.getInfor();
+  const data = entity.getData();
   const type = entity.getType();
   if (blockProps.components[type]) {
     const AtComponent = blockProps.components[type];
@@ -257,6 +259,31 @@ const AtomicBlock = (props) => {
   return <p>Block of type <b>{type}</b> is not supported.</p>;
 };
 
+class ANImageSideButton extends ImageSideButton {
+  /*
+   We will only check for first file and also whether
+   it is an image or not.
+   */
+  async onChange(e) {
+    if (e.target.files && e.target.files[0]) {
+
+      const file = e.target.files[0];
+      if (file.type.indexOf('image/') === 0) {
+        let uploadResult = await CommonServiceInstance.uploadImage({image:file});
+        if (uploadResult.Url) {
+          this.props.setEditorState(addNewBlock(
+            this.props.getEditorState(),
+            Block.IMAGE, {
+              src: uploadResult.Url,
+            }
+          ));
+        }
+      }
+
+    }
+    this.props.close();
+  }
+}
 
 export class HTMLEditorByMD extends React.Component {
   constructor(props) {
@@ -264,12 +291,11 @@ export class HTMLEditorByMD extends React.Component {
 
     this.state = {
       editorEnabled: true,
-      placeholder: this.props.placeholder || 'Write here...',
     };
 
     this.sideButtons = [{
       title: 'Image',
-      component: ImageSideButton,
+      component: ANImageSideButton,
     }, {
       title: 'Embed',
       component: EmbedSideButton,
@@ -410,11 +436,11 @@ export class HTMLEditorByMD extends React.Component {
   }
 
   render() {
-    const {editorEnabled} = this.state;
+    const {editorEnabled} = this.props;
     return (
       <Editor
         editorState={this.props.editorState}
-        placeholder={this.state.placeholder}
+        placeholder={this.props.placeholder}
         onChange={(v, c) => this.props.onChange(v, c)}
         editorEnabled={editorEnabled}
         handleDroppedFiles={this.handleDroppedFiles.bind(this)}
@@ -428,4 +454,3 @@ export class HTMLEditorByMD extends React.Component {
     );
   }
 }
-;

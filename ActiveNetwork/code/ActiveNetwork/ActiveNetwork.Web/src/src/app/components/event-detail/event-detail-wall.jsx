@@ -19,13 +19,22 @@ export class EventDetailWallComponent extends Component {
         },
       }
     });
-
     this.eventId = this.props.params.id;
   }
 
-  componentDidMount() {
+  componentDidMount(){
+    this.loadData();
+  }
+
+
+  loadData() {
     this.getInfoData();
     this.getMemberData();
+    this.getOtherEvents();
+  }
+  componentWillReceiveProps(props) {
+    this.eventId = props.params.id;
+    this.loadData();
   }
 
   async getInfoData() {
@@ -42,12 +51,18 @@ export class EventDetailWallComponent extends Component {
     });
   }
 
+  async getOtherEvents() {
+    this.setState({
+      otherEvents: await ANEventDetailServiceInstance.getRelatedEvents(this.eventId)
+    })
+  }
+
   render() {
     return (<div className="row">
       <div className="col-md-5">
         <EventDetailWallDescriptionComponent eventDecription={this.state.eventDecription}/>
         <EventDetailWallMembersComponent eventMember={this.state.eventMember}/>
-        <EventDetailWallOtherEventsComponent/>
+        <EventDetailWallOtherEventsComponent otherEvents={this.state.otherEvents}/>
       </div>
       <div className="col-md-7">
         <div className="row">

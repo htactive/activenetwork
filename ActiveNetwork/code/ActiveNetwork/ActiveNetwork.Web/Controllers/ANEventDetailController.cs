@@ -10,6 +10,7 @@ using System.Threading;
 using HTActive.Authorize.Core;
 using ActiveNetwork.Common;
 using System.Net;
+using System.Threading.Tasks;
 
 
 namespace ActiveNetwork.Web.Controllers
@@ -37,7 +38,7 @@ namespace ActiveNetwork.Web.Controllers
             if (entity == null) return null;
             var firstInformation = entity.ANEventInformations.FirstOrDefault();
             var coverPhoto = entity.ANEventImages.FirstOrDefault(x => x.ANEventImageType == (int)Common.ANEventImageType.ANEventCoverImage);
-            var isPendingMember = this.ANDBUnitOfWork.ANEventRequestToJoinRepository.GetAll().Any(x=>x.ANEventId.HasValue && x.ANEventId.Value == Id && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id && x.Status == (int)Common.ANRequestToJoinStatus.Waiting);
+            var isPendingMember = this.ANDBUnitOfWork.ANEventRequestToJoinRepository.GetAll().Any(x => x.ANEventId.HasValue && x.ANEventId.Value == Id && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id && x.Status == (int)Common.ANRequestToJoinStatus.Waiting);
             var isMember = this.ANDBUnitOfWork.ANEventMemberRepository.GetAll().Any(x => x.ANEventId.HasValue && x.ANEventId.Value == Id && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
             return new ANEventDetailHeaderModel()
             {
@@ -161,8 +162,8 @@ namespace ActiveNetwork.Web.Controllers
             };
         }
 
-        [Route("anevent-detail/cancel-my-rtj"),HttpPost]
-        [HTActiveAuthorize(Roles=ANRoleConstant.USER)]
+        [Route("anevent-detail/cancel-my-rtj"), HttpPost]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public bool CancelMyRequestToJoin([FromBody]int eventId)
         {
             var rtjEntity = this.ANDBUnitOfWork.ANEventRequestToJoinRepository.GetAll().FirstOrDefault(x => x.ANEventId.HasValue && x.ANEventId.Value == eventId && x.UserId.HasValue && x.UserId.Value == this.CurrentUser.Id);
@@ -180,6 +181,71 @@ namespace ActiveNetwork.Web.Controllers
             this.ANDBUnitOfWork.ANEventMemberRepository.Delete(anEventMemberEntity);
             this.ANDBUnitOfWork.Commit();
             return true;
+        }
+
+        [Route("anevent-detail/get-related-events"), HttpGet]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public List<ANEventModel> GetRelatedEvents(int eventId)
+        {
+            var hostId = this.ANDBUnitOfWork.ANEventRepository.GetAll().Where(x => x.Id == eventId).Select(x => x.UserId).FirstOrDefault().GetValueOrDefault();
+            if (hostId == 0) return null;
+            var events = this.ANDBUnitOfWork.ANEventRepository.GetAll()
+                .Include(x => x.User)
+                .Include(x => x.User.UserProfiles)
+                .Include("User.UserProfiles.Image")
+                .Include(x => x.ANEventImages)
+                .Include("ANEventImages.Image")
+                .Include("ANEventInformations.ANEventLocation")
+                .Include(x => x.ANEventMembers)
+                .Where(e => e.UserId.HasValue && e.UserId.Value == hostId && e.Id != eventId).OrderByDescending(t => t.CreatedDate).Take(3).ToList();
+
+            var anEventModels = new List<ANEventModel>();
+
+            foreach (var ev in events)
+            {
+                var model = new ANEventModel();
+                model.Id = ev.Id;
+                model.Host = UserMapper.ToModel(ev.User);
+                // get cover image
+                var coverImageEntity = ev.ANEventImages.Where(x => x.ANEventImageType == (int)Common.ANEventImageType.ANEventCoverImage).OrderBy(x => x.SortPriority).FirstOrDefault();
+                if (coverImageEntity != null)
+                {
+                    model.CoverPhoto = ImageMapper.ToModel(coverImageEntity.Image);
+                }
+                var information = ev.ANEventInformations.FirstOrDefault();
+                model.Information = ANEventInformationMapper.ToModel(information);
+                if (model.Information != null)
+                {
+                    model.Information.ANEventLocation = ANEventLocationMapper.ToModel(information.ANEventLocation);
+                }
+                model.CreatedDate = ev.CreatedDate;
+                model.NumberOfMember = ev.ANEventMembers.Count;
+                anEventModels.Add(model);
+            }
+
+            return anEventModels;
+        }
+
+        
+        [Route("anevent-detail/update-event-description"), HttpPost]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public bool UpdateEventDescription(UpdateEventDescriptionRequestModel request)
+        {
+            var anEvent = this.ANDBUnitOfWork.ANEventRepository.GetAll()
+                .Include(x=>x.ANEventInformations)
+                .FirstOrDefault(x => x.Id == request.ANEventId);
+            if (anEvent == null) return false;
+            if (!anEvent.UserId.HasValue || anEvent.UserId.Value != this.CurrentUser.Id)
+            {
+                throw new HttpResponseException(HttpStatusCode.Forbidden);
+            }
+            var firstInformation = anEvent.ANEventInformations.FirstOrDefault();
+            if (firstInformation == null) return false;
+            firstInformation.Description = request.Description;
+            this.ANDBUnitOfWork.ANEventInformationRepository.Save(firstInformation);
+            this.ANDBUnitOfWork.Commit();
+            return true;
+
         }
     }
 }

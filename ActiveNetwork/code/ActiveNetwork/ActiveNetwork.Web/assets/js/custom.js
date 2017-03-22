@@ -32,8 +32,18 @@ function registerCommon() {
 //   registerCommon();
 // });
 function groupby(xs, func) {
-    return xs.reduce(function (rv, x) {
-        (rv[func(x)] = rv[func(x)] || []).push(x);
-        return rv;
-    }, {});
+  return xs.reduce(function (rv, x) {
+    (rv[func(x)] = rv[func(x)] || []).push(x);
+    return rv;
+  }, {});
 };
+
+function resizeEventCoverPhoto() {
+  let $pts = $('.event-cover-photo');
+  $pts.each(function () {
+    let w = $(this).width();
+    $(this).height(w * 0.65);
+  });
+}
+
+setInterval(resizeEventCoverPhoto, 200);

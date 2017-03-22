@@ -23,11 +23,15 @@ export class EventDetailHeaderComponent extends Component {
   }
 
   async componentDidMount() {
-    this.setState({eventHeader: await this.getData(), hasData: true});
+    this.setState({eventHeader: await this.getData(this.props.eventId), hasData: true});
   }
 
-  async getData() {
-    return await ANEventDetailServiceInstance.getANEventDetailHeader(this.props.eventId);
+  async componentWillReceiveProps(props) {
+    this.setState({eventHeader: await this.getData(props.eventId), hasData: true});
+  }
+
+  async getData(eventId) {
+    return await ANEventDetailServiceInstance.getANEventDetailHeader(eventId);
   }
 
   changeTab(e, tab) {
@@ -77,12 +81,12 @@ export class EventDetailHeaderComponent extends Component {
 
   async clickLeaveEvent(eventId) {
     let result = await
-    MessageBox.instance.show({
-      title: "Xác nhận",
-      content: "Bạn có chắn muốn rời khỏi sự kiện này",
-      type: MessageBoxType.Confirmation,
-      buttons: MessageBoxButtons.YesNo
-    });
+      MessageBox.instance.show({
+        title: "Xác nhận",
+        content: "Bạn có chắn muốn rời khỏi sự kiện này",
+        type: MessageBoxType.Confirmation,
+        buttons: MessageBoxButtons.YesNo
+      });
 
     if (result == MessageBoxResult.Yes) {
       let cancelResult = await ANEventDetailServiceInstance.leaveEvent(eventId);
@@ -92,12 +96,12 @@ export class EventDetailHeaderComponent extends Component {
       }
       else {
         await
-        MessageBox.instance.show({
-          title: "Lỗi",
-          content: "Rời khỏi sự kiện thất bại",
-          type: MessageBoxType.Error,
-          buttons: MessageBoxButtons.OK
-        });
+          MessageBox.instance.show({
+            title: "Lỗi",
+            content: "Rời khỏi sự kiện thất bại",
+            type: MessageBoxType.Error,
+            buttons: MessageBoxButtons.OK
+          });
       }
     }
   }
@@ -162,7 +166,7 @@ export class EventDetailHeaderComponent extends Component {
                   Người tham gia</a></li>
 
                 <li className={`${this.state.currentTab == CURRENT_TAB_PHOTOS ? 'active' : ''} hidden`}><a href=""
-                                                                                               onClick={(e) => this.changeTab(e, CURRENT_TAB_PHOTOS)}><i
+                                                                                                           onClick={(e) => this.changeTab(e, CURRENT_TAB_PHOTOS)}><i
                   className="fa fa-fw fa-image"/>
                   Hình ảnh</a></li>
               </ul>
