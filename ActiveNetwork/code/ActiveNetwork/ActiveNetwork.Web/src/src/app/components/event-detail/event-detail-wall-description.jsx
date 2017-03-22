@@ -40,7 +40,9 @@ export class EventDetailWallDescriptionComponent extends Component {
                   <div className="col-sm-1 col-lg-1 col-md-1 col-xs-1 text-center" title="Người tạo"><span
                     className="text-muted"><i
                     className="fa fa-user"/></span></div>
-                  <div className="col-sm-10 col-lg-10 col-md-10 col-xs-10"><a href="">{this.state.host_fullName}</a>
+                  <div className="col-sm-10 col-lg-10 col-md-10 col-xs-10">
+                    <strong>Người tạo sự kiện:</strong><br/>
+                    <a href="">{this.state.host_fullName}</a>
                   </div>
                 </div>
               </li>
@@ -51,6 +53,7 @@ export class EventDetailWallDescriptionComponent extends Component {
                   className="text-muted"><i
                   className="fa fa-globe"/></span></div>
                 <div className="col-sm-10 col-lg-10 col-md-10 col-xs-10">
+                  <strong>Địa điểm diễn ra:</strong><br/>
                   <span> <a href="">{this.state.event_locationName}</a></span>
                 </div>
               </div>
@@ -61,7 +64,11 @@ export class EventDetailWallDescriptionComponent extends Component {
                      title="Thời gian bắt đầu"><span className="text-muted"><i
                   className="fa fa-hourglass-start"/></span></div>
                 <div
-                  className="col-sm-10 col-lg-10 col-md-10 col-xs-10">{this.state.event_startDate ? moment(this.state.event_startDate).format('HH:mm [ngày] DD/MM/YYYY') : null}</div>
+                  className="col-sm-10 col-lg-10 col-md-10 col-xs-10">
+                  <strong>Thời gian bắt đầu:</strong><br/>
+                  <span>
+                    {this.state.event_startDate ? moment(this.state.event_startDate).format('HH:mm [ngày] DD/MM/YYYY') : null}</span>
+                </div>
               </div>
             </li>
             {this.state.event_endDate ?
@@ -71,7 +78,9 @@ export class EventDetailWallDescriptionComponent extends Component {
                     className="text-muted"><i
                     className="fa fa-hourglass-end"/></span></div>
                   <div
-                    className="col-sm-10 col-lg-10 col-md-10 col-xs-10">{moment(this.state.event_endDate).format('HH:mm [ngày] DD/MM/YYYY')}</div>
+                    className="col-sm-10 col-lg-10 col-md-10 col-xs-10">
+                    <strong>Thời gian kết thúc:</strong><br/>
+                    <span>{moment(this.state.event_endDate).format('HH:mm [ngày] DD/MM/YYYY')}</span></div>
                 </div>
               </li> : null}
             {this.state.event_shortDescription ?
@@ -82,6 +91,7 @@ export class EventDetailWallDescriptionComponent extends Component {
                     className="fa fa-sticky-note"/></span></div>
                   <div
                     className="col-sm-10 col-lg-10 col-md-10 col-xs-10">
+                    <strong>Mô tả sự kiện:</strong><br/>
                     <p
                       dangerouslySetInnerHTML={{__html: this.state.event_shortDescription.replace(/(?:\r\n|\r|\n)/g, '<br />')}}/>
                   </div>

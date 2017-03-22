@@ -102,6 +102,14 @@ namespace ActiveNetwork.Repository
                 return anEventUserFavouriteRepository ?? (anEventUserFavouriteRepository = new ANEventUserFavouriteRepository(this));
             }
         }
+        private IANEventInformationRepository anEventInformationRepository;
+        public IANEventInformationRepository ANEventInformationRepository
+        {
+            get
+            {
+                return anEventInformationRepository ?? (anEventInformationRepository = new ANEventInformationRepository(this));
+            }
+        }
         #endregion
     }
 }

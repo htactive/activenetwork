@@ -124,7 +124,8 @@ class ANEventService extends ServiceBase {
 
   async getMyFavouriteEvents() {
     let url = '/anevent/get-my-favourite-events';
-    return await super.executeFetch(url);
+    let events = await super.executeFetch(url);
+    return this.groupEvents(events);
   }
 
   groupEvents(events) {
@@ -146,11 +147,11 @@ class ANEventService extends ServiceBase {
           return {
             id: ev.Id,
             cover_image: ev.CoverPhoto != null ? ev.CoverPhoto.Url : '',
-            day: ev.Day,
+            day: moment(ev.CreatedDate).date(),
             start_day: ev.Information.StartDate ? moment(ev.Information.StartDate).format('DD [tháng] MM YYYY, [lúc] HH:mm') : '',
             title: ev.Information.Title,
-            location: ev.Information.Location || '',
-            description: ev.Information.Description,
+            location: (ev.Information.ANEventLocation || {Address: ''}).Address,
+            description: ev.Information.ShortDescription,
             number_of_member: ev.NumberOfMember,
           }
         });

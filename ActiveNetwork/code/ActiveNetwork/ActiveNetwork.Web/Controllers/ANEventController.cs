@@ -160,7 +160,7 @@ namespace ActiveNetwork.Web.Controllers
                 .Include("User.UserProfiles.Image")
                 .Include(x => x.ANEventImages)
                 .Include("ANEventImages.Image")
-                .Include(x => x.ANEventInformations)
+                .Include("ANEventInformations.ANEventLocation")
                 .Include(x => x.ANEventMembers)
                 .Where(e => e.UserId == (hostId)).OrderByDescending(t => t.CreatedDate).ToList();
 
@@ -179,9 +179,11 @@ namespace ActiveNetwork.Web.Controllers
                 }
                 var information = ev.ANEventInformations.FirstOrDefault();
                 model.Information = ANEventInformationMapper.ToModel(information);
-
+                if (model.Information != null)
+                {
+                    model.Information.ANEventLocation = ANEventLocationMapper.ToModel(information.ANEventLocation);
+                }
                 model.CreatedDate = ev.CreatedDate;
-                model.Day = ev.CreatedDate.Day;
                 model.NumberOfMember = ev.ANEventMembers.Count;
                 anEventModels.Add(model);
             }
@@ -204,7 +206,7 @@ namespace ActiveNetwork.Web.Controllers
                 .Include("User.UserProfiles.Image")
                 .Include(x => x.ANEventImages)
                 .Include("ANEventImages.Image")
-                .Include(x => x.ANEventInformations)
+                .Include("ANEventInformations.ANEventLocation")
                 .Include(x => x.ANEventMembers)
                 .Where(e => (e.UserId == (hostId) || e.ANEventMembers.Select(f => f.UserId).Contains(hostId))
                         && e.ANEventInformations.FirstOrDefault().StartDate.Value.Day >= first 
@@ -226,9 +228,11 @@ namespace ActiveNetwork.Web.Controllers
                 }
                 var information = ev.ANEventInformations.FirstOrDefault();
                 model.Information = ANEventInformationMapper.ToModel(information);
-
+                if (model.Information != null)
+                {
+                    model.Information.ANEventLocation = ANEventLocationMapper.ToModel(information.ANEventLocation);
+                }
                 model.CreatedDate = ev.CreatedDate;
-                model.Day = ev.CreatedDate.Day;
                 model.NumberOfMember = ev.ANEventMembers.Count;
                 anEventModels.Add(model);
             }
@@ -247,7 +251,7 @@ namespace ActiveNetwork.Web.Controllers
                 .Include("User.UserProfiles.Image")
                 .Include(x => x.ANEventImages)
                 .Include("ANEventImages.Image")
-                .Include(x => x.ANEventInformations)
+                .Include("ANEventInformations.ANEventLocation")
                 .Include(x => x.ANEventMembers)
                 .Where(e => e.ANEventMembers.Select(f => f.UserId).Contains(hostId)).OrderByDescending(t => t.CreatedDate).ToList();
 
@@ -266,10 +270,13 @@ namespace ActiveNetwork.Web.Controllers
                 }
                 var information = ev.ANEventInformations.FirstOrDefault();
                 model.Information = ANEventInformationMapper.ToModel(information);
-
+                if (model.Information != null)
+                {
+                    model.Information.ANEventLocation = ANEventLocationMapper.ToModel(information.ANEventLocation);
+                }
                 model.CreatedDate = ev.CreatedDate;
-                model.Day = ev.CreatedDate.Day;
                 model.NumberOfMember = ev.ANEventMembers.Count;
+                
                 anEventModels.Add(model);
             }
 
@@ -288,21 +295,25 @@ namespace ActiveNetwork.Web.Controllers
             return anEventModels;
         }
 
-        [HttpGet, Route("anevent/get-my-event-favourites")]
+        [HttpGet, Route("anevent/get-my-favourite-events")]
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public List<ANEventModel> GetMyEventFavourites()
         {
             var currentUserId = this.CurrentUser.Id;
             var anEventEntities = this.ANDBUnitOfWork.ANEventUserFavouriteRepository.GetAll()
-                .Include("User.UserProfiles.Image")
-                .Include("ANEventImages.Image")
-                .Include("ANEventInformations")
                 .Where(x => x.UserId.HasValue && x.UserId.Value == currentUserId)
                 .Select(x => x.ANEvent)
+                .Include("User.UserProfiles.Image")
+                .Include("ANEventImages.Image")
+                .Include("ANEventInformations.ANEventLocation")
                 .ToList()
                 .OrderByDescending(x => x.CreatedDate).ToList();
 
             var anEventModels = new List<ANEventModel>();
+            var anEventIds = anEventEntities.Select(x => x.Id).ToList();
+            var numberOfMembers = this.ANDBUnitOfWork.ANEventRepository.GetAll()
+                .Where(x=>anEventIds.Contains(x.Id))
+                .Select(x=> new {Id=x.Id, numberOfMember = x.ANEventMembers.Count()}).ToList();
 
             foreach (var entity in anEventEntities)
             {
@@ -328,6 +339,8 @@ namespace ActiveNetwork.Web.Controllers
                 // get information
                 var information = entity.ANEventInformations.FirstOrDefault();
                 anEventModel.Information = ANEventInformationMapper.ToModel(information);
+                anEventModel.NumberOfMember = numberOfMembers.Where(x => x.Id == anEventModel.Id).Select(x => x.numberOfMember).FirstOrDefault();
+                anEventModel.Information.ANEventLocation = ANEventLocationMapper.ToModel(information.ANEventLocation);
                 anEventModels.Add(anEventModel);
             }
             return anEventModels;

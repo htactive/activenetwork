@@ -50,6 +50,14 @@ export class EventManager extends Component {
     });
   }
 
+  async loadFavouriteEvents() {
+    let posts = await ANEventServiceInstance.getMyFavouriteEvents();
+    this.setState({
+      eventGroups: posts,
+      evListType: 'Sự kiện yêu thích'
+    });
+  }
+
   async loadEventsInWeek() {
     let currentUser = userStore.getState().currentUser;
     if (currentUser == undefined || currentUser == null) {
@@ -65,9 +73,11 @@ export class EventManager extends Component {
 
   getBgrImageStyle(url) {
     return {
-      backgroundImage: 'url(' + url + ')'
+      backgroundImage: 'url(' + url + ')',
+      backgroundColor: '#545454'
     }
   }
+
   render() {
     return (<div>
       <div className="container page-content ">
@@ -84,6 +94,9 @@ export class EventManager extends Component {
                       tạo</a></li>
                     <li><a href="#" onClick={() => this.showJoinedEvents()}><i className="fa fa-align-right"/> Sự kiện
                       đã tham gia</a></li>
+
+                    <li><a href="#" onClick={() => this.showFavouriteEvents()}><i className="fa fa-heart"/> Sự kiện
+                      yêu thích</a></li>
                   </ul>
                   <div className="clearfix"></div>
                 </div>
@@ -101,48 +114,48 @@ export class EventManager extends Component {
                   <h5 style={{color: 'black'}}>Sự kiện trong tuần</h5>
                   <div className="clearfix"></div>
                   {this.state.eventsInWeek != null ? this.state.eventsInWeek.map((ev, z) =>
-                      (
-                        <div key={z} className="row" style={{padding: 15}}>
-                          <div className="col-md-4 no-padding">
-                            <div className="image-item-md"
-                                 style={this.getBgrImageStyle(ev.cover_image)}
-                                 onClick={(e) => this.goToEventDetail(e, ev.id)}>
-                              <div>
-                                <span className="fa fa-calendar-check-o"/>
-                                <span>&nbsp;{ev.day}</span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-md-8 event-info-section" style={{paddingRight: 5, fontSize:12}} >
-
-                            <div
-                              style={{
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap'
-                              }}>
-                              <a href="#" title={ev.title}
-                                 onClick={(e) => this.goToEventDetail(e, ev.id)}>{ev.title} &nbsp;</a>
-                            </div>
-                            <div style={{
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                              color: '#969696'
-                            }}>
-                              <span title={ev.start_day}>{ev.start_day}</span>
-                            </div>
-                            <div style={{
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                              color: '#969696'
-                            }}>
-                              <span title={ev.location}>Tại {ev.location}</span>
+                    (
+                      <div key={z} className="row" style={{padding: 15}}>
+                        <div className="col-md-4 no-padding">
+                          <div className="image-item-md"
+                               style={this.getBgrImageStyle(ev.cover_image)}
+                               onClick={(e) => this.goToEventDetail(e, ev.id)}>
+                            <div>
+                              <span className="fa fa-calendar-check-o"/>
+                              <span>&nbsp;{ev.day}</span>
                             </div>
                           </div>
                         </div>
-                      )) : (<div className="row">Không có sự kiện trong tuần.</div>)
+                        <div className="col-md-8 event-info-section" style={{paddingRight: 5, fontSize: 12}}>
+
+                          <div
+                            style={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap'
+                            }}>
+                            <a href="#" title={ev.title}
+                               onClick={(e) => this.goToEventDetail(e, ev.id)}>{ev.title} &nbsp;</a>
+                          </div>
+                          <div style={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            color: '#969696'
+                          }}>
+                            <span title={ev.start_day}>{ev.start_day}</span>
+                          </div>
+                          <div style={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            color: '#969696'
+                          }}>
+                            <span title={ev.location}>Tại {ev.location}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )) : (<div className="row">Không có sự kiện trong tuần.</div>)
                   }
                 </div>
               </div>
@@ -160,6 +173,11 @@ export class EventManager extends Component {
   showJoinedEvents() {
     this.loadJoinedEvents();
   }
+
+  showFavouriteEvents() {
+    this.loadFavouriteEvents();
+  }
+
 }
 
 export class EventManagerList extends Component {
@@ -173,7 +191,8 @@ export class EventManagerList extends Component {
 
   getBgrImageStyle(url) {
     return {
-      backgroundImage: 'url(' + url + ')'
+      backgroundImage: 'url(' + url + ')',
+      backgroundColor: '#545454'
     }
   }
 
@@ -189,82 +208,96 @@ export class EventManagerList extends Component {
           <h3>{this.props.evListType}</h3>
         </div>
         {this.props.eventGroups != null ? this.props.eventGroups.map((evGroup, x) =>
-            (
-              <div key={x} className="col-md-12" style={{backgroundColor: '#fff', marginBottom: 20}}>
-                <div className="row" style={{padding: 15}}>
-                  <a style={{cursor: 'pointer', color: '#000'}} data-toggle="collapse"
-                     data-target={`#${evGroup.year}`}>Sự kiện từ {evGroup.year}</a>
-                </div>
-                <div id={evGroup.year} className={`collapse ${this.props.collapseType}`}>
-                  {evGroup.year_events != null ? evGroup.year_events.map((evMonth, y) =>
-                      (
-                        <div key={y}>
-                          <div className="row"
-                               style={{
-                                 padding: '3px 15px',
-                                 backgroundColor: '#f6f7f9',
-                                 borderBottom: '1px solid #E9EAED',
-                                 borderTop: '1px solid #E9EAED'
-                               }}>
-                            <a style={{cursor: 'pointer', color: '#000', color: '#969696'}}
-                               data-toggle="collapse"
-                               data-target={`#${evGroup.year}_${evMonth.month}`}>THÁNG {evMonth.month}</a>
-                          </div>
-                          <div id={`${evGroup.year}_${evMonth.month}`}
-                               className={`collapse ${this.props.collapseType}`}>
-                            {evMonth.events != null ? evMonth.events.map((ev, z) =>
-                                (
-                                  <div key={z} className="row" style={{padding: 15}}>
-                                    <div className="col-md-4 no-padding">
-                                      <div className="image-item"
-                                           style={this.getBgrImageStyle(ev.cover_image)}
-                                           onClick={(e) => this.goToEventDetail(e, ev.id)}>
-                                        <div>
-                                          <span className="fa fa-calendar-check-o"/>
-                                          <span>&nbsp;{ev.day}</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div className="col-md-8 event-info-section" style={{paddingRight: 5}} >
-                                      <a href="#" className="delete-event-ico"><i
-                                        className="fa fa-times "/></a>
-
-                                      <div
-                                        style={{
-                                          overflow: 'hidden',
-                                          textOverflow: 'ellipsis',
-                                          whiteSpace: 'nowrap'
-                                        }}>
-                                        <a href="#"
-                                           onClick={(e) => this.goToEventDetail(e, ev.id)}>{ev.title} &nbsp;</a>
-                                      </div>
-                                      <div style={{
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        whiteSpace: 'nowrap',
-                                        color: '#969696'
-                                      }}>
-                                        <span>{ev.start_day}</span> <span>Tại {ev.location}</span>
-                                      </div>
-                                      <div style={{paddingTop: 5}} className="cutline">
-                                        {ev.description } &nbsp;
-                                      </div>
-                                      <div style={{paddingTop: 10, color: '#969696'}}>
-                                        <span>Số người tham dự: </span>
-                                        <span>{ev.number_of_member}</span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                )) : null
-                            }
-                          </div>
-                        </div>
-                      )
-                    ) : null}
-                </div>
+          (
+            <div key={x} className="col-md-12" style={{backgroundColor: '#fff', marginBottom: 20}}>
+              <div className="row" style={{padding: 15}}>
+                <a style={{cursor: 'pointer', color: '#000'}} data-toggle="collapse"
+                   data-target={`#${evGroup.year}`}>Sự kiện từ {evGroup.year}</a>
               </div>
-            )
-          ) : null
+              <div id={evGroup.year} className={`collapse ${this.props.collapseType}`}>
+                {evGroup.year_events != null ? evGroup.year_events.map((evMonth, y) =>
+                  (
+                    <div key={y}>
+                      <div className="row"
+                           style={{
+                             padding: '3px 15px',
+                             backgroundColor: '#f6f7f9',
+                             borderBottom: '1px solid #E9EAED',
+                             borderTop: '1px solid #E9EAED'
+                           }}>
+                        <a style={{cursor: 'pointer', color: '#000', color: '#969696'}}
+                           data-toggle="collapse"
+                           data-target={`#${evGroup.year}_${evMonth.month}`}>THÁNG {evMonth.month}</a>
+                      </div>
+                      <div id={`${evGroup.year}_${evMonth.month}`}
+                           className={`collapse ${this.props.collapseType}`}>
+                        {evMonth.events != null ? evMonth.events.map((ev, z) =>
+                          (
+                            <div key={z} className="row" style={{padding: 15}}>
+                              <div className="col-md-4 no-padding">
+                                <div className="image-item"
+                                     style={this.getBgrImageStyle(ev.cover_image)}
+                                     onClick={(e) => this.goToEventDetail(e, ev.id)}>
+                                  <div>
+                                    <span className="fa fa-calendar-check-o"/>
+                                    <span>&nbsp;{ev.day}</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="col-md-8 event-info-section" style={{paddingRight: 5}}>
+                                <a href="#" className="delete-event-ico"><i
+                                  className="fa fa-times "/></a>
+
+                                <div
+                                  style={{
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                  }}>
+                                  <a href="#"
+                                     onClick={(e) => this.goToEventDetail(e, ev.id)}>{ev.title} &nbsp;</a>
+                                </div>
+                                {ev.start_day ?
+                                  <div style={{
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
+                                    color: '#969696'
+                                  }}>
+                                    <span><i>{ev.start_day}</i></span>
+                                  </div>
+                                  : null}
+
+                                {ev.location ?
+                                  <div style={{
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
+                                    color: '#969696'
+                                  }}>
+                                    <span>Tại: <strong>{ev.location}</strong></span>
+                                  </div> : null}
+                                {ev.description ?
+                                  <div style={{paddingTop: 5}} className="cutline">
+                                    <p
+                                      dangerouslySetInnerHTML={{__html: ev.description.replace(/(?:\r\n|\r|\n)/g, '<br />')}}/>
+                                  </div> : null}
+                                <div style={{paddingTop: 10, color: '#969696'}}>
+                                  <span>Số người tham dự: </span>
+                                  <span>{ev.number_of_member}</span>
+                                </div>
+                              </div>
+                            </div>
+                          )) : null
+                        }
+                      </div>
+                    </div>
+                  )
+                ) : null}
+              </div>
+            </div>
+          )
+        ) : null
         }
       </div>
     );
