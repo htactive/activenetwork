@@ -222,6 +222,7 @@
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\NewFeedsModel.cs" />
     <Compile Include="Models\RequestToJoinModel.cs" />
+    <Compile Include="Models\RequiredProfileModel.cs" />
     <Compile Include="Models\UpdateEventDescriptionRequestModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserProfileModel.cs" />

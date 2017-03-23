@@ -366,6 +366,19 @@ namespace ActiveNetwork.Web.Controllers
             eLocation.Name = model.Information.ANEventLocation.Name;
             eLocation.Lat = model.Information.ANEventLocation.Lat;
             eLocation.Lng = model.Information.ANEventLocation.Lng;
+
+            if (model.ANEventRequirements != null)
+            {
+                var eRequirement = model.ANEventRequirements.Select(x => new ANEventRequirement()
+                {
+                    Id = x.Id,
+                    RequiredId = x.RequiredId,
+                    RequiredProfile = new RequiredProfile() { Id = x.RequiredProfile.Id },
+                    ANEventId = x.ANEventId,
+                    ANEvent = new ANEvent() { Id = x.ANEvent.Id },
+                }).ToList();
+                eEvent.ANEventRequirements = eRequirement;
+            }
             var eCategories = model.Categories.Select(x => new Category()
             {
                 Id = x.Id,

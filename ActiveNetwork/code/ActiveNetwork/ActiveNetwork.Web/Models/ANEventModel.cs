@@ -28,6 +28,11 @@ namespace ActiveNetwork.Web.Models
     public class ANEventRequirementModel
     {
         public int Id { get; set; }
+        public int ANEventId { get; set; }
+        public int RequiredId { get; set; }
+
+        public ANEventModel ANEvent { get; set; }
+        public RequiredProfileModel RequiredProfile { get; set; }
     }
 
     public class ANEventCategoryModel

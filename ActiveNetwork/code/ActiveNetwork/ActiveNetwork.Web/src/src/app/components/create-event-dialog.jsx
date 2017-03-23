@@ -298,7 +298,7 @@ export class CreateEventDialog extends React.Component {
                   <label className="col-sm-3 control-label">Đăng bài viết</label>
 
                   <div className="col-sm-8" style={{marginLeft: '30px'}}>
-                    <Radio name="postPermission" checked>
+                    <Radio name="postPermission" defaultChecked>
                       Chỉ chủ sở hữu có quyền đăng
                     </Radio>
                     <Radio name="postPermission">
@@ -311,7 +311,7 @@ export class CreateEventDialog extends React.Component {
                   <label className="col-sm-3 control-label">Duyệt yêu cầu</label>
 
                   <div className="col-sm-8" style={{marginLeft: '30px'}}>
-                    <Radio name="approvePermission" checked>
+                    <Radio name="approvePermission" defaultChecked>
                       Chỉ chủ sở hữu có quyền duyệt yêu cầu tham gia sự kiện
                     </Radio>
                     <Radio name="approvePermission">
