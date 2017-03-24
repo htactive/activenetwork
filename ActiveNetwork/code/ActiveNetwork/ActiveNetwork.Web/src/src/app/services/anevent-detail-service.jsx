@@ -103,6 +103,7 @@ class ANEventDetailService extends ServiceBase {
     };
     return await super.executeFetchPost(url, request) || false;
   }
+  
 }
 
 let ANEventDetailServiceInstance = new ANEventDetailService();
