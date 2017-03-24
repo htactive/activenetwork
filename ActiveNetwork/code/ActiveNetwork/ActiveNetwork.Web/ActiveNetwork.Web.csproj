@@ -39,7 +39,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AWSSDK, Version=2.3.55.2, Culture=neutral, PublicKeyToken=9f476d3089b52be3, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.2.3.55.2\lib\net45\AWSSDK.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Swashbuckle.Core">
+      <HintPath>..\packages\Swashbuckle.Core.5.5.3\lib\net40\Swashbuckle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -93,6 +104,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebActivatorEx">
+      <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -103,9 +117,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
@@ -167,17 +178,53 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Authentication\CustomAuthorizeAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ANEventController.cs" />
+    <Compile Include="Controllers\ANEventDetailController.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\GenderController.cs" />
+    <Compile Include="Controllers\GoogleServiceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mapper\ANEventCategoryMapper.cs" />
+    <Compile Include="Mapper\ANEventImageMapper.cs" />
+    <Compile Include="Mapper\ANEventInformationMapper.cs" />
+    <Compile Include="Mapper\ANEventLocationMapper.cs" />
+    <Compile Include="Mapper\ANEventMapper.cs" />
+    <Compile Include="Mapper\ANEventMemberMapper.cs" />
+    <Compile Include="Mapper\ANEventRequestToJoinMapper.cs" />
+    <Compile Include="Mapper\ANEventRequirementMapper.cs" />
+    <Compile Include="Models\ANEventUserFavouriteModel.cs" />
+    <Compile Include="Mapper\ImageMapper.cs" />
+    <Compile Include="Mapper\GenderMapper.cs" />
+    <Compile Include="Mapper\ANEventUserFavouriteMapper.cs" />
+    <Compile Include="Mapper\UserMapper.cs" />
+    <Compile Include="Mapper\UserProfileMapper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AddEventToFavouritesRequestModel.cs" />
+    <Compile Include="Models\ANEventDetailInformationModel.cs" />
+    <Compile Include="Models\ANEventGroupModel.cs" />
+    <Compile Include="Models\ANEventInformationModel.cs" />
+    <Compile Include="Models\ANEventModel.cs" />
+    <Compile Include="Models\GoogleServiceModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\CategoryModel.cs" />
+    <Compile Include="Models\NewFeedsModel.cs" />
+    <Compile Include="Models\RequestToJoinModel.cs" />
+    <Compile Include="Models\UpdateEventDescriptionRequestModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -186,7 +233,9 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="login.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -224,13 +273,22 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="src\" />
+    <Folder Include="Views\ANEventDetail\" />
     <Folder Include="Views\BaseApi\" />
+    <Folder Include="Views\Gender\" />
+    <Folder Include="Views\GoogleService\" />
+    <Folder Include="Views\Image\" />
+    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ActiveNetwork.Common\ActiveNetwork.Common.csproj">
+      <Project>{393814c2-c21e-4f53-b91c-2b750349f415}</Project>
+      <Name>ActiveNetwork.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ActiveNetwork.Entities\ActiveNetwork.Entities.csproj">
       <Project>{2452a885-1f81-480a-8950-7be495cea83e}</Project>
       <Name>ActiveNetwork.Entities</Name>
@@ -238,6 +296,10 @@
     <ProjectReference Include="..\ActiveNetwork.Repository\ActiveNetwork.Repository.csproj">
       <Project>{afed1bd8-fbcd-4086-a1a2-d8ac8c9b3b1b}</Project>
       <Name>ActiveNetwork.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ActiveNetwork.SearchingSandbox\ActiveNetwork.SearchingSandbox.csproj">
+      <Project>{41016922-a9d9-483f-90d0-b87efafd80f5}</Project>
+      <Name>ActiveNetwork.SearchingSandbox</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

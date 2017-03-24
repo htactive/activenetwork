@@ -1,268 +1,23 @@
 import React, {Component} from 'react';
-import {virtualPath} from '../commons/constant'
+import {virtualPath} from '../../commons/constant'
 import {browserHistory} from 'react-router';
+import {ANEventServiceInstance} from '../services/anevent-service';
+import {JoinEventDialog} from '../components/join-event-dialog';
 
-export class  PostGrid extends Component {
+export class PostGrid extends Component {
+  joinEventDialog;
 
   componentWillMount() {
-    let posts = [
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/1.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit.<a href="https://youtu.be/DLS0PA2cgoo">https://youtu.be/DLS0PA2cgoo</a>',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/2.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/3.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, ',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/4.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/5.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/6.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/7.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/8.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non so',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/9.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis.',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/1.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/2.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/3.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/4.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non ',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/5.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/6.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/7.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/8.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec,',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/9.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin ',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/1.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. ',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/2.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/3.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consevamus ullamcorper aliquam purus, et euismod justo. Nulla',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/4.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. Vivamus ullamcorper aliquam purus, et euismod justo. Nulla',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/5.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non sollicitudin elit. Curabitur magna ligula, condimentum sed lacus nec, vulputate cursus sem. Sed a semper felis. Curabitur ligula enim, auctor eget rutrum a, convallis non diam. ',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/6.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-      {
-        host_name: 'Thuận Hồ',
-        host_avatar: '/img/Friends/guy-6.jpg',
-        cover_image: '/img/Photos/7.jpg',
-        title: 'Lorem ipsum dolor sit amet, copiosae appetere',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        article_width: 0,
-        article_top: 0,
-        article_left: 0
-      },
-    ];
     this.setState({
-      posts: posts
+      posts: []
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    await this.loadEvents();
+  }
+
+  relayout() {
     $('#blog-landing').pinterest_grid({
       no_columns: 3,
       padding_x: 10,
@@ -270,12 +25,79 @@ export class  PostGrid extends Component {
       margin_bottom: 50,
       single_column_breakpoint: 700
     });
-
   }
 
-  goToEventDetail(e) {
+  async loadEvents() {
+    let newFeeds = await ANEventServiceInstance.getANEventsForNewFeed();
+    this.setState({posts: newFeeds.posts, serverDateTimeNow: newFeeds.serverDateTimeNow}, this.relayout);
+  }
+
+  goToEventDetail(e, eventId) {
     e.preventDefault();
-    browserHistory.push(`${virtualPath}/event`)
+    browserHistory.push(`${virtualPath}/event/${eventId}`)
+  }
+
+  clickJoinEventDialog(eventId) {
+    this.joinEventDialog && this.joinEventDialog.show(eventId);
+  }
+
+  getTimeSpan(d, n) {
+    let durationData = moment.duration(moment(n) - moment(d))._data;
+    if (durationData.years > 0) {
+      return `Hơn ${durationData.years} năm trước`;
+    }
+    if (durationData.months) {
+      return `${durationData.months} tháng trước`;
+    }
+    if (Math.floor(durationData.days / 7) > 0) {
+      return `${Math.floor(durationData.days / 7)} tuần trước`
+    }
+    if (durationData.days > 0) {
+      return `${durationData.days} ngày trước`;
+    }
+    if (durationData.hours > 1) {
+      return `${durationData.hours} giờ trước`;
+    }
+    if (durationData.hours > 0) {
+      return `1 giờ ${durationData.minutes} phút trước`;
+    }
+    if (durationData.minutes > 30) {
+      return `Hơn nữa giờ trước`;
+    }
+    if (durationData.minutes > 10) {
+      return `Khoảng nữa tiếng trước`;
+    }
+    if (durationData.minutes > 5) {
+      return `Khoảng 10 phút trước`;
+    }
+    if (durationData.minutes > 1) {
+      return `5 phút trước`;
+    }
+    if (durationData.seconds > 30) {
+      return `Chưa đầy 1 phút trước`;
+    }
+    return `Vừa mới đây`;
+  }
+
+  async addEventToFavourites(post) {
+    let addResult = await ANEventServiceInstance.addEventToFavourites({anEventId: post.anevent_id});
+    if (addResult) {
+      post.isFavorited = true;
+    }
+    this.forceUpdate();
+  }
+
+  async removeEventFromFavourites(post) {
+    let removeResult = await ANEventServiceInstance.removeEventFromFavourites({anEventId: post.anevent_id});
+    if (removeResult) {
+      post.isFavorited = false;
+    }
+    this.forceUpdate();
+  }
+
+  gotoUserPage(e, hostId){
+    e.preventDefault();
+    browserHistory.push(`${virtualPath}/user/${hostId}`)
   }
 
   render() {
@@ -295,26 +117,38 @@ export class  PostGrid extends Component {
                         <img className="" src={post.host_avatar} alt="User Image"/>
                         <span className="username">
                           <span>
-                            <a href="#">{post.host_name}</a>
+                            <a href="" onClick={(e) => this.gotoUserPage(e, post.host_id)}>{post.host_name}</a>
                           </span>
                           <span className="sub-username"><span> đã tạo một </span><a
-                            href="" onClick={(e)=>this.goToEventDetail(e)}>sự kiện</a></span>
+                            href="" onClick={(e) => this.goToEventDetail(e, post.anevent_id)}>sự kiện</a></span>
                         </span>
-                        <span className="description"><abbr title="3 tháng 2 2017 lúc 19:58">1 giờ trước</abbr></span>
+                        <span className="description"><abbr
+                          title={moment(post.event_createdDate).format('DD [tháng] MM YYYY, [lúc] HH:mm')}>{this.getTimeSpan(post.event_createdDate, this.state.serverDateTimeNow)}</abbr></span>
                       </div>
                     </div>
+                    {post.cover_image ?
+                      <img className="img-responsive show-in-modal" src={post.cover_image} alt="Photo"/> : null}
                     <div className="box-body">
-                      <a className="event-name" href="" onClick={(e)=>this.goToEventDetail(e)}>Sự kiện nhậu mừng sinh nhật Bill Gate</a>
-                      <p dangerouslySetInnerHTML={{__html: post.description}} />
+                      <a className="event-name" href=""
+                         onClick={(e) => this.goToEventDetail(e, post.anevent_id)}>{post.title}</a>
+                      <p dangerouslySetInnerHTML={{__html: post.shortDescription}}/>
                     </div>
-                    <img className="img-responsive show-in-modal" src={post.cover_image} alt="Photo"/>
                     <div className="box-footer">
-                      <a type="button" ><i className="fa fa-plus"/> Tham gia
+                      <a type="button" onClick={() => this.clickJoinEventDialog(post.anevent_id)}><i
+                        className="fa fa-plus"/> Tham gia
                       </a>
-                      <a type="button" ><i className="fa fa-heart"/>
-                        Yêu thích
-                      </a>
-                      <a type="button" ><i className="fa fa-comment"/>
+                      {post.isFavorited ?
+                        <a type="button" onClick={() => this.removeEventFromFavourites(post)}><i
+                          className="fa fa-heart active-icon"/>
+                          Yêu thích
+                        </a>
+                        :
+                        <a type="button" onClick={() => this.addEventToFavourites(post)}><i
+                          className="fa fa-heart"/>
+                          Yêu thích
+                        </a>}
+
+                      <a type="button"><i className="fa fa-comment"/>
                         Bình luận
                       </a>
                     </div>
@@ -325,7 +159,7 @@ export class  PostGrid extends Component {
           </div>
         </div>
       </div>
-
+      <JoinEventDialog ref={(e) => this.joinEventDialog = e}/>
     </div>);
   }
 }

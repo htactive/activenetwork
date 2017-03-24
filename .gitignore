@@ -5,4 +5,9 @@
 **/*.user
 **/.idea
 **/src/dist/**
+**/node_modules/**
 /ActiveNetwork/code/ActiveNetwork/ActiveNetwork.Web/src/dist
+/ActiveNetwork/code/ActiveNetwork/packages
+/ActiveNetwork/code/ActiveNetwork/ActiveNetwork.Web/App_Data
+/ActiveNetwork/code/ActiveNetwork/ActiveNetwork.Web/bin
+/ActiveNetwork/code/ActiveNetwork/ActiveNetwork.Web/obj

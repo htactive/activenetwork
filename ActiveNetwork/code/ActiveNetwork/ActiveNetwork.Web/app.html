@@ -14,6 +14,8 @@
     <!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/react-select/dist/react-select.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/medium-draft/dist/medium-draft.css">
     <link href="/assets/css/animate.min.css" rel="stylesheet">
     <link href="/assets/css/timeline.css" rel="stylesheet">
     <link href="/assets/css/cover.css" rel="stylesheet">
@@ -22,11 +24,14 @@
     <link href="/assets/css/grid_posts.css" rel="stylesheet">
     <link href="/assets/css/edit_profile.css" rel="stylesheet">
     <link href="/assets/css/react-datetime.css" rel="stylesheet">
-    <link href="/assets/css/user_detail.css" rel="stylesheet">      
+    <link href="/assets/css/user_detail.css" rel="stylesheet">
     <link href="/assets/css/photos1.css" rel="stylesheet">
     <link href="/assets/css/friends.css" rel="stylesheet">
     <link href="/assets/css/file_manager.css" rel="stylesheet">
     <link href="/assets/css/errors.css" rel="stylesheet">
+    <link href="/assets/css/create_event_dialog.css" rel="stylesheet">
+    <link href="/assets/css/react-datepicker.css" rel="stylesheet">
+    <link href="/assets/css/profile2.css" rel="stylesheet">
 
     <script src="/assets/js/jquery.1.11.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -61,11 +66,33 @@
     To create a production bundle, use `npm run build`.
   -->
 <!--cdn link for react-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-with-addons.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-dom.js"></script>
 
-<script src="/src/dist/application/app.js"></script>
+<!--for moment-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.js"></script>
 
+<!--for redux-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.6.0/redux.js"></script>
+
+<!--for libphonenumber google-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/0.3.14/libphonenumber-js.min.js"></script>
+
+<!--for react bootstrap-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.30.8/react-bootstrap.js"></script>
+<!--for react-onclickoutside-->
+<script src="/assets/js/react-onclickoutside/index.js"></script>
+<!--for react-datepicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-datepicker/0.41.1/react-datepicker.js"></script>
+
+<!--for medium draft-->
+<script type="text/javascript" src="https://unpkg.com/immutable@3.8.1/dist/immutable.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/draft-js@0.9.1/dist/Draft.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/medium-draft@0.4.1/dist/medium-draft.js"></script>
+<script type="text/javascript" src="https://unpkg.com/draft-convert@1.3.3/dist/draft-convert.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/medium-draft@0.4.1/dist/medium-draft-exporter.js"></script>
+
+<script src="/src/dist/application/app.js"></script>
 </body>
 
 </html>

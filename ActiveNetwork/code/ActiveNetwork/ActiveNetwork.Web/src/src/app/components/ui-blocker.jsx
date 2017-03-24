@@ -1,12 +1,14 @@
 import * as React from 'react';
 
 
-export class UIBlocker extends React.Component{
+export class UIBlocker extends React.Component {
   static instance;
 
   componentWillMount() {
     UIBlocker.instance = this;
     this.setState({currentThread: 0});
+    let $div = $('<div id="ui-blocked" class="ui-blocked hidden"><div class="loading-icon"><i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i></div></div>');
+    $('body').append($div);
   }
 
   currentThread;
@@ -25,13 +27,10 @@ export class UIBlocker extends React.Component{
 
   render() {
     if (this.state.currentThread) {
-      return (
-        <div className="ui-blocked">
-          <div className="loading-icon">
-            <i className="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>
-          </div>
-        </div>
-      );
+      $('#ui-blocked').removeClass('hidden');
+    }
+    else {
+      $('#ui-blocked').addClass('hidden');
     }
     return null;
   }

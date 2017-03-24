@@ -1,13 +1,44 @@
 import React, {Component} from 'react';
-import {virtualPath} from '../commons/constant'
+import {virtualPath} from '../../commons/constant'
 import {browserHistory} from 'react-router';
-import {CreateEventDialog} from '../components/create-event-dialog'
+import {CreateEventDialog} from '../components/create-event-dialog';
+import {logoutAction, userStore} from '../store/user-store';
+import {UserProfileServiceInstance} from '../services/user-profile-service';
 
 export class Header extends Component {
   createEventDialog;
 
   createNewEvent() {
     this.createEventDialog && this.createEventDialog.show();
+  }
+
+  componentWillMount() {
+    this.setState({
+      currentUser_avatar: '',
+      currentUser_firstName: ''
+    });
+
+    userStore.subscribe(async() => {
+      await this.updateCurrentUser();
+    });
+  }
+
+  async componentDidMount() {
+    await this.updateCurrentUser();
+  }
+
+  async updateCurrentUser() {
+    let currentUser = userStore.getState().currentUser;
+    if (currentUser == undefined || currentUser == null) {
+      window.location.href = '/login';
+      return;
+    }
+
+    let userProfile = await UserProfileServiceInstance.getUserProfile(currentUser.Id);
+    this.setState({
+      currentUser_avatar: (userProfile.Avatar||{}).Url,
+      currentUser_firstName: userProfile.FirstName
+    });
   }
 
   render() {
@@ -24,7 +55,7 @@ export class Header extends Component {
             </button>
             <div>
             </div>
-            <a className="navbar-brand an-logo" href="#" onClick={(e)=>{
+            <a href="" className="navbar-brand an-logo" onClick={(e) => {
               e.preventDefault();
               browserHistory.push(`${virtualPath}`)
             }}>
@@ -35,29 +66,35 @@ export class Header extends Component {
             <ul className="nav navbar-nav navbar-right">
               <li>
                 <div className="form-group nav-search-bar">
-                  <input type="text" className="form-control" placeholder="Tìm kiếm sự kiện, bạn bè và mọi thứ..." />
+                  <input type="text" className="form-control" placeholder="Tìm kiếm sự kiện, bạn bè và mọi thứ..."/>
                   <span className="fa-icon fa fa-search" aria-hidden="true"/>
                 </div>
               </li>
               <li className="dropdown avatar-img">
-                <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <img src="/img/avatar.jpg" className="img-rounded img-responsive" alt="John Cena"/>
-                  <span>John Cena</span>
+                <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false">
+                  <img src={this.state.currentUser_avatar} className="img-rounded img-responsive"
+                       alt="x"/>
+                  <span>{this.state.currentUser_firstName}</span>
                   <span className="caret"/>
                 </a>
                 <ul className="dropdown-menu">
-                  <li><a href="#">Trang Cá Nhân</a></li>
+                  <li><a href="" onClick={(e) => {
+                    e.preventDefault();
+                    browserHistory.push(`${virtualPath}/my-profile`)
+                  }}>Trang Cá Nhân</a></li>
                   <li><a href="" onClick={(e) => {
                     e.preventDefault();
                     browserHistory.push(`${virtualPath}/manage-event`)
                   }}>Quản Lý Sự Kiện</a></li>
                   <li><a href="#">Cài Đặt</a></li>
                   <li className="divider"></li>
-                  <li><a href="#">Đăng Xuất</a></li>
+                  <li><a href="" onClick={(e) => this.logoutClick(e)}>Đăng Xuất</a></li>
                 </ul>
               </li>
               <li>
-                <a href="#" onClick={() => this.createNewEvent()}><i className="fa fa-plus-circle" />&nbsp;Tạo sự kiện</a>
+                <a href="#" onClick={() => this.createNewEvent()}><i className="fa fa-plus-circle"/>&nbsp;Tạo sự
+                  kiện</a>
               </li>
               <li className="dropdown">
                 <a href="http://demos.bootdey.com/dayday/grid_posts.html#" className="dropdown-toggle"
@@ -107,5 +144,10 @@ export class Header extends Component {
       </nav>
       <CreateEventDialog ref={(r) => this.createEventDialog = r}/>
     </div>;
+  }
+
+  logoutClick(e) {
+    e.preventDefault();
+    userStore.dispatch(logoutAction());
   }
 }

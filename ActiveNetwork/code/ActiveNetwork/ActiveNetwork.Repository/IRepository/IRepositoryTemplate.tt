@@ -2,7 +2,17 @@
 <#@ include file="EF.Utility.CS.ttinclude"#>
 <# 
 var entities = new List<EntityMetadataRender>(){
-new EntityMetadataRender(){Name = "Test"},
+new EntityMetadataRender(){Name = "User"},
+new EntityMetadataRender(){Name = "UserProfile"},
+new EntityMetadataRender(){Name = "Category"},
+new EntityMetadataRender(){Name = "ANEvent"},
+new EntityMetadataRender(){Name = "ANEventInformation"},
+new EntityMetadataRender(){Name = "Role"},
+new EntityMetadataRender(){Name = "Gender"},
+new EntityMetadataRender(){Name = "ANEventRequestToJoin"},
+new EntityMetadataRender(){Name = "Image"},
+new EntityMetadataRender(){Name = "ANEventMember"},
+new EntityMetadataRender(){Name = "ANEventUserFavourite"},
 };
   var fileManager = EntityFrameworkTemplateFileManager.Create(this); 
   fileManager.StartHeader(); 
