@@ -110,6 +110,14 @@ namespace ActiveNetwork.Repository
                 return anEventInformationRepository ?? (anEventInformationRepository = new ANEventInformationRepository(this));
             }
         }
+        private IANEventImageRepository anEventImageRepository;
+        public IANEventImageRepository ANEventImageRepository
+        {
+            get
+            {
+                return anEventImageRepository ?? (anEventImageRepository = new ANEventImageRepository(this));
+            }
+        }
         #endregion
     }
 }

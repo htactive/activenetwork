@@ -117,9 +117,6 @@
     <Compile Include="sp_helpdiagrams_Result.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>ANDB.tt</DependentUpon>
-    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>ANDB.tt</DependentUpon>
     </Compile>

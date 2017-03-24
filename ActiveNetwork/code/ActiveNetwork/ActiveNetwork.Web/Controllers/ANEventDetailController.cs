@@ -247,5 +247,25 @@ namespace ActiveNetwork.Web.Controllers
             return true;
 
         }
+        [Route("anevent-detail/update-event-title"), HttpPost]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public bool UpdateEventDescription(UpdateEventTitleRequestModel request)
+        {
+            var anEvent = this.ANDBUnitOfWork.ANEventRepository.GetAll()
+                .Include(x => x.ANEventInformations)
+                .FirstOrDefault(x => x.Id == request.ANEventId);
+            if (anEvent == null) return false;
+            if (!anEvent.UserId.HasValue || anEvent.UserId.Value != this.CurrentUser.Id)
+            {
+                throw new HttpResponseException(HttpStatusCode.Forbidden);
+            }
+            var firstInformation = anEvent.ANEventInformations.FirstOrDefault();
+            if (firstInformation == null) return false;
+            firstInformation.Title = request.Title;
+            this.ANDBUnitOfWork.ANEventInformationRepository.Save(firstInformation);
+            this.ANDBUnitOfWork.Commit();
+            return true;
+
+        }
     }
 }

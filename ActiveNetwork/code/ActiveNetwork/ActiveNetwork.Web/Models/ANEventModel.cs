@@ -65,4 +65,10 @@ namespace ActiveNetwork.Web.Models
         public ANEventModel ANEvent { get; set; }
         public ImageModel Image { get; set; }
     }
+
+    public class UpdateEventCoverPhotoRequest
+    {
+        public int ANEventId { get; set; }
+        public int ImageId { get; set; }
+    }
 }

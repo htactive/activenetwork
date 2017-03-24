@@ -18,7 +18,15 @@ export class EventDetailDescriptionComponent extends Component {
     let eventInformation = await ANEventDetailServiceInstance.getANEventDetailInformation(this.eventId);
     let editorState = createEditorState();
     if (eventInformation.EventInformation.Description) {
-      editorState = createEditorState(JSON.parse(eventInformation.EventInformation.Description));
+      let objJson = null;
+      try {
+        JSON.parse(eventInformation.EventInformation.Description)
+      }
+      catch (e) {
+      }
+      if (objJson) {
+        editorState = createEditorState(objJson);
+      }
     }
     this.setState({
       event_description: editorState,

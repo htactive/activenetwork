@@ -103,7 +103,15 @@ class ANEventDetailService extends ServiceBase {
     };
     return await super.executeFetchPost(url, request) || false;
   }
-  
+
+  async updateEventTitle(model) {
+    let url = '/anevent-detail/update-event-title';
+    let request = {
+      ANEventId: model.eventId,
+      Title: model.title
+    };
+    return await super.executeFetchPost(url, request) || false;
+  }
 }
 
 let ANEventDetailServiceInstance = new ANEventDetailService();

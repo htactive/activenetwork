@@ -4,20 +4,24 @@
   position: relative;
   margin-bottom: 20px;
 }
+
 .panel > .cover {
   margin-bottom: 0;
 }
+
 .cover.profile {
   position: relative;
   background: #ffffff;
   border: 1px solid #e2e9e6;
 }
+
 .cover.profile .wrapper {
   position: relative;
   overflow: hidden;
   max-height: 250px;
   border-bottom: 1px solid #e2e9e6;
 }
+
 .cover.profile .wrapper .friends {
   list-style: none;
   display: inline-block;
@@ -31,33 +35,40 @@
   margin-bottom: 0;
   padding: 0;
 }
+
 .cover.profile .wrapper .friends li {
   float: left;
   margin: 0;
   width: 33.33%;
 }
+
 .cover.profile .wrapper .friends li a {
   display: block;
   padding-left: 1px;
   padding-top: 1px;
 }
+
 .cover.profile .wrapper .friends li a img {
   width: 100%;
 }
+
 .cover.profile .wrapper .friends li a.group {
   font-size: 40px;
   color: #efefef;
   text-align: center;
 }
+
 .cover.profile .wrapper .friends li a.group i {
   position: relative;
   top: 12px;
 }
+
 .cover.profile .wrapper .image {
   width: 100%;
   overflow-y: hidden;
   position: relative;
 }
+
 .cover.profile .wrapper .image:after {
   position: absolute;
   top: 80px;
@@ -72,13 +83,16 @@
   background-image: linear-gradient(transparent, black);
   opacity: .7;
 }
+
 .cover.profile .wrapper .image img {
   width: 100%;
 }
+
 .cover.profile .cover-info {
   position: relative;
   height: 57px;
 }
+
 .cover.profile .cover-info .cover-nav {
   position: absolute;
   bottom: 0;
@@ -100,6 +114,7 @@
   float: left;
   display: block;
 }
+
 .cover.profile .cover-info .cover-nav > li > a {
   line-height: 20px;
   padding: 18px 15px;
@@ -108,30 +123,37 @@
   font-weight: 500;
   display: block;
 }
+
 .cover.profile .cover-info .cover-nav > li > a i {
   font-size: 20px;
   vertical-align: middle;
   color: #e4e4e4;
 }
+
 .cover.profile .cover-info .cover-nav > li > a:hover {
   background: none;
   color: #6c6c6c;
   text-decoration: none;
 }
+
 .cover.profile .cover-info .cover-nav > li > a:hover i {
   color: #6c6c6c;
 }
+
 .cover.profile .cover-info .cover-nav > li.active > a {
   background: none;
   color: #6c6c6c;
 }
+
 .cover.profile .cover-info .cover-nav > li.active > a i {
   color: #6c6c6c;
 }
+
 .cover.profile .cover-info .cover-nav li {
   border-right: 1px solid #e2e9e6;
   border-left: 1px solid transparent;
 }
+
 .cover.profile .cover-info .name {
   position: absolute;
   left: 60px;
@@ -140,11 +162,13 @@
   display: block;
   z-index: 3;
 }
+
 .cover.profile .cover-info .name a {
   color: #fff;
   font-size: 30px;
   font-weight: 500;
 }
+
 .cover.profile .cover-info .avatar {
   position: absolute;
   display: inline-block;
@@ -153,72 +177,89 @@
   left: 30px;
   z-index: 4;
 }
+
 .cover.profile .cover-info .avatar img {
   width: 110px;
   height: 110px;
   border: 3px solid #fff;
 }
+
 @media (max-width: 992px) {
   .cover.profile .wrapper .image {
     padding-right: 120px;
     height: auto;
     position: relative;
   }
+
   .cover.profile .wrapper .friends {
     position: absolute;
     right: 0;
     width: 120px;
     height: auto;
   }
+
   .cover.profile .wrapper .friends > li {
     width: 50%;
   }
+
   .cover.profile .wrapper .friends > li > a.group {
     font-size: 30px;
   }
+
   .cover.profile .wrapper .friends > li > a.group i {
     top: 10px;
   }
+
   .cover.profile .wrapper .name a {
     color: #212121;
   }
+
   .cover.profile .wrapper .nav {
     left: 0;
     padding-left: 140px;
     width: 100%;
     border-top: 1px solid #e2e9e6;
   }
+
   .cover.profile .cover-info {
     height: 37px;
   }
+
   .cover.profile .cover-info .name {
     left: 100px;
     margin-bottom: 40px;
   }
+
   .cover.profile .cover-info .name a {
     font-size: 24px;
   }
+
   .cover.profile .cover-info .cover-nav {
     left: 85px;
   }
+
   .cover.profile .cover-info .cover-nav > li > a {
     padding: 8px 10px;
   }
+
   .cover.profile .cover-info .avatar {
     left: 10px;
     margin-bottom: 3px;
   }
+
   .cover.profile .cover-info .avatar img {
     width: 70px;
     height: 70px;
   }
 }
+
 @media (max-width: 768px) {
   .cover.profile .cover-info {
     background: #fff;
     clear: both;
     height: auto;
   }
+
   .cover.profile .cover-info .avatar {
     position: relative;
     left: 10px;
@@ -226,10 +267,12 @@
     margin-top: 5px;
     margin-bottom: 6px;
   }
+
   .cover.profile .cover-info .avatar img {
     width: 45px;
     height: 45px;
   }
+
   .cover.profile .cover-info .name {
     display: inline-block;
     position: relative;
@@ -237,10 +280,12 @@
     left: 10px;
     top: 3px;
   }
+
   .cover.profile .cover-info .name a {
     color: #212121;
     font-size: 18px;
   }
+
   .cover.profile .cover-info .cover-nav {
     position: relative;
     margin: 0;
@@ -250,9 +295,32 @@
     padding-left: 0;
     border-top: 1px solid #e2e9e6;
   }
+
   .cover.profile .cover-info .cover-nav li {
     float: none;
     border-right: 0 !important;
     border-bottom: 1px solid #e2e9e6;
   }
+}
+
+.btn-change-cover-photo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  opacity: 0.4;
+}
+
+.btn-change-cover-photo.show {
+  opacity: 1.0;
+}
+
+.name .event-title-editor-input, .name .event-title-editor-input:active,
+.name .event-title-editor-input:hover,
+.name .event-title-editor-input:focus{
+  color: #fff;
+  font-size: 30px;
+  font-weight: 500;
+  background-color: transparent;
+  border: 0px solid #ffffff;
+  border-bottom-width: 1px;
 }

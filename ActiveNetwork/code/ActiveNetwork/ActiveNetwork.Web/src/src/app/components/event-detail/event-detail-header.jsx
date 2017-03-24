@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {virtualPath} from '../../../commons/constant'
 import {browserHistory} from 'react-router';
-import {ANEventDetailServiceInstance} from '../../services/anevent-detail-service'
+import {ANEventDetailServiceInstance} from '../../services/anevent-detail-service';
+import {ANEventServiceInstance} from '../../services/anevent-service';
 import {JoinEventDialog} from '../join-event-dialog';
 import {MessageBox, MessageBoxType, MessageBoxButtons, MessageBoxResult} from '../../../commons/message-box';
+import {EventTitleEditor} from './event-title-editor';
 
 const CURRENT_TAB_WALL = 'wall',
   CURRENT_TAB_DESCRIPTION = 'description',
@@ -106,9 +108,37 @@ export class EventDetailHeaderComponent extends Component {
     }
   }
 
+
+  hideChangeCoverPhotoLink() {
+    this.setState({isChangeCoverPhotoLinkShown: false});
+  }
+
+  showChangeCoverPhotoLink() {
+    this.setState({isChangeCoverPhotoLinkShown: true});
+  }
+
+  async startUploadCoverPhoto(v) {
+    if (v.target.files && v.target.files[0]) {
+
+      let image = v.target.files[0];
+      let uploadResult = await ANEventServiceInstance.uploadCoverPhoto({
+        cover: image
+      });
+      if (uploadResult) {
+        let updateResult = await ANEventServiceInstance.updateCoverPhoto({
+          eventId: this.props.eventId,
+          imageId: uploadResult.Id
+        });
+        if (updateResult) {
+          this.state.eventHeader.EventCoverPhoto = updateResult;
+          this.forceUpdate();
+        }
+      }
+    }
+  }
+
   renderRightMenu() {
     return (
-
       <ul className="right-meu">
         {
           !this.state.hasData ?
@@ -145,12 +175,31 @@ export class EventDetailHeaderComponent extends Component {
         <div className="col-md-12">
           <div className="cover profile">
             <div className="wrapper">
-              <div className="image">
+              <div className="image" onMouseOver={() => this.showChangeCoverPhotoLink()}
+                   onMouseOut={() => this.hideChangeCoverPhotoLink()}>
+                {
+
+                  this.state.eventHeader.IsHost ?
+                    <a
+                      className={`file-input btn btn-primary btn-file btn-change-cover-photo${this.state.isChangeCoverPhotoLinkShown ? ' show' : ''}`}><i
+                      className="fa fa-camera"/> Đổi hình nền <input type="file" multiple="" accept="image/*"
+                                                                     onChange={v => this.startUploadCoverPhoto(v)}/>
+                    </a> : null
+                }
+
                 <img src={this.state.eventHeader.EventCoverPhoto.Url} className="show-in-modal" alt="people"/>
               </div>
             </div>
             <div className="cover-info">
-              <div className="name"><a href="#">{this.state.eventHeader.EventTitle}</a></div>
+              <div className="name">
+                <EventTitleEditor isHost={this.state.eventHeader.IsHost} EventTitle={this.state.eventHeader.EventTitle}
+                                  eventId={this.props.eventId}
+                                  afterSaveChanged={(e) => {
+                                    this.state.eventHeader.EventTitle = e.title;
+                                    this.forceUpdate();
+                                  }}
+                />
+              </div>
               <ul className="cover-nav">
                 <li className={this.state.currentTab == CURRENT_TAB_WALL ? 'active' : ''}><a href=""
                                                                                              onClick={(e) => this.changeTab(e, CURRENT_TAB_WALL)}><i
@@ -178,5 +227,4 @@ export class EventDetailHeaderComponent extends Component {
       </div>
     );
   }
-
 }

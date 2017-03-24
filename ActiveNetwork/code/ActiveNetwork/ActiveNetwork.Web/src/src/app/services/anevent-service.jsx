@@ -7,6 +7,12 @@ class ANEventService extends ServiceBase {
     return await super.executeFetchPostImage(url, image);
   }
 
+  async updateCoverPhoto(model) {
+    let url = '/anevent/update-event-cover-photo';
+    let request = {ANEventId: model.eventId, ImageId: model.imageId};
+    return await super.executeFetchPost(url, request);
+  }
+
   async createANEvent(model) {
     let url = '/anevent/create-event';
     let result = await super.executeFetchPost(url, model);

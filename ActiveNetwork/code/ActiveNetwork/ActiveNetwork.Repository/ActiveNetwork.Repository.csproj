@@ -54,6 +54,9 @@
     <Compile Include="Core\BaseRepository.cs" />
     <Compile Include="Core\BaseUnitOfWork.cs" />
     <Compile Include="ANDBUnitOfWork.cs" />
+    <Compile Include="IRepository\IANEventImageRepository.cs">
+      <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="IRepository\IANEventInformationRepository.cs">
       <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
     </Compile>
@@ -93,6 +96,9 @@
       <DependentUpon>IRepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\ANEventImageRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="Repository\ANEventInformationRepository.cs">
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>

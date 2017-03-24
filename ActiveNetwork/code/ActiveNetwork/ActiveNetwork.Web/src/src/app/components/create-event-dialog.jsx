@@ -4,9 +4,26 @@ import {Modal, Button, Radio} from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
 import Autocomplete from 'react-autocomplete';
 import Select from 'react-select';
-import {getStates, matchStateToTerm, sortStates, styles, fakeRequest} from 'react-autocomplete/build/lib/utils'
 import {GoogleAPIServiceInstance} from '../services/location-service'
 import {ANEventServiceInstance} from '../services/anevent-service';
+
+const styles = {
+  item: {
+    padding: '2px 6px',
+    cursor: 'default'
+  },
+
+  highlightedItem: {
+    color: 'white',
+    background: 'hsl(200, 50%, 50%)',
+    padding: '2px 6px',
+    cursor: 'default'
+  },
+
+  menu: {
+    border: 'solid 1px #ccc'
+  }
+};
 
 // import {
 //   createEditorState,
@@ -159,10 +176,10 @@ export class CreateEventDialog extends React.Component {
                   renderMenu={(items, value, style) => (
                     <div className="menu" style={[styles.menu, style]}>
                       {value === '' ? (
-                          <div style={{padding: 6}}>Gõ tên một địa điểm bất kì</div>
-                        ) : this.state.isLocationLoading ? (
-                            <div style={{padding: 6}}>Loading...</div>
-                          ) : this.renderItems(items)}
+                        <div style={{padding: 6}}>Gõ tên một địa điểm bất kì</div>
+                      ) : this.state.isLocationLoading ? (
+                        <div style={{padding: 6}}>Loading...</div>
+                      ) : this.renderItems(items)}
                     </div>
                   )}
                 />
@@ -186,18 +203,18 @@ export class CreateEventDialog extends React.Component {
             </div>
 
             {this.state.showEndDate ? <div className="form-group">
-                <label className="col-sm-3 control-label">Kết thúc</label>
-                <div className="col-sm-4">
-                  <Datetime
-                    defaultValue={new Date()}
-                    onSelect={(value) => this.endDateOnSelect(value)}
-                    dateFormat="DD/MM/YYYY"
-                  />
-                </div>
-                <div className="col-sm-3">
-                  <Button onClick={() => this.toggleEndDate()}>- Hủy bỏ</Button>
-                </div>
-              </div> : null}
+              <label className="col-sm-3 control-label">Kết thúc</label>
+              <div className="col-sm-4">
+                <Datetime
+                  defaultValue={new Date()}
+                  onSelect={(value) => this.endDateOnSelect(value)}
+                  dateFormat="DD/MM/YYYY"
+                />
+              </div>
+              <div className="col-sm-3">
+                <Button onClick={() => this.toggleEndDate()}>- Hủy bỏ</Button>
+              </div>
+            </div> : null}
 
             <div className="form-group" style={{marginTop: 20}}>
               <label className="col-sm-3 control-label">Chủ đề</label>
@@ -264,28 +281,28 @@ export class CreateEventDialog extends React.Component {
                   <div className="col-sm-8" style={{marginLeft: '30px'}}>
                     <div className="checkbox">
                       <label> <input type="checkbox" value="emailRequired"
-                                     onChange={(e)=> this.setState({requirement: {email : e.target["checked"]}})}/>
+                                     onChange={(e) => this.setState({requirement: {email: e.target["checked"]}})}/>
                         Đã xác nhận email
                       </label>
                     </div>
 
                     <div className="checkbox">
                       <label> <input type="checkbox" value="phoneRequired"
-                                     onChange={(e)=> this.setState({requirement: {phone : e.target["checked"]}})}/>
+                                     onChange={(e) => this.setState({requirement: {phone: e.target["checked"]}})}/>
                         Đã xác nhận số điện thoại
                       </label>
                     </div>
 
                     <div className="checkbox">
                       <label> <input type="checkbox" value="ageRequired"
-                                     onChange={(e)=> this.setState({requirement: {age : e.target["checked"]}})}/>
+                                     onChange={(e) => this.setState({requirement: {age: e.target["checked"]}})}/>
                         Đã xác nhận tuổi
                       </label>
                     </div>
 
                     <div className="checkbox">
                       <label> <input type="checkbox" value="addressRequired"
-                                     onChange={(e)=> this.setState({requirement: {address : e.target["checked"]}})}/>
+                                     onChange={(e) => this.setState({requirement: {address: e.target["checked"]}})}/>
                         Đã xác nhận địa chỉ
                       </label>
                     </div>
@@ -379,7 +396,7 @@ export class CreateEventDialog extends React.Component {
   }
 
   async createEvent() {
-    let uploadResult = await ANEventServiceInstance.uploadCoverPhoto({cover: this.state.file});
+    let uploadResult = !this.state.file || await ANEventServiceInstance.uploadCoverPhoto({cover: this.state.file});
     if (uploadResult) {
       let model = {
         Information: {

@@ -10,4 +10,9 @@ namespace ActiveNetwork.Web.Models
         public int ANEventId { get; set; }
         public string Description { get; set; }
     }
+    public class UpdateEventTitleRequestModel
+    {
+        public int ANEventId { get; set; }
+        public string Title { get; set; }
+    }
 }

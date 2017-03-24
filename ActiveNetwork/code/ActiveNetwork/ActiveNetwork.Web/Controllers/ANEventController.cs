@@ -395,14 +395,18 @@ namespace ActiveNetwork.Web.Controllers
             elstInfo.Add(eInfo);
             eEvent.ANEventInformations = elstInfo;
             //ANImage
-            var eANEventImage = new ANEventImage()
+            if (model.CoverPhoto.Id > 0)
             {
-                ImageId = model.CoverPhoto.Id,
-                ANEventImageType = (int)Common.ANEventImageType.ANEventCoverImage
-            };
-            var lstANEventImage = new List<ANEventImage>();
-            lstANEventImage.Add(eANEventImage);
-            eEvent.ANEventImages = lstANEventImage;
+                var eANEventImage = new ANEventImage()
+                {
+                    ImageId = model.CoverPhoto.Id,
+                    ANEventImageType = (int)Common.ANEventImageType.ANEventCoverImage
+                };
+
+                var lstANEventImage = new List<ANEventImage>();
+                lstANEventImage.Add(eANEventImage);
+                eEvent.ANEventImages = lstANEventImage;
+            }
             this.ANDBUnitOfWork.ANEventRepository.Save(eEvent);
             this.ANDBUnitOfWork.Commit();
             return true;
@@ -426,7 +430,34 @@ namespace ActiveNetwork.Web.Controllers
             var image = await this.CreateNewImage(stream, fileKey);
             return ImageMapper.ToModel(image);
         }
-
+        [HttpPost, Route("anevent/update-event-cover-photo")]
+        [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
+        public async Task<ImageModel> UpdateEventCoverPhoto(UpdateEventCoverPhotoRequest request)
+        {
+            var eventEntity = this.ANDBUnitOfWork.ANEventRepository.GetAll()
+                .Include(x=>x.ANEventImages)
+                .FirstOrDefault(x => x.Id == request.ANEventId);
+            if (eventEntity == null) return null;
+            if (eventEntity.UserId.GetValueOrDefault() != this.CurrentUser.Id)
+            {
+                throw new HttpResponseException(HttpStatusCode.Forbidden);
+            }
+            var imageEntity = this.ANDBUnitOfWork.ImageRepository.GetAll().FirstOrDefault(x => x.Id == request.ImageId);
+            if (imageEntity == null) return null;
+            var coverPhoto = eventEntity.ANEventImages.FirstOrDefault(x => x.ImageId.HasValue && x.ANEventImageType == (int)Common.ANEventImageType.ANEventCoverImage);
+            if (coverPhoto == null)
+            {
+                coverPhoto = new ANEventImage()
+                {
+                    ANEventId = eventEntity.Id,
+                    ANEventImageType = (int)Common.ANEventImageType.ANEventCoverImage,
+                };
+            }
+            coverPhoto.ImageId = imageEntity.Id;
+            this.ANDBUnitOfWork.ANEventImageRepository.Save(coverPhoto);
+            this.ANDBUnitOfWork.Commit();
+            return ImageMapper.ToModel(imageEntity);
+        }
         [HttpPost, Route("anevent/approve-join-event")]
         [HTActiveAuthorize(Roles = ANRoleConstant.USER)]
         public bool ApproveJoinEvent([FromBody]int RTJId)
